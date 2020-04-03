@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C830D676243690FD00674C08 /* BuildingBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C830D674243690FD00674C08 /* BuildingBuilder.cpp */; };
 		C8E8C03C2431A75600A1BFB1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E8C03B2431A75600A1BFB1 /* main.cpp */; };
 		C8E8C0442431A76900A1BFB1 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8E8C0432431A76900A1BFB1 /* GLUT.framework */; };
 		C8E8C0462431A77600A1BFB1 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8E8C0452431A77600A1BFB1 /* OpenGL.framework */; };
@@ -26,6 +27,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C830D674243690FD00674C08 /* BuildingBuilder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BuildingBuilder.cpp; sourceTree = "<group>"; };
+		C830D675243690FD00674C08 /* BuildingBuilder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BuildingBuilder.hpp; sourceTree = "<group>"; };
 		C8E8C0382431A75600A1BFB1 /* 3710Project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = 3710Project; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8E8C03B2431A75600A1BFB1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		C8E8C0432431A76900A1BFB1 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -70,6 +73,8 @@
 				C8E8C03B2431A75600A1BFB1 /* main.cpp */,
 				C8E8C0472431A7C200A1BFB1 /* objects.cpp */,
 				C8E8C0482431A7C200A1BFB1 /* objects.hpp */,
+				C830D674243690FD00674C08 /* BuildingBuilder.cpp */,
+				C830D675243690FD00674C08 /* BuildingBuilder.hpp */,
 			);
 			path = 3710Project;
 			sourceTree = "<group>";
@@ -141,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8E8C0492431A7C200A1BFB1 /* objects.cpp in Sources */,
+				C830D676243690FD00674C08 /* BuildingBuilder.cpp in Sources */,
 				C8E8C03C2431A75600A1BFB1 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

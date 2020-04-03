@@ -87,11 +87,11 @@ public:
     glColor3f(0.5f, 0.5f, 0.5f);
     // Top Building
     // BACK
-    if (modeV == GL_SELECT)
-    {
-      glLoadName(nameCount);
-      nameCount++;
-    }
+//    if (modeV == GL_SELECT)
+//    {
+//      glLoadName(nameCount);
+//      nameCount++;
+//    }
     glBegin(GL_QUADS);
     glVertex3f(x + 16.5, 0, z + 45);
     glVertex3f(x + 16.5, 30, z + 45);
