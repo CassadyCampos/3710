@@ -48,328 +48,9 @@ public:
   int nameCount;
   GLenum modeV; // current GL_MODE (either GL_RENDER or GL_SELECT)
 
-  // Draws the buildings for b block
-  void drawBuildingB(int x, int z)
-  {
-    // Draw the one cylindrical building on the block
-
-    // BLACK CYLINDER
-    glColor3f(0.0f, 0.0f, 0.0f);
-    //  glTranslatef(-605 + x, 0, -605 + z);
-    glLoadIdentity();
-    gluLookAt(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
-    glTranslatef(-660, 0, -660);
-    glTranslatef(x + 30, -4.95, z + 30);
-    glRotatef(90, -1, 0, 0);
-    // Draw the cylinder based on the current matrix so it's it the correct
-    // position
-    if (modeV == GL_SELECT)
-    {
-      glLoadName(nameCount);
-      nameCount++;
-    }
-    glBegin(GL_TRIANGLE_STRIP);
-    GLUquadricObj *obj = gluNewQuadric();
-    gluCylinder(obj, 15, 15, 30, 10, 10);
-    glEnd();
-    // Reset current matrix to identity
-    glLoadIdentity();
-  }
-
-  // Draws the buildings for a block
-  void drawBuildingA(int x, int z)
-  {
-
-    glLoadIdentity();
-    gluLookAt(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
-    glTranslatef(-655, -4.95, -655);
-    // GREY X2 BUILDINGS
-    glColor3f(0.5f, 0.5f, 0.5f);
-
-    glBegin(GL_QUADS);
-    glVertex3f(x + 16.5, 0, z + 45);
-    glVertex3f(x + 16.5, 30, z + 45);
-    glVertex3f(x + 34, 30, z + 45);
-    glVertex3f(x + 34, 0, z + 45);
-
-    // RIGHT
-
-    glVertex3f(x + 34, 30, z + 45);
-    glVertex3f(x + 34, 0, z + 45);
-    glVertex3f(x + 34, 0, z + 27.5);
-    glVertex3f(x + 34, 30, z + 27.5);
-
-    // LEFT
-
-    glVertex3f(x + 16.5, 30, z + 27.5);
-    glVertex3f(x + 16.5, 30, z + 45);
-    glVertex3f(x + 16.5, 0, z + 45);
-    glVertex3f(x + 16.5, 0, z + 27.5);
-
-    // TOP
-
-    glVertex3f(x + 16.5, 30, z + 27.5);
-    glVertex3f(x + 16.5, 30, z + 45);
-    glVertex3f(x + 34, 30, z + 45);
-    glVertex3f(x + 34, 30, z + 27.5);
-
-    // BOTTOM
-
-    glVertex3f(x + 16.5, 0, z + 27.5);
-    glVertex3f(x + 16.5, 0, z + 45);
-    glVertex3f(x + 34, 0, z + 45);
-    glVertex3f(x + 34, 0, z + 27.5);
-    glEnd();
-
-    // Bottom Left Building
-    // BACK
-    glBegin(GL_QUADS);
-    glVertex3f(x + 5, 0, z + 22.5);
-    glVertex3f(x + 5, 20, z + 22.5);
-    glVertex3f(x + 22.5, 20, z + 22.5);
-    glVertex3f(x + 22.5, 0, z + 22.5);
-
-    // RIGHT
-
-    glVertex3f(x + 22.5, 0, z + 5);
-    glVertex3f(x + 22.5, 20, z + 5);
-    glVertex3f(x + 22.5, 20, z + 22.5);
-    glVertex3f(x + 22.5, 0, z + 22.5);
-
-    // LEFT
-
-    glVertex3f(x + 5, 0, z + 5);
-    glVertex3f(x + 5, 20, z + 5);
-    glVertex3f(x + 5, 20, z + 22.5);
-    glVertex3f(x + 5, 0, z + 22.5);
-
-    // TOP
-
-    glVertex3f(x + 5, 20, z + 5);
-    glVertex3f(x + 5, 20, z + 22.5);
-    glVertex3f(x + 22.5, 20, z + 22.5);
-    glVertex3f(x + 22.5, 20, z + 5);
-
-    // BOTTOM
-
-    glVertex3f(x + 5, 0, z + 5);
-    glVertex3f(x + 5, 0, z + 22.5);
-    glVertex3f(x + 22.5, 0, z + 22.5);
-    glVertex3f(x + 22.5, 0, z + 5);
-    glEnd();
-
-    // Reset current matrix to identity
-    glLoadIdentity();
-  }
-  // antenna
-  void draw_cylinder(GLfloat radius,
-                     GLfloat height) // function that can be used to draw a
-                                     // custom cylinder with different colors
-                                     // (this is only used for the antenna)
-  {
-    GLfloat x = 0.0;
-    GLfloat y = 0.0;
-    GLfloat angle = 0.0;
-    GLfloat angle_stepsize = 0.1;
-
-    float r = 0;
-
-    /** Draw the tube */
-    glBegin(GL_TRIANGLE_STRIP);
-    angle = 0.0;
-    while (angle < 2 * M_PI)
-    {
-      x = radius * cos(angle);
-      y = radius * sin(angle);
-      glColor3f(r, 0.3f, 0.3f);
-      r += 0.005;
-      glVertex3f(x, y, height);
-      glColor3f(0.86f, 0.86f, 0.86f);
-      glVertex3f(x, y, 0.0);
-      angle = angle + angle_stepsize;
-    }
-    glColor3f(0.5f, 0.5f, 0.5f);
-    glVertex3f(radius, 0.0, height);
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(radius, 0.0, 0.0);
-    glEnd();
-
-    /** Draw the circle on top of cylinder */
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glBegin(GL_POLYGON);
-    angle = 0.0;
-    while (angle < 2 * PI)
-    {
-      x = radius * cos(angle);
-      y = radius * sin(angle);
-      glVertex3f(x, y, height);
-      angle = angle + angle_stepsize;
-    }
-    glVertex3f(radius, 0.0, height);
-    glEnd();
-  }
-
-  void draw_environment(GLenum mode)
-  {
-
-    // CLEAR THE BUFFER, all drawing code should be after this point
-    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
-
-    // BLOCK COLORS:::
-    glColor4f(0.5, 0.9, 0.8, 1.0);
-    glTranslatef(-605, 0, -605);
-
-    glBegin(GL_QUADS);
-    for (int i = 0; i < 20; i++)
-    {
-      for (int j = 0; j < 20; j++)
-      {
-        glTexCoord2f(1.0, 1.0);
-        glVertex3f(-50.0 + i * 60, -5.0, 0.0 + j * 60);
-        glTexCoord2f(0.0, 1.0);
-        glVertex3f(0.0 + i * 60, -5.0, 0.0 + j * 60);
-        glTexCoord2f(0.0, 0.0);
-        glVertex3f(0.0 + i * 60, -5.0, -50.0 + j * 60);
-        glTexCoord2f(1.0, 0.0);
-        glVertex3f(-50.0 + i * 60, -5.0, -50.0 + j * 60);
-      }
-    }
-    glEnd();
-
-    // ROAD COLORS:::
-    glColor4f(0.3, 0.3, 0.3, 0.3);
-
-    glBegin(GL_QUADS);
-
-    for (int i = 0; i < 21; i++)
-    {
-      glTexCoord2f(1.0, 1.0);
-      glVertex3f(-60 + i * 60, -4.95, 1150.0);
-      glTexCoord2f(0.0, 1.0);
-      glVertex3f(-50 + i * 60, -4.95, 1150.0);
-      glTexCoord2f(0.0, 0.0);
-      glVertex3f(-50 + i * 60, -4.95, -60.0);
-      glTexCoord2f(1.0, 0.0);
-      glVertex3f(-60 + i * 60, -4.95, -60.0);
-    }
-
-    for (int i = 0; i < 21; i++)
-    {
-      glTexCoord2f(1.0, 0.0);
-      glVertex3f(-60, -4.95, -60 + i * 60);
-
-      glTexCoord2f(0.0, 0.0);
-      glVertex3f(-60, -4.95, -50 + i * 60);
-      glTexCoord2f(0.0, 1.0);
-      glVertex3f(1150, -4.95, -50 + i * 60);
-      glTexCoord2f(1.0, 1.0);
-      glVertex3f(1150, -4.95, -60 + i * 60);
-    }
-    glEnd();
-
-    /*
-    Was unable to impliment a skybox after changes to our lookat
-
-    */
-    // SKY COLORS:::
-    /*
-    glColor4f(1.0, 0.6, 0.3, 0.0);
-    glBindTexture(GL_TEXTURE_2D, skybox);
-                glBegin(GL_QUADS);
-
-                glTexCoord2f(0.0, 0.0); glVertex3f( 50.0, 5.0, -50.0);
-
-                glTexCoord2f(0.0, 1.0); glVertex3f( 50.0, 5.0,  50.0);
-
-                glTexCoord2f(1.0, 1.0); glVertex3f(-50.0, 5.0,  50.0);
-
-                glTexCoord2f(1.0, 0.0); glVertex3f(-50.0, 5.0, -50.0);
-                glEnd();
-
-                glBindTexture(GL_TEXTURE_2D, hor);
-                glBegin(GL_QUADS);
-        glTexCoord2f(1.0, 1.0); glVertex3f( 50.0,  -5.0,  -50.0);
-        glTexCoord2f(1.0, 0.0); glVertex3f( 50.0, 5.0,  -50.0);
-        glTexCoord2f(0.0, 0.0); glVertex3f(-50.0, 5.0,  -50.0);
-                glTexCoord2f(0.0, 1.0); glVertex3f(-50.0,  -5.0,  -50.0);
-
-
-
-                glTexCoord2f(0.0, 0.0); glVertex3f(-50.0, -5.0,   50.0);
-                glTexCoord2f(0.0, 1.0); glVertex3f(-50.0,  5.0,   50.0);
-                glTexCoord2f(1.0, 1.0); glVertex3f( 50.0,  5.0,   50.0);
-                glTexCoord2f(1.0, 0.0); glVertex3f( 50.0, -5.0,   50.0);
-
-                glTexCoord2f(0.0, 0.0); glVertex3f( 50.0, 5.0,  -50.0);
-                glTexCoord2f(0.0, 1.0); glVertex3f( 50.0,  -5.0,  -50.0);
-                glTexCoord2f(1.0, 1.0); glVertex3f( 50.0,  -5.0,   50.0);
-                glTexCoord2f(1.0, 0.0); glVertex3f( 50.0, 5.0,   50.0);
-
-                glTexCoord2f(0.0, 0.0); glVertex3f(-50.0, -5.0,  -50.0);
-                glTexCoord2f(0.0, 1.0); glVertex3f(-50.0,  5.0,  -50.0);
-                glTexCoord2f(1.0, 1.0); glVertex3f(-50.0,  5.0,   50.0);
-                glTexCoord2f(1.0, 0.0); glVertex3f(-50.0, -5.0,   50.0);
-                glEnd();
-
-*/
-    glFlush();
-  }
-
-  // Draws the buildings for a block
-  void drawBuildingC(int x, int z)
-  {
-    glLoadIdentity();
-    gluLookAt(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
-    glTranslatef(-655, -4.95, -655);
-    glColor3f(0.1f, 0.2f, 0.0f);
-    // BACK
-    if (modeV == GL_SELECT)
-    {
-      glLoadName(nameCount);
-      nameCount++;
-    }
-    glBegin(GL_QUADS);
-    glVertex3f(x + 5, 0, z + 45);
-    glVertex3f(x + 5, 30, z + 45);
-    glVertex3f(x + 45, 30, z + 45);
-    glVertex3f(x + 45, 0, z + 45);
-
-    // RIGHT
-
-    glVertex3f(x + 45, 30, z + 45);
-    glVertex3f(x + 45, 0, z + 45);
-    glVertex3f(x + 45, 0, z + 5);
-    glVertex3f(x + 45, 30, z + 5);
-
-    // LEFT
-
-    glVertex3f(x + 5, 0, z + 5);
-    glVertex3f(x + 5, 30, z + 5);
-    glVertex3f(x + 5, 30, z + 45);
-    glVertex3f(x + 5, 0, z + 45);
-
-    // TOP
-
-    glVertex3f(x + 5, 30, z + 5);
-    glVertex3f(x + 5, 30, z + 45);
-    glVertex3f(x + 45, 30, z + 45);
-    glVertex3f(x + 45, 30, z + 5);
-
-    // BOTTOM
-
-    glVertex3f(x + 5, 0, z + 5);
-    glVertex3f(x + 5, 0, z + 45);
-    glVertex3f(x + 45, 0, z + 45);
-    glVertex3f(x + 45, 0, z + 5);
-    glEnd();
-  }
-
   void drawRobot()
   { // function for drawing the robot into the world
+  float theta,angle,i;
     GLUquadric *neckquad;
     neckquad = gluNewQuadric();
     GLUquadric *antquad;
@@ -383,180 +64,209 @@ public:
 
     glTranslatef(cx, cy, cz);      // translate to robots current position
     glRotatef(bodyAngle, 0, 1, 0); // for when robot is turning to left or right
-    glTranslatef(0, 0, 0);         // translate to 0, 0, 0 first for if robot is turning
-
-    glBegin(
-        GL_TRIANGLES); // this is the triangle design on the back of the robot
-    // included on the body
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glVertex3f(-0.8f, -1.3f, -1.01f);
-    glVertex3f(0.8f, -1.3f, -1.01f);
-    glVertex3f(0.0f, 0.0f, -1.01f);
-
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glVertex3f(-0.8f, 0.0f, -1.01f);
-    glVertex3f(0.8f, 0.0f, -1.01f);
-    glVertex3f(0.0f, 1.3f, -1.01f);
-
-    glEnd();
+    glTranslatef(3.0, 3.0, 3.0);         // translate to 0, 0, 0 first for if robot is turning
+    glScalef(3.0,3.0,3.0);
+    glEnable(GL_COLOR_MATERIAL);
 
     // begin the body of the robot
     glBegin(GL_QUADS);
 
     // frontdesign
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glVertex3f(-0.6f, -1.0f, 1.01f);
-    glVertex3f(0.6f, -1.0f, 1.01f);
-    glVertex3f(0.6f, 1.0f, 1.01f);
-    glVertex3f(-0.6f, 1.0f, 1.01f);
+    glColor3f(1.0f, 0.0f, 1.0f);
+    glVertex3f( 0.2, 0.4,0.6);
+    glVertex3f(0.6, 0.5,0.6);
+    glVertex3f(0.6, 0.5,0.2);
+    glVertex3f( 0.2,0.4,0.2);
+    /* bottom of cube*/
+    glVertex3f( 0.2,0.4,0.6);
+    glVertex3f(0.6,0.2,0.6);
+    glVertex3f(0.6,0.2,0.2);
+    glVertex3f( 0.2,0.2,0.2);
+    /* front of cube*/
+    glVertex3f( 0.2,0.2,0.6);
+    glVertex3f(0.2, 0.4,0.6);
+    glVertex3f(0.2,0.4,0.2);
+    glVertex3f( 0.2,0.2,0.2);
+    /* back of cube.*/
+    glVertex3f(0.6,0.2,0.6);
+    glVertex3f(0.6,0.5,0.6);
+    glVertex3f(0.6,0.5,0.2);
+    glVertex3f( 0.6,0.2,0.2);
+    /* left of cube*/
+    glVertex3f(0.2,0.2,0.6);
+    glVertex3f(0.6,0.2,0.6);
+    glVertex3f(0.6,0.5,0.6);
+    glVertex3f(0.2,0.4,0.6);
+    /* Right of cube */
+    glVertex3f(0.2,0.2,0.2);
+    glVertex3f( 0.6,0.2,0.2);
+    glVertex3f( 0.6,0.5,0.2);
+    glVertex3f( 0.2,0.4,0.2);
+    glVertex3f(0.7,0.65,0.6);
+    glVertex3f(0.7,0.65,0.2);
+    glVertex3f(1.7,0.65,0.2);
+    glVertex3f(1.7,0.65,0.6);
 
-    // Upper face
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(-1.0f, 1.5f, 1.0f);
-    glVertex3f(1.0f, 1.5f, 1.0f);
-    glVertex3f(1.0f, 1.5f, -1.0f);
-    glVertex3f(-1.0f, 1.5f, -1.0f);
+    glColor3f(1.0f, 0.0f, 1.0f);
+    glVertex3f( 1.8, 0.5,0.6);
+    glVertex3f(1.8, 0.5,0.2);
+    glVertex3f(2.1, 0.4, 0.2);
+    glVertex3f(2.1,0.4,0.6);
+    /* bottom of cube*/
+    glVertex3f( 2.1,0.2,0.6);
+    glVertex3f(2.1,0.2,0.2);
+    glVertex3f(1.8,0.2,0.6);
+    glVertex3f( 1.8,0.2,0.6);
+    /* back of cube.*/
+    glVertex3f(2.1,0.4,0.6);
+    glVertex3f(2.1,0.4,0.2);
+    glVertex3f(2.1,0.2,0.2);
+    glVertex3f(2.1,0.2,0.6);
+    /* left of cube*/
+    glVertex3f(1.8,0.2,0.2);
+    glVertex3f(1.8,0.5,0.2);
+    glVertex3f(2.1,0.4,0.2);
+    glVertex3f(2.1,0.2,0.2);
+    /* Right of cube */
+    glVertex3f(1.8,0.2,0.6);
+    glVertex3f(1.8,0.5,0.6);
+    glVertex3f(2.1,0.4,0.6);
+    glVertex3f(2.1,0.2,0.6);
 
-    // Bottom face
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(-1.0f, -1.5f, 1.0f);
-    glVertex3f(1.0f, -1.5f, 1.0f);
-    glVertex3f(1.0f, -1.5f, -1.0f);
-    glVertex3f(-1.0f, -1.5f, -1.0f);
+    //******************MIDDLE BODY************************************
+    glVertex3f( 0.6, 0.5,0.6);
+    glVertex3f(0.6, 0.2,0.6);
+    glVertex3f(1.8, 0.2, 0.6);
+    glVertex3f(1.8,0.5,0.6);
 
-    // Far face.
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(-1.0f, -1.5f, -1.0f);
-    glVertex3f(-1.0f, 1.5f, -1.0f);
-    glVertex3f(1.0f, 1.5f, -1.0f);
-    glVertex3f(1.0f, -1.5f, -1.0f);
+    /* bottom of cube*/
+    glVertex3f( 0.6,0.2,0.6);
+    glVertex3f(0.6,0.2,0.2);
+    glVertex3f(1.8,0.2,0.2);
+    glVertex3f( 1.8,0.2,0.6);
 
-    // Right face.
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(1.0f, -1.5f, -1.0f);
-    glVertex3f(1.0f, 1.5f, -1.0f);
-    glVertex3f(1.0f, 1.5f, 1.0f);
-    glVertex3f(1.0f, -1.5f, 1.0f);
+    /* back of cube.*/
+    glVertex3f(0.6,0.5,0.2);
+    glVertex3f(0.6,0.2,0.2);
+    glVertex3f(1.8,0.2,0.2);
+    glVertex3f(1.8,0.5,0.2);
 
-    // Front face.
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(-1.0f, -1.5f, 1.0f);
-    glVertex3f(1.0f, -1.5f, 1.0f);
-    glVertex3f(1.0f, 1.5f, 1.0f);
-    glVertex3f(-1.0f, 1.5f, 1.0f);
+    //*********************ENTER WINDOW**********************************
+    glColor3f(0.3,0.3,0.3);
+    glVertex3f( 0.77, 0.63,0.2);
+    glVertex3f(0.75, 0.5,0.2);        //quad front window
+    glVertex3f(1.2, 0.5, 0.2);
+    glVertex3f( 1.22,0.63,0.2);
 
-    // Left Face.
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(-1.0f, -1.5f, -1.0f);
-    glVertex3f(-1.0f, -1.5f, 1.0f);
-    glVertex3f(-1.0f, 1.5f, 1.0f);
-    glVertex3f(-1.0f, 1.5f, -1.0f);
+    glVertex3f(1.27,0.63,.2);
+    glVertex3f(1.25,0.5,0.2);        //quad back window
+    glVertex3f(1.65,0.5,0.2);
+    glVertex3f(1.67,0.63,0.2);
 
-    glEnd();
+    glColor3f(1.0f,1.0f,1.0f);
+    glVertex3f(0.7,0.65,0.2);
+    glVertex3f(0.7,0.5,.2);       //first separation
+    glVertex3f(0.75,0.5,0.2);
+    glVertex3f(0.77,0.65,0.2);
 
-    // neck of robot
-    glTranslatef(0.0f, 1.5f, 0.0f);
-    glRotatef(90, -1.0f, 0.0f, 0.0f);
+    glVertex3f(1.2,0.65,0.2);
+    glVertex3f(1.2,0.5,.2);       //second separation
+    glVertex3f(1.25,0.5,0.2);
+    glVertex3f(1.27,0.65,0.2);
 
-    glBegin(GL_TRIANGLE_STRIP);
+    glVertex3f(1.65,0.65,0.2);
+    glVertex3f(1.65,0.5,.2);     //3d separation
+    glVertex3f(1.7,0.5,0.2);
+    glVertex3f(1.7,0.65,0.2);
 
-    glColor3f(0.5f, 0.5f, 0.5f);
-    gluCylinder(neckquad, 0.5, 0.5, 0.5, 50,
-                50); // cylinder gluquadric defined earlier
+    glVertex3f( 0.75, 0.65,0.2);
+    glVertex3f(0.75, 0.63,0.2);        //line strip
+    glVertex3f(1.7, 0.63, 0.2);
+    glVertex3f( 1.7,0.65,0.2);
 
-    glEnd();
+    glVertex3f( 0.75, 0.65,0.6);
+    glVertex3f(0.75, 0.63,0.6);        //line strip
+    glVertex3f(1.7, 0.63, 0.6);
+    glVertex3f( 1.7,0.65,0.6);
 
-    // antenae
-    glRotatef(-antRot, 0.0f, 0.0f, 1.0f); // constantly rotate
-    glTranslatef(0.1f, 0.0f,
-                 1.5f); // translate it on top of its head and slightly to the
-                        // side so we can see it rotating better
+    glColor3f(0.3,0.3,0.3);
+    glVertex3f( 0.77, 0.63,0.6);
+    glVertex3f(0.75, 0.5,0.6);        //quad front window
+    glVertex3f(1.2, 0.5, 0.6);
+    glVertex3f( 1.22,0.63,0.6);
 
-    glBegin(GL_TRIANGLE_STRIP);
+    glVertex3f(1.27,0.63,.6);
+    glVertex3f(1.25,0.5,0.6);        //quad back window
+    glVertex3f(1.65,0.5,0.6);
+    glVertex3f(1.67,0.63,0.6);
 
-    glTexCoord2f(0.0f, 0.5f);
-    glColor3f(0.86f, 0.86f, 0.86f);
-    draw_cylinder(0.1, 0.8); // use our custom cylinder function for this
+    glColor3f(1.0f,1.0f,1.0f);
+    glVertex3f(0.7,0.65,0.6);
+    glVertex3f(0.7,0.5,.6);       //first separation
+    glVertex3f(0.75,0.5,0.6);
+    glVertex3f(0.77,0.65,0.6);
 
-    glEnd();
+    glVertex3f(1.2,0.65,0.6);
+    glVertex3f(1.2,0.5,.6);       //second separation
+    glVertex3f(1.25,0.5,0.6);
+    glVertex3f(1.27,0.65,0.6);
 
-    glLoadIdentity();
-    gluLookAt(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
-
-    glTranslatef(cx, cy, cz);
-    glRotatef(bodyAngle, 0, 1,
-              0);          // do all the same things we do for the body for the head
-    glTranslatef(0, 0, 0); // the head is separate since it can rotate on its
-                           // own when F2 or F3 are pressed.
-
-    glRotatef(headAngle, 0.0f, 1.0f, 0.0f); // for if the head is rotating
-
-    glBegin(GL_QUADS);
-    // BEGIN HEAD
-    // Left Eye
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3f(-0.3f, 2.9f, 0.71f);
-    glVertex3f(-0.5f, 2.9f, 0.71f);
-    glVertex3f(-0.5f, 2.7f, 0.71f);
-    glVertex3f(-0.3f, 2.7f, 0.71f);
-
-    // Right Eye
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3f(0.3f, 2.9f, 0.71f);
-    glVertex3f(0.5f, 2.9f, 0.71f);
-    glVertex3f(0.5f, 2.7f, 0.71f);
-    glVertex3f(0.3f, 2.7f, 0.71f);
-
-    // Mouth
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(0.53f, 2.2f, 0.71f);
-    glVertex3f(-0.5f, 2.2f, 0.71f);
-    glVertex3f(-0.5f, 2.4f, 0.71f);
-    glVertex3f(0.5f, 2.4f, 0.71f);
-
-    // Upper face
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(-0.7f, 3.2f, 0.7f);
-    glVertex3f(0.7f, 3.2f, 0.7f);
-    glVertex3f(0.7f, 3.2f, -0.7f);
-    glVertex3f(-0.7f, 3.2f, -0.7f);
-
-    // Bottom face
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(-0.8f, 1.9f, 0.7f);
-    glVertex3f(0.8f, 1.9f, 0.7f);
-    glVertex3f(0.8f, 1.9f, -0.7f);
-    glVertex3f(-0.8f, 1.9f, -0.7f);
-
-    // Far face.
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(-0.8f, 1.9f, -0.7f);
-    glVertex3f(-0.8f, 3.2f, -0.7f);
-    glVertex3f(0.8f, 3.2f, -0.7f);
-    glVertex3f(0.8f, 1.9f, -0.7f);
-
-    // Right face.
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(0.8f, 1.9f, -0.7f);
-    glVertex3f(0.8f, 3.2f, -0.7f);
-    glVertex3f(0.8f, 3.2f, 0.7f);
-    glVertex3f(0.8f, 1.9f, 0.7f);
-
-    // Front face.
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(-0.8f, 1.9f, 0.7f);
-    glVertex3f(0.8f, 1.9f, 0.7f);
-    glVertex3f(0.8f, 3.2f, 0.7f);
-    glVertex3f(-0.8f, 3.2f, 0.7f);
-
-    // Left Face.
-    glColor3f(0.86f, 0.86f, 0.86f);
-    glVertex3f(-0.8f, 1.9f, -0.7f);
-    glVertex3f(-0.8f, 1.9f, 0.7f);
-    glVertex3f(-0.8f, 3.2f, 0.7f);
-    glVertex3f(-0.8f, 3.2f, -0.7f);
+    glVertex3f(1.65,0.65,0.6);
+    glVertex3f(1.65,0.5,.6);
+    glVertex3f(1.7,0.5,0.6);
+    glVertex3f(1.7,0.65,0.6);
 
     glEnd();
+
+    glColor3f(0.7,0.7,0.7);
+    glPushMatrix();
+    glBegin(GL_LINE_STRIP);
+        for(theta=0;theta<360;theta=theta+40) {
+            glVertex3f(0.6,0.2,0.62);
+            glVertex3f(0.6+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.62);
+        }
+    glEnd();
+
+    glBegin(GL_LINE_STRIP);
+        for(theta=0;theta<360;theta=theta+40) {
+            glVertex3f(0.6,0.2,0.18);
+            glVertex3f(0.6+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.18);
+        }
+    glEnd();
+
+    glBegin(GL_LINE_STRIP);
+        for(theta=0;theta<360;theta=theta+40) {
+            glVertex3f(1.7,0.2,0.18);
+            glVertex3f(1.7+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.18);
+        }
+    glEnd();
+
+    glBegin(GL_LINE_STRIP);
+        for(theta=0;theta<360;theta=theta+40) {
+            glVertex3f(1.7,0.2,0.62);
+            glVertex3f(1.7+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.62);
+        }
+    glEnd();
+
+    glTranslatef(0.6,0.2,0.6);
+    glColor3f(0,0,0);
+    glutSolidTorus(0.025,0.07,10,25);
+
+    glTranslatef(0,0,-0.4);
+    glutSolidTorus(0.025,0.07,10,25);
+
+    glTranslatef(1.1,0,0);
+    glutSolidTorus(0.025,0.07,10,25);
+
+    glTranslatef(0,0,0.4);
+    glutSolidTorus(0.025,0.07,10,25);
+    glPopMatrix();
+
+    //*************************************************************
+    glPopMatrix();
+    glEnable(GL_DEPTH_TEST);
+    glutPostRedisplay();
+    glutSwapBuffers();
 
     antRot += 30;
     if (antRot == 360)
