@@ -79,7 +79,7 @@ void renderSphe(int x, int z) {
     
     //* Move to building square
     float moveX = -40 + x * 60;
-    float moveZ = -30 + x * 60;
+    float moveZ = -30 + z * 60;
     
 
     // 2nd cylinder
@@ -151,8 +151,8 @@ void renderCyli(int x, int z) {
     //* Draw rectangle ontop
     float rectXmin = -5 + x * 60;
     float rectXmax = -25 + x * 60;
-    float rectZmax = -12 + x * 60;
-    float rectZmin = -30 + x * 60;
+    float rectZmax = -12 + z * 60;
+    float rectZmin = -30 + z * 60;
     
 
     
@@ -161,7 +161,7 @@ void renderCyli(int x, int z) {
     glTranslatef((rectXmax + rectXmin)/2, 21.5, (rectZmax + rectZmin)/2);
     glRotatef(rotateRect, 0, 1, 0);
     glTranslatef(-(rectXmax + rectXmin)/2, -21.5, -(rectZmax + rectZmin)/2);
-    
+
     //* Front
     glColor3f(0.502, 0.000, 0.000);
     glBegin(GL_QUADS);
@@ -213,7 +213,7 @@ void renderCyli(int x, int z) {
     glTranslatef(cylXPos, GROUND_LEVEL, cylZPos);
     //* Rotate it standing
     glRotatef(90, -1, 0, 0);
-    
+
     //* Draw cylinder
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_TRIANGLE_STRIP);
@@ -329,17 +329,17 @@ void renderCity(GLenum mode)
             switch (ran) {
                 case 1:
                     renderBuild(i,j);
-                    renderCyli(i, j);
-                    renderSphe(i, j);
+                    renderCyli(i,j);
+                    renderSphe(i,j);
                     break;
                 case 2:
-                    renderCyli(i, j);
+                    renderCyli(i,j);
                     renderBuild(i,j);
-                    renderSphe(i, j);
+                    renderSphe(i,j);
                     break;
                 case 3:
-                    renderSphe(i, j);
-                    renderCyli(i, j);
+                    renderSphe(i,j);
+                    renderCyli(i,j);
                     renderBuild(i,j);
                     break;
                 default:
