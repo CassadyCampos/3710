@@ -256,32 +256,28 @@ void renderBuild(int x, int z) {
     glVertex3f(buildingXmin, 30, buildingZmax); // top left
     glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmax); // bot left
     glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmax); // bot right
-//    glEnd();
+    
+    //* FRONT WINDOW
+    glColor3f(0.941, 1.000, 1.000); // Azure
+    glVertex3f(buildingXmax + 2, 16, buildingZmax -0.1); // top right
+    glVertex3f(buildingXmin - 2, 16, buildingZmax - 0.1); // top left
+    glVertex3f(buildingXmin - 2, 12, buildingZmax -0.1); // bot left
+    glVertex3f(buildingXmax + 2, 12, buildingZmax -0.1); // bot right
     
     //* LEFT
     glColor3f(0.467, 0.533, 0.600);
-//    glBegin(GL_QUADS);
     glVertex3f(buildingXmin, 30, buildingZmin); // top right
     glVertex3f(buildingXmin, 30, buildingZmax); // top left
     glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmax); // bot left
     glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmin); // bot right
-//    glEnd();
     
-    //* LEFT WINDOW -- Change z value to make window smaller
-    //* building. Extend x value out so appears infront of building
-    for (int i = 1; i < 4; i++) {
-        if (i * 12 > 30) {
-            break;
-        } else {
-            glColor3f(0.941, 1.000, 1.000); // Azure
-//            glBegin(GL_QUADS);
-            glVertex3f(buildingXmin+0.1, i*12, buildingZmin - 2); // top right
-            glVertex3f(buildingXmin+0.1, i*12, buildingZmax + 2); // top left
-            glVertex3f(buildingXmin+0.1, i*8, buildingZmax + 2); // bot left
-            glVertex3f(buildingXmin+0.1, i*8, buildingZmin - 2); // bot right
-//            glEnd();
-        }
-    }
+    //* LEFT WINDOW
+    glColor3f(0.941, 1.000, 1.000); // Azure
+    glVertex3f(buildingXmin+0.1, 12, buildingZmin - 2); // top right
+    glVertex3f(buildingXmin+0.1, 12, buildingZmax + 2); // top left
+    glVertex3f(buildingXmin+0.1, 8, buildingZmax + 2); // bot left
+    glVertex3f(buildingXmin+0.1, 8, buildingZmin - 2); // bot right
+
 
     //*BACK
     glColor3f(0.467, 0.533, 0.600);
