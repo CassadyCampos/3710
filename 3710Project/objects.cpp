@@ -51,11 +51,7 @@ public:
   void drawRobot()
   { // function for drawing the robot into the world
   float theta,angle,i;
-    GLUquadric *neckquad;
-    neckquad = gluNewQuadric();
-    GLUquadric *antquad;
-    antquad = gluNewQuadric();
-    gluQuadricTexture(antquad, true); // making a cylinder object
+  int frame_count;
 
     // cube begin
     glLoadIdentity();
@@ -107,16 +103,17 @@ public:
     glVertex3f(1.7,0.65,0.2);
     glVertex3f(1.7,0.65,0.6);
 
+    //***************************back guard******************************
     glColor3f(1.0f, 0.0f, 1.0f);
-    glVertex3f( 1.8, 0.5,0.6);
-    glVertex3f(1.8, 0.5,0.2);
-    glVertex3f(2.1, 0.4, 0.2);
+    glVertex3f(1.8,0.5,0.6);
+    glVertex3f(1.8,0.5,0.2);
+    glVertex3f(2.1,0.4,0.2);
     glVertex3f(2.1,0.4,0.6);
     /* bottom of cube*/
-    glVertex3f( 2.1,0.2,0.6);
+    glVertex3f(2.1,0.2,0.6);
     glVertex3f(2.1,0.2,0.2);
     glVertex3f(1.8,0.2,0.6);
-    glVertex3f( 1.8,0.2,0.6);
+    glVertex3f(1.8,0.2,0.6);
     /* back of cube.*/
     glVertex3f(2.1,0.4,0.6);
     glVertex3f(2.1,0.4,0.2);
@@ -218,6 +215,17 @@ public:
 
     glEnd();
 
+    //******************ATENNA BODY************************************
+    glBegin(GL_TRIANGLE_STRIP);
+    GLUquadricObj *quadratic;
+    quadratic = gluNewQuadric();
+    gluQuadricTexture(quadratic, true);
+    glTranslatef(3.0, 3.0, 3.0); 
+    glRotatef(antRot, 0.0f, 1.0f, 0.0f);
+    gluCylinder(quadratic,0.1f,0.1f,1.0f,32,32);
+    glEnd();
+    //*****************************************************************
+
     glColor3f(0.7,0.7,0.7);
     glPushMatrix();
     glBegin(GL_LINE_STRIP);
@@ -268,11 +276,13 @@ public:
     glutPostRedisplay();
     glutSwapBuffers();
 
-    antRot += 30;
-    if (antRot == 360)
-    { // rotating antenna constantly, bringing back to 0 if it his 360 so it
-      // doesn't eventually overflow
-      antRot = 0;
+    frame_count++;
+    if (frame_count % 10 == 0) {
+        antRot += 30;
+        frame_count = 0;
+        if (antRot > 360) {
+            antRot = 0;
+        }
     }
   }
 
