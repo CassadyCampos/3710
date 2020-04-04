@@ -59,8 +59,9 @@ BuildingBuilder builder;
 int eyeX = 0, eyeY = 4, eyeZ = -15;
 int atX = 0, atY = 0, atZ = 0;
 int GROUND_LEVEL = 0.5;
-
+int frame_count = 0;
 float rotateRect = 0.4;
+float rotateCyil = 0.5;
 
 static void PrintString(void *font, char *str)
 {
@@ -68,6 +69,73 @@ static void PrintString(void *font, char *str)
 
     for (i = 0; i < len; i++)
         glutBitmapCharacter(font, *str++);
+}
+
+void renderSphe(int x, int z) {
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+
+    
+    //* Move to building square
+    float moveX = -40 + x * 60;
+    float moveZ = -30 + z * 60;
+    
+
+    // 2nd cylinder
+    glPushMatrix();
+    glTranslatef(moveX, GROUND_LEVEL+12, moveZ);
+    //* 1. Translate to origin (center of cylinder
+    //* 2. Rotate on y
+    //* 3. Rotate back to original spot
+    glTranslatef(1, 1, 1); // 3
+    glRotatef(rotateCyil , 0, 1, 0); //2
+    glTranslatef(1, 1, 1); // 1
+    
+    glRotatef(70, -1, 0, 0);
+    glColor3f(0.753, 0.753, 0.753); // grey
+    glBegin(GL_TRIANGLE_STRIP);;
+    GLUquadricObj *obj = gluNewQuadric();
+    gluCylinder(obj, 2.5, 2.5, 2, 5, 5);
+    glEnd();
+    glPopMatrix();
+    
+
+    // Wick part
+    glPushMatrix();
+    //* Moves ontop of sphere
+    glTranslatef(moveX - 2, GROUND_LEVEL+13, moveZ);
+
+    //* 1. Translate to origin (center of cylinder
+    //* 2. Rotate on y
+    //* 3. Rotate back to original spot
+    glTranslatef(5/2, 5/2, 5/2); // 3
+    glRotatef(rotateCyil, 0, 1, 0); //2
+    glTranslatef(5/2, -(5/2), -5/2); // 1
+    
+    //* Rotate it standing
+    glRotatef(70, -1, 0, 0);
+    //* Draw Cylinder
+    glColor3f(0.871, 0.722, 0.529); // wood color
+    glBegin(GL_TRIANGLE_STRIP);
+    GLUquadricObj *obj2 = gluNewQuadric();
+    gluCylinder(obj2, 2, 2, 5, 5, 5);
+    glEnd();
+    glPopMatrix();
+    
+    //* Draw Sphere
+    glPushMatrix();
+    glTranslatef(moveX, GROUND_LEVEL+5, moveZ);
+    glColor3f(0.098, 0.098, 0.439);
+    glutSolidSphere(10, 10, 10);
+    glPopMatrix();
+    
+    frame_count++;
+    if (frame_count % 10 == 0) {
+        rotateCyil += 0.3;
+        frame_count = 0;
+        if(rotateCyil > 360.0) rotateCyil = 0;
+    }
 }
 
 void renderCyli(int x, int z) {
@@ -83,16 +151,17 @@ void renderCyli(int x, int z) {
     //* Draw rectangle ontop
     float rectXmin = -5 + x * 60;
     float rectXmax = -25 + x * 60;
-    float rectZmax = -12 + x * 60;
-    float rectZmin = -30 + x * 60;
+    float rectZmax = -12 + z * 60;
+    float rectZmin = -30 + z * 60;
     
 
     
     glPushMatrix();
-    //* Rotate rectangle
-    glTranslatef(0.0, 4.0, -7.0);
+    // Move to origin, rotate then move back
+    glTranslatef((rectXmax + rectXmin)/2, 21.5, (rectZmax + rectZmin)/2);
     glRotatef(rotateRect, 0, 1, 0);
-    rotateRect += 0.3;
+    glTranslatef(-(rectXmax + rectXmin)/2, -21.5, -(rectZmax + rectZmin)/2);
+
     //* Front
     glColor3f(0.502, 0.000, 0.000);
     glBegin(GL_QUADS);
@@ -100,68 +169,51 @@ void renderCyli(int x, int z) {
     glVertex3f(rectXmin, 25, rectZmin);
     glVertex3f(rectXmin, 18, rectZmin);
     glVertex3f(rectXmax, 18, rectZmin);
-//    glEnd();
-    
 
-
-
-    
     //* Left
     glColor3f(0.184, 0.310, 0.310);
-//    glBegin(GL_QUADS);
     glVertex3f(rectXmin, 25, rectZmin);
     glVertex3f(rectXmin, 25, rectZmax);
     glVertex3f(rectXmin, 18, rectZmax);
     glVertex3f(rectXmin, 18, rectZmin);
-//    glEnd();
 
     //* Back
     glColor3f(0.980, 0.922, 0.843);
-//    glBegin(GL_QUADS);
     glVertex3f(rectXmax, 25, rectZmax);
     glVertex3f(rectXmin, 25, rectZmax);
     glVertex3f(rectXmin, 18, rectZmax);
     glVertex3f(rectXmax, 18, rectZmax);
-//    glEnd();
     
     //* Right
     glColor3f(0.255, 0.412, 0.882);
-//    glBegin(GL_QUADS);
     glVertex3f(rectXmax, 25, rectZmin);
     glVertex3f(rectXmax, 25, rectZmax);
     glVertex3f(rectXmax, 18, rectZmax);
     glVertex3f(rectXmax, 18, rectZmin);
-//    glEnd();
     
     //* Bottom
     glColor3f(0.000, 1.000, 1.000);
-//    glBegin(GL_QUADS);
     glVertex3f(rectXmin, 18, rectZmin);
     glVertex3f(rectXmax, 18, rectZmin);
     glVertex3f(rectXmax, 18, rectZmax);
     glVertex3f(rectXmin, 18, rectZmax);
-//    glEnd();
     
     //* Top
     glColor3f(0.604, 0.804, 0.196);
-//    glBegin(GL_QUADS);
     glVertex3f(rectXmin, 25, rectZmin);
     glVertex3f(rectXmax, 25, rectZmin);
     glVertex3f(rectXmax, 25, rectZmax);
     glVertex3f(rectXmin, 25, rectZmax);
     glEnd();
-    
     glPopMatrix();
     
     
-    
+    glPushMatrix();
     // Move it within building square
     glTranslatef(cylXPos, GROUND_LEVEL, cylZPos);
     //* Rotate it standing
     glRotatef(90, -1, 0, 0);
-    
-    
-    
+
     //* Draw cylinder
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_TRIANGLE_STRIP);
@@ -169,14 +221,24 @@ void renderCyli(int x, int z) {
     gluCylinder(obj, 8, 8, 20, 10, 10);
     glEnd();
     glFlush();
+    glPopMatrix();
     
-//    glutSwapBuffers();
+    // Rotate cube 30 degrees every 10 frames
+    frame_count++;
+    if (frame_count % 10 == 0) {
+        rotateRect += 0.5;
+        frame_count = 0;
+        if (rotateRect > 360.0) rotateRect = 0;
+    }
+    
 }
 
 void renderBuild(int x, int z) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+//    gluLookAt(eyeX, 40, 60, atX, atY, atZ, 0, 1, 0);
+
     
     // These floats are calcualted from the viewpoint of looking at the *FRONT
     // Of the building.
@@ -194,32 +256,28 @@ void renderBuild(int x, int z) {
     glVertex3f(buildingXmin, 30, buildingZmax); // top left
     glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmax); // bot left
     glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmax); // bot right
-//    glEnd();
+    
+    //* FRONT WINDOW
+    glColor3f(0.941, 1.000, 1.000); // Azure
+    glVertex3f(buildingXmax + 2, 16, buildingZmax -0.1); // top right
+    glVertex3f(buildingXmin - 2, 16, buildingZmax - 0.1); // top left
+    glVertex3f(buildingXmin - 2, 12, buildingZmax -0.1); // bot left
+    glVertex3f(buildingXmax + 2, 12, buildingZmax -0.1); // bot right
     
     //* LEFT
     glColor3f(0.467, 0.533, 0.600);
-//    glBegin(GL_QUADS);
     glVertex3f(buildingXmin, 30, buildingZmin); // top right
     glVertex3f(buildingXmin, 30, buildingZmax); // top left
     glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmax); // bot left
     glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmin); // bot right
-//    glEnd();
     
-    //* LEFT WINDOW -- Change z value to make window smaller
-    //* building. Extend x value out so appears infront of building
-    for (int i = 1; i < 4; i++) {
-        if (i * 12 > 30) {
-            break;
-        } else {
-            glColor3f(0.941, 1.000, 1.000); // Azure
-//            glBegin(GL_QUADS);
-            glVertex3f(buildingXmin+0.1, i*12, buildingZmin - 2); // top right
-            glVertex3f(buildingXmin+0.1, i*12, buildingZmax + 2); // top left
-            glVertex3f(buildingXmin+0.1, i*8, buildingZmax + 2); // bot left
-            glVertex3f(buildingXmin+0.1, i*8, buildingZmin - 2); // bot right
-//            glEnd();
-        }
-    }
+    //* LEFT WINDOW
+    glColor3f(0.941, 1.000, 1.000); // Azure
+    glVertex3f(buildingXmin+0.1, 12, buildingZmin - 2); // top right
+    glVertex3f(buildingXmin+0.1, 12, buildingZmax + 2); // top left
+    glVertex3f(buildingXmin+0.1, 8, buildingZmax + 2); // bot left
+    glVertex3f(buildingXmin+0.1, 8, buildingZmin - 2); // bot right
+
 
     //*BACK
     glColor3f(0.467, 0.533, 0.600);
@@ -250,7 +308,7 @@ void renderBuild(int x, int z) {
 
 }
 
-void drawObjects(GLenum mode)
+void renderCity(GLenum mode)
 {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -262,14 +320,23 @@ void drawObjects(GLenum mode)
     
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 20; j++) {
-            ran = 1 + rand() % 2;
+            ran = 1 + rand() % 3;
                 
             switch (ran) {
                 case 1:
                     renderBuild(i,j);
+                    renderCyli(i,j);
+                    renderSphe(i,j);
                     break;
                 case 2:
-                    renderCyli(i, j);
+                    renderCyli(i,j);
+                    renderBuild(i,j);
+                    renderSphe(i,j);
+                    break;
+                case 3:
+                    renderSphe(i,j);
+                    renderCyli(i,j);
+                    renderBuild(i,j);
                     break;
                 default:
                     break;
@@ -301,14 +368,14 @@ void renderGround() {
 
     // Amount of columns = 20
     // Every column x offset is changed
-    for (int x = 0; x < 1; x++)
+    for (int x = 0; x < 20; x++)
     {
         // Amount of rows = 20
         // Every row z offset is changed
         for (int z = 0; z < 20; z++)
         {
             //bottom left
-//            std::cout << "V1: x:" <<neg50 + x * pos60 << " z: " << 0.0 + z * pos60 << std::endl;
+//            std::cout << "V1: x:" <<neg50 + x * pos60 << " z: " << 0.0 +x z * pos60 << std::endl;
             glVertex3f(neg50 + x * pos60, GROUND_LEVEL, 0.0 + z * pos60);
 
             glTexCoord2f(0.0, 1.0);
@@ -389,7 +456,7 @@ void renderGround() {
         glVertex3f(1150, GROUND_LEVEL + 0.05, -56 + i * 60);
     }
     glEnd();
-    glFlush();
+//    glFlush();
 }
 
 void CallBackRenderScene(void)
@@ -398,14 +465,16 @@ void CallBackRenderScene(void)
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    
     glPushMatrix();
-
     //  robot.draw_environment(GL_RENDER); // draw the ground/blocks
     renderGround();
     glPopMatrix();
 
-    drawObjects(GL_RENDER); // draw buildings into the world
-
+    glPushMatrix();
+    renderCity(GL_RENDER); // draw buildings into the world
+    glPopMatrix();
+    
     glPushMatrix();
     glLoadIdentity();
       robot.drawRobot(); // draw robot into the world
@@ -534,7 +603,7 @@ void mouse(int button, int state, int x, int y)
             gluPerspective(45.0f, (GLfloat)Window_Width / (GLfloat)Window_Height, 1.0,
                            250.0f);
             glMatrixMode(GL_MODELVIEW);
-            drawObjects(GL_SELECT); // See below for the tricks we play here.
+            renderCity(GL_SELECT); // See below for the tricks we play here.
 
             glMatrixMode(GL_PROJECTION); // Now that the projection is done,
             glPopMatrix();                 // we don't need it any more. We have to
