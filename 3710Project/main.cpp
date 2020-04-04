@@ -60,6 +60,8 @@ int eyeX = 0, eyeY = 4, eyeZ = -15;
 int atX = 0, atY = 0, atZ = 0;
 int GROUND_LEVEL = 0.5;
 
+float rotateRect = 0.4;
+
 static void PrintString(void *font, char *str)
 {
     int i, len = strlen(str);
@@ -72,6 +74,103 @@ void renderCyli(int x, int z) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+   
+    float cylXPos = -15 + x * 60;
+    float cylZPos = -20 + z * 60;
+    
+
+    
+    //* Draw rectangle ontop
+    float rectXmin = -5 + x * 60;
+    float rectXmax = -25 + x * 60;
+    float rectZmax = -12 + x * 60;
+    float rectZmin = -30 + x * 60;
+    
+
+    
+    glPushMatrix();
+    //* Rotate rectangle
+    glTranslatef(0.0, 4.0, -7.0);
+    glRotatef(rotateRect, 0, 1, 0);
+    rotateRect += 0.3;
+    //* Front
+    glColor3f(0.502, 0.000, 0.000);
+    glBegin(GL_QUADS);
+    glVertex3f(rectXmax, 25, rectZmin);
+    glVertex3f(rectXmin, 25, rectZmin);
+    glVertex3f(rectXmin, 18, rectZmin);
+    glVertex3f(rectXmax, 18, rectZmin);
+//    glEnd();
+    
+
+
+
+    
+    //* Left
+    glColor3f(0.184, 0.310, 0.310);
+//    glBegin(GL_QUADS);
+    glVertex3f(rectXmin, 25, rectZmin);
+    glVertex3f(rectXmin, 25, rectZmax);
+    glVertex3f(rectXmin, 18, rectZmax);
+    glVertex3f(rectXmin, 18, rectZmin);
+//    glEnd();
+
+    //* Back
+    glColor3f(0.980, 0.922, 0.843);
+//    glBegin(GL_QUADS);
+    glVertex3f(rectXmax, 25, rectZmax);
+    glVertex3f(rectXmin, 25, rectZmax);
+    glVertex3f(rectXmin, 18, rectZmax);
+    glVertex3f(rectXmax, 18, rectZmax);
+//    glEnd();
+    
+    //* Right
+    glColor3f(0.255, 0.412, 0.882);
+//    glBegin(GL_QUADS);
+    glVertex3f(rectXmax, 25, rectZmin);
+    glVertex3f(rectXmax, 25, rectZmax);
+    glVertex3f(rectXmax, 18, rectZmax);
+    glVertex3f(rectXmax, 18, rectZmin);
+//    glEnd();
+    
+    //* Bottom
+    glColor3f(0.000, 1.000, 1.000);
+//    glBegin(GL_QUADS);
+    glVertex3f(rectXmin, 18, rectZmin);
+    glVertex3f(rectXmax, 18, rectZmin);
+    glVertex3f(rectXmax, 18, rectZmax);
+    glVertex3f(rectXmin, 18, rectZmax);
+//    glEnd();
+    
+    //* Top
+    glColor3f(0.604, 0.804, 0.196);
+//    glBegin(GL_QUADS);
+    glVertex3f(rectXmin, 25, rectZmin);
+    glVertex3f(rectXmax, 25, rectZmin);
+    glVertex3f(rectXmax, 25, rectZmax);
+    glVertex3f(rectXmin, 25, rectZmax);
+    glEnd();
+    
+    glPopMatrix();
+    
+    
+    
+    // Move it within building square
+    glTranslatef(cylXPos, GROUND_LEVEL, cylZPos);
+    //* Rotate it standing
+    glRotatef(90, -1, 0, 0);
+    
+    
+    
+    //* Draw cylinder
+    glColor3f(1.0, 1.0, 1.0);
+    glBegin(GL_TRIANGLE_STRIP);
+    GLUquadricObj *obj = gluNewQuadric();
+    gluCylinder(obj, 8, 8, 20, 10, 10);
+    glEnd();
+    glFlush();
+    
+//    glutSwapBuffers();
 }
 
 void renderBuild(int x, int z) {
@@ -95,16 +194,16 @@ void renderBuild(int x, int z) {
     glVertex3f(buildingXmin, 30, buildingZmax); // top left
     glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmax); // bot left
     glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmax); // bot right
-    glEnd();
+//    glEnd();
     
     //* LEFT
     glColor3f(0.467, 0.533, 0.600);
-    glBegin(GL_QUADS);
+//    glBegin(GL_QUADS);
     glVertex3f(buildingXmin, 30, buildingZmin); // top right
     glVertex3f(buildingXmin, 30, buildingZmax); // top left
     glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmax); // bot left
     glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmin); // bot right
-    glEnd();
+//    glEnd();
     
     //* LEFT WINDOW -- Change z value to make window smaller
     //* building. Extend x value out so appears infront of building
@@ -113,36 +212,36 @@ void renderBuild(int x, int z) {
             break;
         } else {
             glColor3f(0.941, 1.000, 1.000); // Azure
-            glBegin(GL_QUADS);
+//            glBegin(GL_QUADS);
             glVertex3f(buildingXmin+0.1, i*12, buildingZmin - 2); // top right
             glVertex3f(buildingXmin+0.1, i*12, buildingZmax + 2); // top left
             glVertex3f(buildingXmin+0.1, i*8, buildingZmax + 2); // bot left
             glVertex3f(buildingXmin+0.1, i*8, buildingZmin - 2); // bot right
-            glEnd();
+//            glEnd();
         }
     }
 
     //*BACK
     glColor3f(0.467, 0.533, 0.600);
-    glBegin(GL_QUADS);
+//    glBegin(GL_QUADS);
     glVertex3f(buildingXmax, 30, buildingZmin); // top right;
     glVertex3f(buildingXmin, 30, buildingZmin); // top left
     glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmin); // bot left
     glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmin); // bot right
-    glEnd();
+//    glEnd();
     
     //* RIGHT
     glColor3d(0.467, 0.533, 0.600);
-    glBegin(GL_QUADS);
+//    glBegin(GL_QUADS);
     glVertex3f(buildingXmax, 30, buildingZmin); // top right
     glVertex3f(buildingXmax, 30, buildingZmax); // top left
     glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmax); // bot left
     glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmin); // bot right
-    glEnd();
+//    glEnd();
     
     //* TOP
     glColor3d(0.467, 0.533, 0.600);
-    glBegin(GL_QUADS);
+//    glBegin(GL_QUADS);
     glVertex3f(buildingXmin, 30, buildingZmin);
     glVertex3f(buildingXmax, 30, buildingZmin);
     glVertex3f(buildingXmax, 30, buildingZmax);
@@ -171,15 +270,9 @@ void drawObjects(GLenum mode)
                     break;
                 case 2:
                     renderCyli(i, j);
-
-                    
-                    
-//            glVertex3f(neg50 + x * pos60, GROUND_LEVEL, 0.0 + z * pos60);
-        //                glFlush();
-                        break;
-                        
-                    default:
-                        break;
+                    break;
+                default:
+                    break;
                 }
             }
             
