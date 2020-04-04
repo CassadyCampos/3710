@@ -53,7 +53,7 @@ int randNums[400];        // array to hold random numbers generated for building
                         // generation
 int buildHits[400];        // sister array to hold hit values of buildings so they can
                         // be destroyed.
-//Robot robot;            // robot object to do most functions.
+Robot robot;            // robot object to do most functions.
 BuildingBuilder builder;
 
 int eyeX = 0, eyeY = 4, eyeZ = -15;
@@ -68,42 +68,129 @@ static void PrintString(void *font, char *str)
         glutBitmapCharacter(font, *str++);
 }
 
+void renderCyli(int x, int z) {
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+}
+
+void renderBuild(int x, int z) {
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+    
+    // These floats are calcualted from the viewpoint of looking at the *FRONT
+    // Of the building.
+    float buildingXmin = -10 + x * 60;
+    float buildingXmax = -20 + x * 60;
+    float buildingZmax = -50 + z * 60;
+    float buildingZmin = -40 + z * 60;
+    
+    //* FRONT
+    // more pos <- x+ -x -> more neg,
+    // more neg -z push aways, more pos +z push towards me
+    glColor3f(0.467, 0.533, 0.600);
+    glBegin(GL_QUADS);
+    glVertex3f(buildingXmax, 30, buildingZmax); // top right
+    glVertex3f(buildingXmin, 30, buildingZmax); // top left
+    glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmax); // bot left
+    glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmax); // bot right
+    glEnd();
+    
+    //* LEFT
+    glColor3f(0.467, 0.533, 0.600);
+    glBegin(GL_QUADS);
+    glVertex3f(buildingXmin, 30, buildingZmin); // top right
+    glVertex3f(buildingXmin, 30, buildingZmax); // top left
+    glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmax); // bot left
+    glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmin); // bot right
+    glEnd();
+    
+    //* LEFT WINDOW -- Change z value to make window smaller
+    //* building. Extend x value out so appears infront of building
+    for (int i = 1; i < 4; i++) {
+        if (i * 12 > 30) {
+            break;
+        } else {
+            glColor3f(0.941, 1.000, 1.000); // Azure
+            glBegin(GL_QUADS);
+            glVertex3f(buildingXmin+0.1, i*12, buildingZmin - 2); // top right
+            glVertex3f(buildingXmin+0.1, i*12, buildingZmax + 2); // top left
+            glVertex3f(buildingXmin+0.1, i*8, buildingZmax + 2); // bot left
+            glVertex3f(buildingXmin+0.1, i*8, buildingZmin - 2); // bot right
+            glEnd();
+        }
+    }
+
+    //*BACK
+    glColor3f(0.467, 0.533, 0.600);
+    glBegin(GL_QUADS);
+    glVertex3f(buildingXmax, 30, buildingZmin); // top right;
+    glVertex3f(buildingXmin, 30, buildingZmin); // top left
+    glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmin); // bot left
+    glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmin); // bot right
+    glEnd();
+    
+    //* RIGHT
+    glColor3d(0.467, 0.533, 0.600);
+    glBegin(GL_QUADS);
+    glVertex3f(buildingXmax, 30, buildingZmin); // top right
+    glVertex3f(buildingXmax, 30, buildingZmax); // top left
+    glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmax); // bot left
+    glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmin); // bot right
+    glEnd();
+    
+    //* TOP
+    glColor3d(0.467, 0.533, 0.600);
+    glBegin(GL_QUADS);
+    glVertex3f(buildingXmin, 30, buildingZmin);
+    glVertex3f(buildingXmax, 30, buildingZmin);
+    glVertex3f(buildingXmax, 30, buildingZmax);
+    glVertex3f(buildingXmin, 30, buildingZmax);
+    glEnd();
+
+}
+
 void drawObjects(GLenum mode)
 {
-    //  int counter = 0;
-    //  robot.modeV = mode; // what mode we are currently in
-    //  for (int i = 0; i < 20; i++)
-    //  { // 20 blocks by 20 blocks
-    //    for (int j = 0; j < 20; j++)
-    //    {
-    //      int build = randNums[counter];
-    //      switch (build)
-    //      { // depending on the random numbers generated at program start, we draw
-    //        // buildings into different blocks.
-    //      case 1:
-    //        robot.drawBuildingA(0 + i * 60, 0 + j * 60);
-    //        builder.renderRectBuilding(0 + i * 60, 0 + j * 60);
-    //        counter++; // increment through the array of random numbers
-    //        break;
-    //      case 2:
-    ////      robot.drawBuildingB(0 + i * 60, 0 + j * 60);
-    //        builder.renderCubeBuilding(0 + i * 60,0 +j * 60);
-    //        counter++;
-    //        break;
-    //      case 3:
-    ////        robot.drawBuildingC(0 + i * 60, 0 + j * 60);
-    ////        builder.renderCyliBuilding(0 + i * 60, 0 + j * 60);
-    //        counter++;
-    //        break;
-    //      default:                             // case for if the building is destroyed (its number will be set
-    //                                           // to 5 and fall here)
-    //        robot.drawBuildingC(20000, 20000); // draws the building out of view to
-    //                                           // give the illusion it is destroyed
-    //        counter++;
-    //        break;
-    //      }
-    //    }
-    //  }
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    
+    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+    
+    srand(time(NULL));
+    int ran;
+    
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; i < 20; i++) {
+            ran = 1 + rand() % 3;
+                
+            switch (ran) {
+                case 1:
+                    renderBuild(i,j);
+                    break;
+                case 2:
+                    renderCyli(i, j);
+
+                    
+                    
+//            glVertex3f(neg50 + x * pos60, GROUND_LEVEL, 0.0 + z * pos60);
+        //                glFlush();
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+            
+
+            glFlush();
+            
+
+
+    }
+
+    
 }
 
 void renderGround() {
@@ -114,7 +201,6 @@ void renderGround() {
 
     // Render blocks for building sections
     glColor3f(0.000, 0.000, 0.000); // black
-                                    //                glTranslatef(-605, 0, -605);
     glBegin(GL_QUADS);
 
     int neg50 = -50;
@@ -122,25 +208,29 @@ void renderGround() {
 
     // Amount of columns = 20
     // Every column x offset is changed
-    for (int x = 0; x < 20; x++)
+    for (int x = 0; x < 1; x++)
     {
         // Amount of rows = 20
         // Every row z offset is changed
-        for (int z = 0; z < 20; z++)
+        for (int z = 0; z < 1; z++)
         {
             //bottom left
+            std::cout << "V1: x:" <<neg50 + x * pos60 << " z: " << 0.0 + z * pos60 << std::endl;
             glVertex3f(neg50 + x * pos60, GROUND_LEVEL, 0.0 + z * pos60);
 
             glTexCoord2f(0.0, 1.0);
             //bottom right
+            std::cout << "V2: x:" << 0.0 + x * pos60 << " z: " << 0.0 + z * pos60 << std::endl;
             glVertex3f(0.0 + x * pos60, GROUND_LEVEL, 0.0 + z * pos60);
 
             glTexCoord2f(0.0, 0.0);
             // top right
+            std::cout << "V3: x:" << 0.0 + x * pos60 << " z: " << neg50 + z * pos60 << std::endl;
             glVertex3f(0.0 + x * pos60, GROUND_LEVEL, neg50 + z * pos60);
 
             glTexCoord2f(1.0, 0.0);
             // top left
+            std::cout << "V4: x:" << neg50 + x * pos60 << " z: " << neg50 + z * pos60 << std::endl;
             glVertex3f(neg50 + x * pos60, GROUND_LEVEL, neg50 + z * pos60);
         }
     }
@@ -148,38 +238,37 @@ void renderGround() {
 
     // VERTICLE ROADS
     glColor3f(0.412, 0.412, 0.412);
-
     glBegin(GL_QUADS);
 
     for (int i = 0; i < 21; i++)
     {
         //* TOP VERTICES
         glTexCoord2f(1.0, 1.0);
-        glVertex3f(-60 + i * 60, GROUND_LEVEL, 0);
+        glVertex3f(-60 + i * 60, GROUND_LEVEL, 1150);
         glTexCoord2f(0.0, 1.0);
-        glVertex3f(-50 + i * 60, GROUND_LEVEL, 0);
+        glVertex3f(-50 + i * 60, GROUND_LEVEL, 1150);
 
         //* BOTTOM VERTICES
         glTexCoord2f(0.0, 0.0);
-        glVertex3f(-50 + i * 60, GROUND_LEVEL, -60.0);
+        glVertex3f(-50 + i * 60, GROUND_LEVEL, -50);
         glTexCoord2f(1.0, 0.0);
-        glVertex3f(-60 + i * 60, GROUND_LEVEL, -60.0);
+        glVertex3f(-60 + i * 60, GROUND_LEVEL, -50);
 
     }
     glEnd();
-
+    
     //* VERTICLE ROAD STRIPES*
-    glColor3f(1.0, 0.0 , 1.0);
+    glColor3f(1.0, 1.0 , 0.0); // Just yellow
     glBegin(GL_QUADS);
     for (int i = 0; i < 20; i++) {
-        glVertex3f(-54 + i * 60, GROUND_LEVEL + 0.05, 0);
-        glVertex3f(-56 + i * 60, GROUND_LEVEL + 0.05, 0);
+        glVertex3f(-54 + i * 60, GROUND_LEVEL + 0.05, 1150);
+        glVertex3f(-56 + i * 60, GROUND_LEVEL + 0.05, 1150);
         //* BOTTOM VERTICES
         glVertex3d(-56 + i * 60, GROUND_LEVEL + 0.05, -50);
         glVertex3d(-54 + i * 60, GROUND_LEVEL + 0.05, -50);
     }
     glEnd();
-    
+
 
     //* HORIZONTAL ROADS
     glColor3f(0.412, 0.412, 0.412);
@@ -197,36 +286,17 @@ void renderGround() {
     }
     glEnd();
 
-    
-//        glBegin(GL_QUADS);
-//        for (int i = 0; i < 21; i++)
-//        {
-//          glTexCoord2f(1.0, 1.0);
-//
-//            glVertex3f(-60 + i * 60, -4.94, 1150.0);
-//          glTexCoord2f(0.0, 1.0);
-//          glVertex3f(-55 + i * 60, -4.94, 1150.0);
-//          glTexCoord2f(0.0, 0.0);
-//          glVertex3f(-50 + i * 60, -4.94, -60.0);
-//          glTexCoord2f(1.0, 0.0);
-//          glVertex3f(-60 + i * 60, -4.94, -60.0);
-//        }
-//
-//        for (int i = 0; i < 21; i++)
-//        {
-//          glTexCoord2f(1.0, 0.0);
-//          glVertex3f(-60, -4.94, -60 + i * 60);
-//
-//          glTexCoord2f(0.0, 0.0);
-//          glVertex3f(-60, -4.95, -50 + i * 60);
-//          glTexCoord2f(0.0, 1.0);
-//          glVertex3f(1150, -4.95, -50 + i * 60);
-//          glTexCoord2f(1.0, 1.0);
-//          glVertex3f(1150, -4.95, -60 + i * 60);
-//        }
-//        glEnd();
-    //
-            glFlush();
+    //* HORIZONTAL ROAD STRIPES
+    glColor3f(1.0, 1.0, 0.0); // Yellow
+    glBegin(GL_QUADS);
+    for (int i = 0; i < 20; i++) {
+        glVertex3f(-60, GROUND_LEVEL + 0.05, -56 + i * 60);
+        glVertex3f(-60, GROUND_LEVEL + 0.05, -54 + i * 60);
+        glVertex3f(1150, GROUND_LEVEL + 0.05, -54 + i * 60);
+        glVertex3f(1150, GROUND_LEVEL + 0.05, -56 + i * 60);
+    }
+    glEnd();
+    glFlush();
 }
 
 void CallBackRenderScene(void)
@@ -245,7 +315,7 @@ void CallBackRenderScene(void)
 
     glPushMatrix();
     glLoadIdentity();
-    //  robot.drawRobot(); // draw robot into the world
+      robot.drawRobot(); // draw robot into the world
     glPopMatrix();
 
     glLoadIdentity();
@@ -402,8 +472,11 @@ void keyboard(unsigned char key, int x, int y)
             break;
 
         case 122:
-            eyeZ += 1.0;
-            std::cout << "EyeZ: " << eyeZ << std::endl;
+                robot.cz += 1.0;
+                robot.eyez += 1.0;
+//                eyez += 1.0;
+            
+//            std::cout << "EyeZ: " << eyeZ << std::endl;
 
             // z key
             //      robot.cz +=
@@ -453,40 +526,49 @@ void keyboard(unsigned char key, int x, int y)
             break;
         case 97: // a key
             eyeY += 1.0;
+                robot.eyey += 1.0;
             std::cout << "EyeY: " << eyeY << std::endl;
             break;
         case 115: // s key
             eyeY -= 1.0;
+                robot.eyey -= 1.0;
             std::cout << "EyeY: " << eyeY << std::endl;
             break;
         case 113: // q key
             eyeX += 1.0;
+                robot.eyex += 1.0;
             std::cout << "EyeX: " << eyeX << std::endl;
 
             break;
         case 119: // w key
             eyeX -= 1.0;
+                robot.eyex -= 1.0;
             std::cout << "EyeX: " << eyeX << std::endl;
             break;
         case 114: // r key
             eyeZ += 1.0;
+                robot.eyez += 1.0;
             std::cout << "EyeZ: " << eyeZ << std::endl;
             break;
         case 120: //x key
             eyeZ -= 1.0;
+                robot.eyez -= 1.0;
             std::cout << "EyeZ " << eyeZ << std::endl;
             break;
         case 117: //u
             atX += 1.0;
+                robot.atx += 1.0;
             std::cout << "atX: " << atX << std::endl;
             break;
         case 105: //i
             atX -= 1.0;
+                robot.atx -= 1.0;
             std::cout << "atX: " << atX << std::endl;
 
             break;
         case 106: // j
             atY += 1.0;
+                robot.aty += 1.0;
             std::cout << "atY: " << atY << std::endl;
 
             break;
@@ -494,15 +576,18 @@ void keyboard(unsigned char key, int x, int y)
             std::cout << "atY: " << atY << std::endl;
 
             atY -= 1.0;
+                robot.aty -= 1.0;
             break;
         case 110: // n
             std::cout << "atZ: " << atZ << std::endl;
 
             atZ += 1.0;
+                robot.atz += 1.0;
             break;
         case 109: //
             std::cout << "atZ: " << atZ << std::endl;
             atZ -= 1.0;
+                robot.atz -= 1.0;
             break;
 
         default:
@@ -796,22 +881,22 @@ void MyInit(int Width, int Height)
 
 int main(int argc, char **argv)
 {
-    //  // INITIALIZATION of class attributes of Robot
-    //  robot.atx = 0;       // x position of lookat
-    //  robot.aty = 0.0;     // y position of lookat
-    //  robot.atz = 0;       // z position of lookat
-    //  robot.eyex = 0;      // x position of camera eye
-    //  robot.eyey = 4;      // y position of camera eye
-    //  robot.eyez = -15;    // z position of camera eye
-    //  robot.cx = 0;        // x position of robot
-    //  robot.cy = -3.5;     // y position of robot
-    //  robot.cz = 0;        // z position of robot
-    //  robot.bodyAngle = 0; // the angle at which the robot is currently.
-    //  robot.headAngle = 0; // angle the head is currently rotated
-    //  robot.antRot = 0;    // angle of antenae rotating
-    //  robot.offz = 0;      // x offset from the origin
-    //  robot.offx = 0;      // z offset from the origin
-    //  robot.nameCount = 0; // counter for naming the buildings for picking function
+      // INITIALIZATION of class attributes of Robot
+      robot.atx = 0;       // x position of lookat
+      robot.aty = 0.0;     // y position of lookat
+      robot.atz = 0;       // z position of lookat
+      robot.eyex = 0;      // x position of camera eye
+      robot.eyey = 4;      // y position of camera eye
+      robot.eyez = -15;    // z position of camera eye
+      robot.cx = 0;        // x position of robot
+      robot.cy = -3.5;     // y position of robot
+      robot.cz = 0;        // z position of robot
+      robot.bodyAngle = 0; // the angle at which the robot is currently.
+      robot.headAngle = 0; // angle the head is currently rotated
+      robot.antRot = 0;    // angle of antenae rotating
+      robot.offz = 0;      // x offset from the origin
+      robot.offx = 0;      // z offset from the origin
+      robot.nameCount = 0; // counter for naming the buildings for picking function
 
     // generate a random array of numbers 1-3 for our building generation. The
     // random seed is based on current system time so it should be different each
