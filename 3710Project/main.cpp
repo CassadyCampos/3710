@@ -261,8 +261,8 @@ void drawObjects(GLenum mode)
     int ran;
     
     for (int i = 0; i < 20; i++) {
-        for (int j = 0; i < 20; i++) {
-            ran = 1 + rand() % 3;
+        for (int j = 0; j < 20; j++) {
+            ran = 1 + rand() % 2;
                 
             switch (ran) {
                 case 1:
@@ -305,25 +305,25 @@ void renderGround() {
     {
         // Amount of rows = 20
         // Every row z offset is changed
-        for (int z = 0; z < 1; z++)
+        for (int z = 0; z < 20; z++)
         {
             //bottom left
-            std::cout << "V1: x:" <<neg50 + x * pos60 << " z: " << 0.0 + z * pos60 << std::endl;
+//            std::cout << "V1: x:" <<neg50 + x * pos60 << " z: " << 0.0 + z * pos60 << std::endl;
             glVertex3f(neg50 + x * pos60, GROUND_LEVEL, 0.0 + z * pos60);
 
             glTexCoord2f(0.0, 1.0);
             //bottom right
-            std::cout << "V2: x:" << 0.0 + x * pos60 << " z: " << 0.0 + z * pos60 << std::endl;
+//            std::cout << "V2: x:" << 0.0 + x * pos60 << " z: " << 0.0 + z * pos60 << std::endl;
             glVertex3f(0.0 + x * pos60, GROUND_LEVEL, 0.0 + z * pos60);
 
             glTexCoord2f(0.0, 0.0);
             // top right
-            std::cout << "V3: x:" << 0.0 + x * pos60 << " z: " << neg50 + z * pos60 << std::endl;
+//            std::cout << "V3: x:" << 0.0 + x * pos60 << " z: " << neg50 + z * pos60 << std::endl;
             glVertex3f(0.0 + x * pos60, GROUND_LEVEL, neg50 + z * pos60);
 
             glTexCoord2f(1.0, 0.0);
             // top left
-            std::cout << "V4: x:" << neg50 + x * pos60 << " z: " << neg50 + z * pos60 << std::endl;
+//            std::cout << "V4: x:" << neg50 + x * pos60 << " z: " << neg50 + z * pos60 << std::endl;
             glVertex3f(neg50 + x * pos60, GROUND_LEVEL, neg50 + z * pos60);
         }
     }
@@ -348,11 +348,11 @@ void renderGround() {
         glVertex3f(-60 + i * 60, GROUND_LEVEL, -50);
 
     }
-    glEnd();
+//    glEnd();
     
     //* VERTICLE ROAD STRIPES*
     glColor3f(1.0, 1.0 , 0.0); // Just yellow
-    glBegin(GL_QUADS);
+//    glBegin(GL_QUADS);
     for (int i = 0; i < 20; i++) {
         glVertex3f(-54 + i * 60, GROUND_LEVEL + 0.05, 1150);
         glVertex3f(-56 + i * 60, GROUND_LEVEL + 0.05, 1150);
@@ -360,13 +360,13 @@ void renderGround() {
         glVertex3d(-56 + i * 60, GROUND_LEVEL + 0.05, -50);
         glVertex3d(-54 + i * 60, GROUND_LEVEL + 0.05, -50);
     }
-    glEnd();
+//    glEnd();
 
 
     //* HORIZONTAL ROADS
     glColor3f(0.412, 0.412, 0.412);
 
-    glBegin(GL_QUADS);
+//    glBegin(GL_QUADS);
     for (int i = 0; i < 20; i++) {
         glTexCoord2f(1.0, 0.0);
         glVertex3f(-60, GROUND_LEVEL, -60 + i * 60);
@@ -377,11 +377,11 @@ void renderGround() {
         glTexCoord2f(1.0, 1.0);
         glVertex3f(1150, GROUND_LEVEL, -60 + i * 60);
     }
-    glEnd();
+//    glEnd();
 
     //* HORIZONTAL ROAD STRIPES
     glColor3f(1.0, 1.0, 0.0); // Yellow
-    glBegin(GL_QUADS);
+//    glfBegin(GL_QUADS);
     for (int i = 0; i < 20; i++) {
         glVertex3f(-60, GROUND_LEVEL + 0.05, -56 + i * 60);
         glVertex3f(-60, GROUND_LEVEL + 0.05, -54 + i * 60);
