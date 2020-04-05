@@ -40,8 +40,9 @@ public:
   int bodyAngle;
   int headAngle;
   float antRot = 0.5f;
-  float offz;
-  float offx;
+  float offz = 3.0f;
+  float offx = 3.0f;
+  float offy = 3.0f;
   int nameCount;
   GLenum modeV; // current GL_MODE (either GL_RENDER or GL_SELECT)
 
@@ -56,7 +57,7 @@ public:
 
     glTranslatef(cx, cy, cz);      // translate to Cars current position
     glRotatef(bodyAngle, 0, 1, 0); // for when Car is turning to left or right
-    glTranslatef(3.0, 3.0, 3.0);         // translate to 0, 0, 0 first for if Car is turning
+    glTranslatef(offx, 3.0,offz);         // translate to 0, 0, 0 first for if Car is turning
     glScalef(3.0,3.0,3.0);
     glEnable(GL_COLOR_MATERIAL);
 
@@ -323,6 +324,14 @@ public:
             antRot = 0;
         }
     }
+  }
+
+  void moveforward(){
+    offy+= 0.5;
+  }
+
+  void movebackward(){
+    offy-= 0.5;
   }
 };
 #endif

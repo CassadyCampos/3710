@@ -684,10 +684,11 @@ void keyboard(unsigned char key, int x, int y)
 //                  }
             break;
         case 97: // a key
-                std::cout << "EyeZ: " << eyeZ << std::endl << " AtZ: " << atZ << std::endl;;
-                car.cz += 1;
-                car.atz += 1;
-//                car.eyez += 1;
+                std::cout << "EyeZ: " << eyeZ << std::endl << " AtZ: " << atZ << std::endl;
+                car.moveforward();
+//                 car.cz += 1;
+//                 car.atz += 1;
+// //                car.eyez += 1;
                 eyeZ += 1.0;
                 atZ += 1.0;
             break;
