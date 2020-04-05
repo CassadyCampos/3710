@@ -56,7 +56,7 @@ int buildHits[400];        // sister array to hold hit values of buildings so th
 Car car;            // robot object to do most functions.
 BuildingBuilder builder;
 
-int eyeX = 4, eyeY = 4,eyeZ = -40;
+int eyeX = 5, eyeY = 4,eyeZ = -40;
 int atX = 0, atY = 0, atZ = 0;
 int GROUND_LEVEL = 0.5;
 int frame_count = 0;
@@ -629,65 +629,67 @@ void keyboard(unsigned char key, int x, int y)
             pausedState = true;
             break;
 
-        case 122:
-                
-                car.cz += 1.0;
-                car.eyez += 1.0;
-                eyeZ += 1.0;
-                atZ += 1.0;
-            
-            std::cout << "EyeZ: " << eyeZ << std::endl;
+        case 122: // z
+                if (eyeZ == -85) break;
+                eyeZ -= 1.0;
+                std::cout << "EyeZ " << eyeZ << std::endl;
+//
+//            std::cout << "EyeZ: " << eyeZ << std::endl;
 
 //             z key
-                  car.cz +=
-                      offAddz; // move the robot forward, the offAddx and offAddz change
-                 car.cx +=
-                      offAddx;           // based on the direction the robot is currently facing
-                  car.eyez += offAddz; // to keep up with where the robot is
-                  car.atz += offAddz;
-                  car.atx += offAddx;
-                  car.eyex += offAddx;
-                  car.offx += offAddx;
-                  car.offz += offAddz;
-                  switch (car.cx)
-                  {
-                  case 545: // if at the boundary, we cannot go forward
-                    car.cx -= 5;
-                    car.offx -= 5;
-                    car.atx -= 5;
-                   car.eyex -= 5;
-                    break;
-                  case -665: // if at the boundary, we cannot go forward
-                    car.cx += 5;
-                    car.offx += 5;
-                    car.atx += 5;
-                    car.eyex += 5;
-                    break;
-                  default:
-                    break;
-                  }
-                  switch (car.cz)
-                  { // if at the boundary, we cannot go forward
-                  case 545:
-                    car.cz -= 5;
-                    car.offz -= 5;
-                    car.atz -= 5;
-                    car.eyez -= 5;
-                    break;
-                  case -665: // if at the boundary, we cannot go forward
-                    car.cz += 5;
-                   car.offz += 5;
-                car.atz += 5;
-                    car.eyez += 5;
-                    break;
-                  default:
-                    break;
-                  }
+//                  car.cz +=
+//                      offAddz; // move the robot forward, the offAddx and offAddz change
+//                 car.cx +=
+//                      offAddx;           // based on the direction the robot is currently facing
+//                  car.eyez += offAddz; // to keep up with where the robot is
+//                  car.atz += offAddz;
+//                  car.atx += offAddx;
+//                  car.eyex += offAddx;
+//                  car.offx += offAddx;
+//                  car.offz += offAddz;
+//                  switch (car.cx)
+//                  {
+//                  case 545: // if at the boundary, we cannot go forward
+//                    car.cx -= 5;
+//                    car.offx -= 5;
+//                    car.atx -= 5;
+//                   car.eyex -= 5;
+//                    break;
+//                  case -665: // if at the boundary, we cannot go forward
+//                    car.cx += 5;
+//                    car.offx += 5;
+//                    car.atx += 5;
+//                    car.eyex += 5;
+//                    break;
+//                  default:
+//                    break;
+//                  }
+//                  switch (car.cz)
+//                  { // if at the boundary, we cannot go forward
+//                  case 545:
+//                    car.cz -= 5;
+//                    car.offz -= 5;
+//                    car.atz -= 5;
+//                    car.eyez -= 5;
+//                    break;
+//                  case -665: // if at the boundary, we cannot go forward
+//                    car.cz += 5;
+//                   car.offz += 5;
+//                car.atz += 5;
+//                    car.eyez += 5;
+//                    break;
+//                  default:
+//                    break;
+//                  }
             break;
         case 97: // a key
-            eyeY += 1.0;
-//                car.eyey += 1.0;
+//            eyeY += 1.0;
+////                car.eyey += 1.0;
             std::cout << "EyeY: " << eyeY << std::endl;
+//                car.cz = atZ;
+//                car.eyez = eyeZ;
+                eyeZ += 1.0;
+//                atZ += 1.0;
             break;
         case 115: // s key
             eyeY -= 1.0;
