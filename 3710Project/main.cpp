@@ -56,7 +56,7 @@ int buildHits[400];        // sister array to hold hit values of buildings so th
 Car car;            // robot object to do most functions.
 BuildingBuilder builder;
 
-int eyeX = 5, eyeY = 4,eyeZ = -40;
+int eyeX = 5, eyeY = 8,eyeZ = -45;
 int atX = 0, atY = 0, atZ = 0;
 int GROUND_LEVEL = 0.5;
 int frame_count = 0;
@@ -633,6 +633,7 @@ void keyboard(unsigned char key, int x, int y)
                 if (eyeZ == -85) break;
                 eyeZ -= 1.0;
                 std::cout << "EyeZ " << eyeZ << std::endl;
+//                car.cz += 0.5;
 //
 //            std::cout << "EyeZ: " << eyeZ << std::endl;
 
@@ -648,7 +649,7 @@ void keyboard(unsigned char key, int x, int y)
 //                  car.offx += offAddx;
 //                  car.offz += offAddz;
 //                  switch (car.cx)
-//                  {
+//                  {z
 //                  case 545: // if at the boundary, we cannot go forward
 //                    car.cx -= 5;
 //                    car.offx -= 5;
@@ -683,13 +684,12 @@ void keyboard(unsigned char key, int x, int y)
 //                  }
             break;
         case 97: // a key
-//            eyeY += 1.0;
-////                car.eyey += 1.0;
-            std::cout << "EyeY: " << eyeY << std::endl;
-//                car.cz = atZ;
-//                car.eyez = eyeZ;
+                std::cout << "EyeZ: " << eyeZ << std::endl << " AtZ: " << atZ << std::endl;;
+                car.cz += 1;
+                car.atz += 1;
+//                car.eyez += 1;
                 eyeZ += 1.0;
-//                atZ += 1.0;
+                atZ += 1.0;
             break;
         case 115: // s key
             eyeY -= 1.0;
@@ -768,9 +768,9 @@ void speckeyboard(int key, int x, int y)
 {
     if (!pausedState)
     {
-        if (key == GLUT_KEY_F1)
-        { // depending on what direction the robot is facing we set the camera
-            // appropriately for the defined lookats
+        if (key == GLUT_KEY_F1) { // depending on what direction the robot is facing we set the camera
+//            // appropriately for the defined lookats
+            std::cout << "test" << std::endl;
             if (robNorth)
             {
                 recentfKey = 1; // recent fkey is simply a int specifying what camera
@@ -1048,15 +1048,15 @@ int main(int argc, char **argv) {
     car.eyex = 0.0;      // x position of camera eye
     car.eyey = 4;      // y position of camera eye
     car.eyez = -10 ;    // z position of camera eye
-    car.cx = 0;        // x position of robot
-    car.cy = -3.5;     // y position of robot
-    car.cz = 0;        // z position of robot
-    car.bodyAngle = 0; // the angle at which the robot is currently.
-    car.headAngle = 0; // angle the head is currently rotated
-    car.antRot = 0;    // angle of antenae rotating
-    car.offz = 0;      // x offset from the origin
-    car.offx = 0;      // z offset from the origin
-    car.nameCount = 0; // counter for naming the buildings for picking function
+    car.cx = -3;        // x position of robot
+    car.cy = -5;     // y position of robot
+    car.cz = 4;        // z position of robot
+    car.bodyAngle = 95; // the angle at which the robot is currently.
+//    car.headAngle = 0; // angle the head is currently rotated
+//    car.antRot = 0;    // angle of antenae rotating
+//    car.offz = 0;      // x offset from the origin
+//    car.offx = 0;      // z offset from the origin
+//    car.nameCount = 0; // counter for naming the buildings for picking function
 
 
 
