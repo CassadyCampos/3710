@@ -53,10 +53,10 @@ int randNums[400];        // array to hold random numbers generated for building
                         // generation
 int buildHits[400];        // sister array to hold hit values of buildings so they can
                         // be destroyed.
-Robot robot;            // robot object to do most functions.
+Car car;            // robot object to do most functions.
 BuildingBuilder builder;
 
-int eyeX = 0, eyeY = 4, eyeZ = -15;
+int eyeX = 4, eyeY = 4,eyeZ = -40;
 int atX = 0, atY = 0, atZ = 0;
 int GROUND_LEVEL = 0.5;
 int frame_count = 0;
@@ -69,6 +69,16 @@ static void PrintString(void *font, char *str)
 
     for (i = 0; i < len; i++)
         glutBitmapCharacter(font, *str++);
+}
+
+void renderCar() {
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+    
+    //* Move to building square
+//    float moveX = -40 + x * 60;
+//    float moveZ = -30 + z * 60;
 }
 
 void renderSphe(int x, int z) {
@@ -281,25 +291,20 @@ void renderBuild(int x, int z) {
 
     //*BACK
     glColor3f(0.467, 0.533, 0.600);
-//    glBegin(GL_QUADS);
     glVertex3f(buildingXmax, 30, buildingZmin); // top right;
     glVertex3f(buildingXmin, 30, buildingZmin); // top left
     glVertex3f(buildingXmin, GROUND_LEVEL, buildingZmin); // bot left
     glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmin); // bot right
-//    glEnd();
     
     //* RIGHT
     glColor3d(0.467, 0.533, 0.600);
-//    glBegin(GL_QUADS);
     glVertex3f(buildingXmax, 30, buildingZmin); // top right
     glVertex3f(buildingXmax, 30, buildingZmax); // top left
     glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmax); // bot left
     glVertex3f(buildingXmax, GROUND_LEVEL, buildingZmin); // bot right
-//    glEnd();
     
     //* TOP
     glColor3d(0.467, 0.533, 0.600);
-//    glBegin(GL_QUADS);
     glVertex3f(buildingXmin, 30, buildingZmin);
     glVertex3f(buildingXmax, 30, buildingZmin);
     glVertex3f(buildingXmax, 30, buildingZmax);
@@ -313,7 +318,7 @@ void renderCity(GLenum mode)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+    gluLookAt(eyeX * 60, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
     
     srand(time(NULL));
     int ran;
@@ -343,11 +348,7 @@ void renderCity(GLenum mode)
                 }
             }
             
-
             glFlush();
-            
-
-
     }
 
     
@@ -415,11 +416,9 @@ void renderGround() {
         glVertex3f(-60 + i * 60, GROUND_LEVEL, -50);
 
     }
-//    glEnd();
     
     //* VERTICLE ROAD STRIPES*
     glColor3f(1.0, 1.0 , 0.0); // Just yellow
-//    glBegin(GL_QUADS);
     for (int i = 0; i < 20; i++) {
         glVertex3f(-54 + i * 60, GROUND_LEVEL + 0.05, 1150);
         glVertex3f(-56 + i * 60, GROUND_LEVEL + 0.05, 1150);
@@ -427,13 +426,10 @@ void renderGround() {
         glVertex3d(-56 + i * 60, GROUND_LEVEL + 0.05, -50);
         glVertex3d(-54 + i * 60, GROUND_LEVEL + 0.05, -50);
     }
-//    glEnd();
 
 
     //* HORIZONTAL ROADS
     glColor3f(0.412, 0.412, 0.412);
-
-//    glBegin(GL_QUADS);
     for (int i = 0; i < 20; i++) {
         glTexCoord2f(1.0, 0.0);
         glVertex3f(-60, GROUND_LEVEL, -60 + i * 60);
@@ -444,7 +440,6 @@ void renderGround() {
         glTexCoord2f(1.0, 1.0);
         glVertex3f(1150, GROUND_LEVEL, -60 + i * 60);
     }
-//    glEnd();
 
     //* HORIZONTAL ROAD STRIPES
     glColor3f(1.0, 1.0, 0.0); // Yellow
@@ -477,7 +472,8 @@ void CallBackRenderScene(void)
     
     glPushMatrix();
     glLoadIdentity();
-      robot.drawRobot(); // draw robot into the world
+    car.renderCar(); // draw robot into the world
+//    renderCar();
     glPopMatrix();
 
     glLoadIdentity();
@@ -634,103 +630,105 @@ void keyboard(unsigned char key, int x, int y)
             break;
 
         case 122:
-                robot.cz += 1.0;
-                robot.eyez += 1.0;
-//                eyez += 1.0;
+                
+                car.cz += 1.0;
+                car.eyez += 1.0;
+                eyeZ += 1.0;
+                atZ += 1.0;
             
-//            std::cout << "EyeZ: " << eyeZ << std::endl;
+            std::cout << "EyeZ: " << eyeZ << std::endl;
 
-            // z key
-            //      robot.cz +=
-            //          offAddz; // move the robot forward, the offAddx and offAddz change
-            //      robot.cx +=
-            //          offAddx;           // based on the direction the robot is currently facing
-            //      robot.eyez += offAddz; // to keep up with where the robot is
-            //      robot.atz += offAddz;
-            //      robot.atx += offAddx;
-            //      robot.eyex += offAddx;
-            //      robot.offx += offAddx;
-            //      robot.offz += offAddz;
-            //      switch (robot.cx)
-            //      {
-            //      case 545: // if at the boundary, we cannot go forward
-            //        robot.cx -= 5;
-            //        robot.offx -= 5;
-            //        robot.atx -= 5;
-            //        robot.eyex -= 5;
-            //        break;
-            //      case -665: // if at the boundary, we cannot go forward
-            //        robot.cx += 5;
-            //        robot.offx += 5;
-            //        robot.atx += 5;
-            //        robot.eyex += 5;
-            //        break;
-            //      default:
-            //        break;
-            //      }
-            //      switch (robot.cz)
-            //      { // if at the boundary, we cannot go forward
-            //      case 545:
-            //        robot.cz -= 5;
-            //        robot.offz -= 5;
-            //        robot.atz -= 5;
-            //        robot.eyez -= 5;
-            //        break;
-            //      case -665: // if at the boundary, we cannot go forward
-            //        robot.cz += 5;
-            //        robot.offz += 5;
-            //        robot.atz += 5;
-            //        robot.eyez += 5;
-            //        break;
-            //      default:
-            //        break;
-            //      }
+//             z key
+                  car.cz +=
+                      offAddz; // move the robot forward, the offAddx and offAddz change
+                 car.cx +=
+                      offAddx;           // based on the direction the robot is currently facing
+                  car.eyez += offAddz; // to keep up with where the robot is
+                  car.atz += offAddz;
+                  car.atx += offAddx;
+                  car.eyex += offAddx;
+                  car.offx += offAddx;
+                  car.offz += offAddz;
+                  switch (car.cx)
+                  {
+                  case 545: // if at the boundary, we cannot go forward
+                    car.cx -= 5;
+                    car.offx -= 5;
+                    car.atx -= 5;
+                   car.eyex -= 5;
+                    break;
+                  case -665: // if at the boundary, we cannot go forward
+                    car.cx += 5;
+                    car.offx += 5;
+                    car.atx += 5;
+                    car.eyex += 5;
+                    break;
+                  default:
+                    break;
+                  }
+                  switch (car.cz)
+                  { // if at the boundary, we cannot go forward
+                  case 545:
+                    car.cz -= 5;
+                    car.offz -= 5;
+                    car.atz -= 5;
+                    car.eyez -= 5;
+                    break;
+                  case -665: // if at the boundary, we cannot go forward
+                    car.cz += 5;
+                   car.offz += 5;
+                car.atz += 5;
+                    car.eyez += 5;
+                    break;
+                  default:
+                    break;
+                  }
             break;
         case 97: // a key
             eyeY += 1.0;
-                robot.eyey += 1.0;
+//                car.eyey += 1.0;
             std::cout << "EyeY: " << eyeY << std::endl;
             break;
         case 115: // s key
             eyeY -= 1.0;
-                robot.eyey -= 1.0;
+//                car.eyey -= 1.0;
             std::cout << "EyeY: " << eyeY << std::endl;
             break;
         case 113: // q key
             eyeX += 1.0;
-                robot.eyex += 1.0;
+//                car.eyex += 1.0;
             std::cout << "EyeX: " << eyeX << std::endl;
 
             break;
         case 119: // w key
             eyeX -= 1.0;
-                robot.eyex -= 1.0;
+//                car.eyex -= 1.0;
             std::cout << "EyeX: " << eyeX << std::endl;
             break;
         case 114: // r key
             eyeZ += 1.0;
-                robot.eyez += 1.0;
+//                car.eyez += 1.0;
             std::cout << "EyeZ: " << eyeZ << std::endl;
             break;
         case 120: //x key
             eyeZ -= 1.0;
-                robot.eyez -= 1.0;
+//                car.eyez -= 1.0;
             std::cout << "EyeZ " << eyeZ << std::endl;
             break;
         case 117: //u
             atX += 1.0;
-                robot.atx += 1.0;
+//                car.atx += 1.0;
             std::cout << "atX: " << atX << std::endl;
             break;
         case 105: //i
             atX -= 1.0;
-                robot.atx -= 1.0;
+//                car.atx -= 1.0;
             std::cout << "atX: " << atX << std::endl;
 
             break;
         case 106: // j
             atY += 1.0;
-                robot.aty += 1.0;
+//                car.aty += 1.0;
             std::cout << "atY: " << atY << std::endl;
 
             break;
@@ -738,18 +736,18 @@ void keyboard(unsigned char key, int x, int y)
             std::cout << "atY: " << atY << std::endl;
 
             atY -= 1.0;
-                robot.aty -= 1.0;
+//                car.aty -= 1.0;
             break;
         case 110: // n
             std::cout << "atZ: " << atZ << std::endl;
 
             atZ += 1.0;
-                robot.atz += 1.0;
+//                car.atz += 1.0;
             break;
         case 109: //
             std::cout << "atZ: " << atZ << std::endl;
             atZ -= 1.0;
-                robot.atz -= 1.0;
+//                car.atz -= 1.0;
             break;
 
         default:
@@ -1041,57 +1039,24 @@ void MyInit(int Width, int Height)
     CallBackResizeScene(Width, Height);
 }
 
-int main(int argc, char **argv)
-{
-      // INITIALIZATION of class attributes of Robot
-      robot.atx = 0;       // x position of lookat
-      robot.aty = 0.0;     // y position of lookat
-      robot.atz = 0;       // z position of lookat
-      robot.eyex = 0;      // x position of camera eye
-      robot.eyey = 4;      // y position of camera eye
-      robot.eyez = -15;    // z position of camera eye
-      robot.cx = 0;        // x position of robot
-      robot.cy = -3.5;     // y position of robot
-      robot.cz = 0;        // z position of robot
-      robot.bodyAngle = 0; // the angle at which the robot is currently.
-      robot.headAngle = 0; // angle the head is currently rotated
-      robot.antRot = 0;    // angle of antenae rotating
-      robot.offz = 0;      // x offset from the origin
-      robot.offx = 0;      // z offset from the origin
-      robot.nameCount = 0; // counter for naming the buildings for picking function
+int main(int argc, char **argv) {
+    car.atx = 0.0;       // x position of lookat
+    car.aty = 0.0;     // y position of lookat
+    car.atz = 0;       // z position of lookat
+    car.eyex = 0.0;      // x position of camera eye
+    car.eyey = 4;      // y position of camera eye
+    car.eyez = -10 ;    // z position of camera eye
+    car.cx = 0;        // x position of robot
+    car.cy = -3.5;     // y position of robot
+    car.cz = 0;        // z position of robot
+    car.bodyAngle = 0; // the angle at which the robot is currently.
+    car.headAngle = 0; // angle the head is currently rotated
+    car.antRot = 0;    // angle of antenae rotating
+    car.offz = 0;      // x offset from the origin
+    car.offx = 0;      // z offset from the origin
+    car.nameCount = 0; // counter for naming the buildings for picking function
 
-    // generate a random array of numbers 1-3 for our building generation. The
-    // random seed is based on current system time so it should be different each
-    // time you run it
 
-    srand(time(NULL));
-    for (int i = 0; i < 400; i++)
-    {
-        randNums[i] = rand() % 3 + 1;
-    }
-
-    /*using the previously generated array of random numbers, we associated a
-   *sister array of hit values. building 1 is -1 for indestructible building 2
-   *is 3 for strong building building 3 is 1 for weak building this array is
-   *later accessed when a building is clicked on and the number is
-   *de-incremented until it hits 0 which is then removed from the viewing area
-   */
-
-    for (int i = 0; i < 400; i++)
-    {
-        if (randNums[i] == 1)
-        {
-            buildHits[i] = -1;
-        }
-        if (randNums[i] == 2)
-        {
-            buildHits[i] = 3;
-        }
-        if (randNums[i] == 3)
-        {
-            buildHits[i] = 1;
-        }
-    }
 
     glutInit(&argc, argv);
 
