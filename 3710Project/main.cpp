@@ -907,13 +907,24 @@ void keyboard(unsigned char key, int x, int y)
                 std::cout << "EyeZ " << eyeZ << std::endl;
                 eyeZ -= 1.0;
                 atZ -= 1.0;
-                cz -= 0.9;
+                if (bodyAngle == 90)
+                {
+                    cz -= 0.9;
+                } else{
+                    cx -= 0.9;
+                }
+                
             break;
         case 97: // a key
                 std::cout << "EyeZ: " << eyeZ << std::endl << " AtZ: " << atZ << std::endl;
                 eyeZ += 1.0;
                 atZ += 1.0;
-                cz += 0.9;
+                if (bodyAngle == 90)
+                {
+                    cz += 0.9;
+                } else{
+                    cx += 0.9;
+                }
             break;
         case 115: // s key
             eyeY -= 1.0;
