@@ -1,5 +1,5 @@
-#ifndef ROBOT_H
-#define ROBOT_H
+#ifndef CAR_H
+#define CAR_H
 
 
 #ifdef __APPLE__
@@ -25,8 +25,7 @@
 void moveCam(int);
 void headRotate(bool, bool);
 
-class Robot
-{
+class Car {
 public:
   // all explained in main where we initialize them in the main function
   float atx;
@@ -46,22 +45,22 @@ public:
   int nameCount;
   GLenum modeV; // current GL_MODE (either GL_RENDER or GL_SELECT)
 
-  void drawRobot()
-  { // function for drawing the robot into the world
+  void renderCar()
+  { // function for drawing the Car into the world
   float theta,angle;
   int frame_count;
 
     // cube begin
     glLoadIdentity();
-    gluLookAt(eyex, eyey, eyez, atx, aty, atz, 0, 1,0); // lookat view for the robot
+    gluLookAt(eyex, eyey, eyez, atx, aty, atz, 0, 1,0); // lookat view for the Car
 
-    glTranslatef(cx, cy, cz);      // translate to robots current position
-    glRotatef(bodyAngle, 0, 1, 0); // for when robot is turning to left or right
-    glTranslatef(3.0, 3.0, 3.0);         // translate to 0, 0, 0 first for if robot is turning
+    glTranslatef(cx, cy, cz);      // translate to Cars current position
+    glRotatef(bodyAngle, 0, 1, 0); // for when Car is turning to left or right
+    glTranslatef(3.0, 3.0, 3.0);         // translate to 0, 0, 0 first for if Car is turning
     glScalef(3.0,3.0,3.0);
     glEnable(GL_COLOR_MATERIAL);
 
-    // begin the body of the robot
+    // begin the body of the Car
     glBegin(GL_QUADS);
 
     // frontdesign
