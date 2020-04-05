@@ -24,8 +24,6 @@
 
 void moveCam(int);
 void headRotate(bool, bool);
-static GLuint skybox;
-static GLuint hor;
 
 class Robot
 {
@@ -42,7 +40,7 @@ public:
   int cz;
   int bodyAngle;
   int headAngle;
-  int antRot;
+  float antRot = 0.5f;
   float offz;
   float offx;
   int nameCount;
@@ -50,13 +48,12 @@ public:
 
   void drawRobot()
   { // function for drawing the robot into the world
-  float theta,angle,i;
+  float theta,angle;
   int frame_count;
 
     // cube begin
     glLoadIdentity();
-    gluLookAt(eyex, eyey, eyez, atx, aty, atz, 0, 1,
-              0); // lookat view for the robot
+    gluLookAt(eyex, eyey, eyez, atx, aty, atz, 0, 1,0); // lookat view for the robot
 
     glTranslatef(cx, cy, cz);      // translate to robots current position
     glRotatef(bodyAngle, 0, 1, 0); // for when robot is turning to left or right
@@ -131,10 +128,21 @@ public:
     glVertex3f(2.1,0.2,0.6);
 
     //******************MIDDLE BODY************************************
-    glVertex3f( 0.6, 0.5,0.6);
-    glVertex3f(0.6, 0.2,0.6);
-    glVertex3f(1.8, 0.2, 0.6);
+    glVertex3f(0.6,0.5,0.6);
+    glVertex3f(0.6,0.2,0.6);
+    glVertex3f(1.8,0.2,0.6);
     glVertex3f(1.8,0.5,0.6);
+    //******************Top Antenna************************************
+    /*side of antenna*/
+    glVertex3f(1.35,1.3,0.4);
+    glVertex3f(1.35,0.63,0.4);
+    glVertex3f(1.6,0.63,0.4);
+    glVertex3f(1.6,1.3,0.4);
+    /*side of antenna*/
+    glVertex3f(1.6,1.3,0.5);
+    glVertex3f(1.6,0.63,0.5);
+    glVertex3f(1.35,0.63,0.5);
+    glVertex3f(1.35,1.3,0.5);
 
     /* bottom of cube*/
     glVertex3f( 0.6,0.2,0.6);
@@ -216,14 +224,12 @@ public:
     glEnd();
 
     //******************ATENNA BODY************************************
-    glBegin(GL_TRIANGLE_STRIP);
-    GLUquadricObj *quadratic;
-    quadratic = gluNewQuadric();
-    gluQuadricTexture(quadratic, true);
-    glTranslatef(3.0, 3.0, 3.0); 
-    glRotatef(antRot, 0.0f, 1.0f, 0.0f);
-    gluCylinder(quadratic,0.1f,0.1f,1.0f,32,32);
-    glEnd();
+    glPushMatrix();
+    glColor3f(0.0,0.3,0.3);
+    glTranslatef(1.5,1.5,0.45);
+    glRotatef(antRot,0.0f,1.0f,0.0f);
+    glutWireSphere(0.25,25,25);
+    glPopMatrix();
     //*****************************************************************
 
     glColor3f(0.7,0.7,0.7);
@@ -268,13 +274,10 @@ public:
 
     glTranslatef(0,0,0.4);
     glutSolidTorus(0.025,0.07,10,25);
-    glPopMatrix();
-
     //*************************************************************
     glPopMatrix();
     glEnable(GL_DEPTH_TEST);
     glutPostRedisplay();
-    glutSwapBuffers();
 
     frame_count++;
     if (frame_count % 10 == 0) {
@@ -285,417 +288,6 @@ public:
         }
     }
   }
-
-  void moveCam(int fKey)
-  { // function that handles the camera angles.
-    switch (fKey)
-    {
-    case 1:
-      if (eyex > (offx + 0))
-      { // this is default view of robot
-        eyex--;
-      }
-      if (eyex < (offx + 0))
-      { // each on of these if statements basically is checking if the eye is in
-        // the right position
-        eyex++; // relative to the robots offset for the desired camera angle.
-      }         // this is standard across all cases (1-12) for every camera angle
-      // required
-      if (eyey > 5)
-      { // 1-4 are the behind view of the robot (depending on what direction he
-        // is facing)
-        eyey--; // 5-8 are the angled camera views of the robot
-      }         // 9-12 are the farther out angled camera views of the robot
-      if (eyey < 5)
-      { // All of these use offx and offz to determine how far offset the robot
-        // currently is from the origin
-        eyey++;
-      }
-      if (eyez > (offz + -15))
-      {
-        eyez--;
-      }
-      if (eyez < (offz + -15))
-      {
-        eyez++;
-      }
-      break;
-    case 2:
-      if (eyex > (offx + -15))
-      {
-        eyex--;
-      }
-      if (eyex < (offx + -15))
-      {
-        eyex++;
-      }
-      if (eyey > 5)
-      {
-        eyey--;
-      }
-      if (eyey < 5)
-      {
-        eyey++;
-      }
-      if (eyez > (offz + 0))
-      {
-        eyez--;
-      }
-      if (eyez < (offz + 0))
-      {
-        eyez++;
-      }
-      break;
-    case 3:
-      if (eyex > (offx + 0))
-      {
-        eyex--;
-      }
-      if (eyex < (offx + 0))
-      {
-        eyex++;
-      }
-      if (eyey > 5)
-      {
-        eyey--;
-      }
-      if (eyey < 5)
-      {
-        eyey++;
-      }
-      if (eyez > (offz + 15))
-      {
-        eyez--;
-      }
-      if (eyez < (offz + 15))
-      {
-        eyez++;
-      }
-      break;
-    case 4:
-      if (eyex > (offx + 15))
-      {
-        eyex--;
-      }
-      if (eyex < (offx + 15))
-      {
-        eyex++;
-      }
-      if (eyey > 5)
-      {
-        eyey--;
-      }
-      if (eyey < 5)
-      {
-        eyey++;
-      }
-      if (eyez > (offz + 0))
-      {
-        eyez--;
-      }
-      if (eyez < (offz + 0))
-      {
-        eyez++;
-      }
-      break;
-    case 5:
-      if (eyex > (offx + 10))
-      {
-        eyex--;
-      }
-      if (eyex < (offx + 10))
-      {
-        eyex++;
-      }
-      if (eyey > 10)
-      {
-        eyey--;
-      }
-      if (eyey < 10)
-      {
-        eyey++;
-      }
-      if (eyez > (offz + -10))
-      {
-        eyez--;
-      }
-      if (eyez < (offz + -10))
-      {
-        eyez++;
-      }
-      break;
-    case 6:
-      if (eyex > (offx + -10))
-      {
-        eyex--;
-      }
-      if (eyex < (offx + -10))
-      {
-        eyex++;
-      }
-      if (eyey > 10)
-      {
-        eyey--;
-      }
-      if (eyey < 10)
-      {
-        eyey++;
-      }
-      if (eyez > (offz + -10))
-      {
-        eyez--;
-      }
-      if (eyez < (offz + -10))
-      {
-        eyez++;
-      }
-      break;
-    case 7:
-      if (eyex > (offx + -10))
-      {
-        eyex--;
-      }
-      if (eyex < (offx + -10))
-      {
-        eyex++;
-      }
-      if (eyey > 10)
-      {
-        eyey--;
-      }
-      if (eyey < 10)
-      {
-        eyey++;
-      }
-      if (eyez > (offz + 10))
-      {
-        eyez--;
-      }
-      if (eyez < (offz + 10))
-      {
-        eyez++;
-      }
-      break;
-    case 8:
-      if (eyex > (offx + 10))
-      {
-        eyex--;
-      }
-      if (eyex < (offx + 10))
-      {
-        eyex++;
-      }
-      if (eyey > 10)
-      {
-        eyey--;
-      }
-      if (eyey < 10)
-      {
-        eyey++;
-      }
-      if (eyez > (offz + 10))
-      {
-        eyez--;
-      }
-      if (eyez < (offz + 10))
-      {
-        eyez++;
-      }
-      break;
-    case 9:
-      if (eyex > (offx + 50))
-      {
-        eyex--;
-      }
-      if (eyex < (offx + 50))
-      {
-        eyex++;
-      }
-      if (eyey > 50)
-      {
-        eyey--;
-      }
-      if (eyey < 50)
-      {
-        eyey++;
-      }
-      if (eyez > (offz + -50))
-      {
-        eyez--;
-      }
-      if (eyez < (offz + -50))
-      {
-        eyez++;
-      }
-      break;
-    case 10:
-      if (eyex > (offx + -50))
-      {
-        eyex--;
-      }
-      if (eyex < (offx + -50))
-      {
-        eyex++;
-      }
-      if (eyey > 50)
-      {
-        eyey--;
-      }
-      if (eyey < 50)
-      {
-        eyey++;
-      }
-      if (eyez > (offz + -50))
-      {
-        eyez--;
-      }
-      if (eyez < (offz + -50))
-      {
-        eyez++;
-      }
-      break;
-    case 11:
-      if (eyex > (offx + -50))
-      {
-        eyex--;
-      }
-      if (eyex < (offx + -50))
-      {
-        eyex++;
-      }
-      if (eyey > 50)
-      {
-        eyey--;
-      }
-      if (eyey < 50)
-      {
-        eyey++;
-      }
-      if (eyez > (offz + 50))
-      {
-        eyez--;
-      }
-      if (eyez < (offz + 50))
-      {
-        eyez++;
-      }
-      break;
-    case 12:
-      if (eyex > (offx + 50))
-      {
-        eyex--;
-      }
-      if (eyex < (offx + 50))
-      {
-        eyex++;
-      }
-      if (eyey > 50)
-      {
-        eyey--;
-      }
-      if (eyey < 50)
-      {
-        eyey++;
-      }
-      if (eyez > (offz + 50))
-      {
-        eyez--;
-      }
-      if (eyez < (offz + 50))
-      {
-        eyez++;
-      }
-      break;
-    }
-  }
-
-  void bodyRot(bool &robRotR, bool &robRotL)
-  {
-    if (robRotR)
-    {
-      bodyAngle +=
-          3; // if the robot is supposed to be rotating right, we add 3 until we
-             // hit a 90 degree angle (which is north/east/south/west)
-      if ((bodyAngle == 90) || (bodyAngle == 180) || (bodyAngle == 270) ||
-          (bodyAngle == 360) || (bodyAngle == 0))
-      { // we only want to rotate to a 90 degree direction
-        if (bodyAngle == 360)
-        { // to prevent overflow we reset to 0 when we hit 360
-          bodyAngle = 0;
-        }
-        robRotR = false; // when we hit a 90 degree angle we set it to no longer
-                         // be rotating
-      }
-      if ((bodyAngle == -90) || (bodyAngle == -180) || (bodyAngle == -270) ||
-          (bodyAngle == -360) || (bodyAngle == 0))
-      {
-        if (bodyAngle == -360)
-        { // still must account for if the robot was previously rotated to the
-          // left, checking for 90 degree angles in the negative direction as
-          // well
-          bodyAngle = 0;
-        }
-        robRotR = false;
-      }
-    }
-    if (robRotL)
-    {
-      bodyAngle -= 3; // identical to previous if statement but reversed for
-                      // rotating to the left instead
-      if ((bodyAngle == -90) || (bodyAngle == -180) || (bodyAngle == -270) ||
-          (bodyAngle == -360) || (bodyAngle == 0))
-      {
-        if (bodyAngle == -360)
-        {
-          bodyAngle = 0;
-        }
-        robRotL = false;
-      }
-      if ((bodyAngle == 90) || (bodyAngle == 180) || (bodyAngle == 270) ||
-          (bodyAngle == 360) || (bodyAngle == 0))
-      {
-        if (bodyAngle == -360)
-        {
-          bodyAngle = 0;
-        }
-        robRotL = false;
-      }
-    }
-  }
-
-  void headRotate(bool headTurnR, bool headTurnL)
-  {
-    if (headAngle == 360)
-    { // if the angle rotates a full 360 we reset it to prevent overflow
-      headAngle = 0;
-    }
-    if (headAngle == -360)
-    { // if the angle rotates a full 360 we reset it to prevent overflow
-      headAngle = 0;
-    }
-    if (headTurnR == true)
-    { // if the head turn right key is pressed down we rotate the head until it
-      // no longer is
-      headAngle -= 2;
-    }
-
-    if (headTurnL == true)
-    { // if the head turn left key is pressed down we rotate the head until it
-      // no longer is
-      headAngle += 2;
-    }
-
-    if ((headAngle != 0) && (headTurnL == false) && (headTurnR == false))
-    { // when we are no longer turning we reset the head to forward position
-      if (headAngle > 0)
-      {
-        headAngle -= 2;
-      }
-      if (headAngle < 0)
-      {
-        headAngle += 2;
-      }
-    }
-  }
 };
 #endif
+
