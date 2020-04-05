@@ -64,9 +64,9 @@ float rotateRect = 0.4;
 float rotateCyil = 0.5;
 float antRot = 90;
 float bodyAngle = 90;
-float cx = 0.0;
+float cx = 4.0;
 float cy = 0.0;
-float cz = 0.0;
+float cz = -20.0;
 
 static void PrintString(void *font, char *str)
 {
@@ -933,12 +933,10 @@ void keyboard(unsigned char key, int x, int y)
             std::cout << "EyeY: " << eyeY << std::endl;
             break;
         case 113: // q key
-            bodyAngle = 180;
-            cx += 0.9;
+            bodyAngle += 90;
             break;
         case 119: // w key
-            bodyAngle = -180;
-            cx -= 0.9;
+            bodyAngle -= 90;
             break;
         case 114: // r key
             eyeZ += 1.0;
