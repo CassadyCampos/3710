@@ -719,7 +719,6 @@ void renderGround() {
 
     //* HORIZONTAL ROAD STRIPES
     glColor3f(1.0, 1.0, 0.0); // Yellow
-//    glfBegin(GL_QUADS);
     for (int i = 0; i < 20; i++) {
         glVertex3f(-60, GROUND_LEVEL + 0.05, -56 + i * 60);
         glVertex3f(-60, GROUND_LEVEL + 0.05, -54 + i * 60);
@@ -727,7 +726,6 @@ void renderGround() {
         glVertex3f(1150, GROUND_LEVEL + 0.05, -56 + i * 60);
     }
     glEnd();
-//    glFlush();
 }
 
 void CallBackRenderScene(void)
