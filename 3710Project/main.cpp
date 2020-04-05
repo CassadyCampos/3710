@@ -909,9 +909,9 @@ void keyboard(unsigned char key, int x, int y)
                 atZ -= 1.0;
                 if (bodyAngle == 90)
                 {
-                    cz -= 0.9;
+                    cz -= 1.0;
                 } else{
-                    cx -= 0.9;
+                    cx -= 1.0;
                 }
                 
             break;
@@ -921,9 +921,9 @@ void keyboard(unsigned char key, int x, int y)
                 atZ += 1.0;
                 if (bodyAngle == 90)
                 {
-                    cz += 0.9;
+                    cz += 1.0;
                 } else{
-                    cx += 0.9;
+                    cx += 1.0;
                 }
             break;
         case 115: // s key
