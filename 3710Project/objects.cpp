@@ -132,16 +132,16 @@ public:
     glVertex3f(1.8,0.2,0.6);
     glVertex3f(1.8,0.5,0.6);
     //******************Top Antenna************************************
-    /*side of antenna*/
-    glVertex3f(1.35,1.3,0.4);
-    glVertex3f(1.35,0.63,0.4);
-    glVertex3f(1.6,0.63,0.4);
-    glVertex3f(1.6,1.3,0.4);
-    /*side of antenna*/
-    glVertex3f(1.6,1.3,0.5);
-    glVertex3f(1.6,0.63,0.5);
-    glVertex3f(1.35,0.63,0.5);
-    glVertex3f(1.35,1.3,0.5);
+    // /*side of antenna*/
+    // glVertex3f(1.35,1.3,0.4);
+    // glVertex3f(1.35,0.63,0.4);
+    // glVertex3f(1.6,0.63,0.4);
+    // glVertex3f(1.6,1.3,0.4);
+    // /*side of antenna*/
+    // glVertex3f(1.6,1.3,0.5);
+    // glVertex3f(1.6,0.63,0.5);
+    // glVertex3f(1.35,0.63,0.5);
+    // glVertex3f(1.35,1.3,0.5);
 
     /* bottom of cube*/
     glVertex3f( 0.6,0.2,0.6);
@@ -167,7 +167,7 @@ public:
     glVertex3f(1.65,0.5,0.2);
     glVertex3f(1.67,0.63,0.2);
 
-    glColor3f(1.0f,1.0f,1.0f);
+    glColor3f(0.1,1.0,0.5);
     glVertex3f(0.7,0.65,0.2);
     glVertex3f(0.7,0.5,.2);       //first separation
     glVertex3f(0.75,0.5,0.2);
@@ -204,7 +204,7 @@ public:
     glVertex3f(1.65,0.5,0.6);
     glVertex3f(1.67,0.63,0.6);
 
-    glColor3f(1.0f,1.0f,1.0f);
+    glColor3f(0.1,1.0,0.5);
     glVertex3f(0.7,0.65,0.6);
     glVertex3f(0.7,0.5,.6);       //first separation
     glVertex3f(0.75,0.5,0.6);
@@ -223,6 +223,16 @@ public:
     glEnd();
 
     //******************ATENNA BODY************************************
+    glBegin(GL_TRIANGLE_STRIP);
+    GLUquadricObj *quadratic;
+    quadratic = gluNewQuadric();
+    gluQuadricTexture(quadratic, true);
+    glColor3f(1.0,0.0,1.0);
+    glTranslatef(3.0, 3.0, 3.0); 
+    glRotatef(90,1.0f,0.0f,0.0f);
+    gluCylinder(quadratic,0.1f,0.1f,1.0f,32,32);
+    glEnd();
+
     glPushMatrix();
     glColor3f(0.0,0.3,0.3);
     glTranslatef(1.5,1.5,0.45);
