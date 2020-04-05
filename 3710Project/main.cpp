@@ -62,6 +62,11 @@ int GROUND_LEVEL = 0.5;
 int frame_count = 0;
 float rotateRect = 0.4;
 float rotateCyil = 0.5;
+float antRot = 90;
+float bodyAngle = 90;
+float cx = 0.0;
+float cy = 0.0;
+float cz = 0.0;
 
 static void PrintString(void *font, char *str)
 {
@@ -71,15 +76,286 @@ static void PrintString(void *font, char *str)
         glutBitmapCharacter(font, *str++);
 }
 
-void renderCar() {
-    glMatrixMode(GL_MODELVIEW);
+void renderCar()
+  { // function for drawing the Car into the world
+  float theta,angle;
+  int frame_count;
+
+    // cube begin
     glLoadIdentity();
-    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1,0); // lookat view for the Car
+
+    glTranslatef(GROUND_LEVEL+cx,GROUND_LEVEL,GROUND_LEVEL+cz);      // translate to Cars current position
+    glRotatef(bodyAngle, 0, 1, 0); // for when Car is turning to left or right
+    glTranslatef(0,0,0);         // translate to 0, 0, 0 first for if Car is turning
+    glScalef(3.0,3.0,3.0);
+    glEnable(GL_COLOR_MATERIAL);
+
+    // begin the body of the Car
+
+    glBegin(GL_QUADS);
+    /* top of cube*/
+    //************************FRONT BODY****************************************
+    glColor3f(0.1,1.0,0.5);
+    glVertex3f( 0.2, 0.4,0.6);
+    glVertex3f(0.6, 0.5,0.6);
+    glVertex3f(0.6, 0.5,0.2);
+    glVertex3f( 0.2,0.4,0.2);
+    /* bottom of cube*/
+    glVertex3f( 0.2,0.4,0.6);
+    glVertex3f(0.6,0.2,0.6);
+    glVertex3f(0.6,0.2,0.2);
+    glVertex3f( 0.2,0.2,0.2);
+    /* front of cube*/
+    glVertex3f( 0.2,0.2,0.6);
+    glVertex3f(0.2, 0.4,0.6);
+    glVertex3f(0.2,0.4,0.2);
+    glVertex3f( 0.2,0.2,0.2);
+    /* back of cube.*/
+    glVertex3f(0.6,0.2,0.6);
+    glVertex3f(0.6,0.5,0.6);
+    glVertex3f(0.6,0.5,0.2);
+    glVertex3f( 0.6,0.2,0.2);
+    /* left of cube*/
+    glVertex3f(0.2,0.2,0.6);
+    glVertex3f(0.6,0.2,0.6);
+    glVertex3f(0.6,0.5,0.6);
+    glVertex3f(0.2,0.4,0.6);
+    /* Right of cube */
+    glVertex3f(0.2,0.2,0.2);
+    glVertex3f( 0.6,0.2,0.2);
+    glVertex3f( 0.6,0.5,0.2);
+    glVertex3f( 0.2,0.4,0.2);
+
+    //****************************************************************************
+    glVertex3f(0.7,0.65,0.6);
+    glVertex3f(0.7,0.65,0.2);
+    glVertex3f(1.7,0.65,0.2);
+    glVertex3f(1.7,0.65,0.6);
+
+    //***************************back guard******************************
+    // You can change r, g, b to different colors.
+    glColor3f(0.1,1.0,0.5);
+    glVertex3f( 1.8, 0.5,0.6);
+    glVertex3f(1.8, 0.5,0.2);
+    glVertex3f(2.1, 0.4, 0.2);
+    glVertex3f(2.1,0.4,0.6);
+    /* bottom of cube*/
+    glVertex3f( 2.1,0.2,0.6);
+    glVertex3f(2.1,0.2,0.2);
+    glVertex3f(1.8,0.2,0.6);
+    glVertex3f( 1.8,0.2,0.6);
+    /* back of cube.*/
+    glVertex3f(2.1,0.4,0.6);
+    glVertex3f(2.1,0.4,0.2);
+    glVertex3f(2.1,0.2,0.2);
+    glVertex3f(2.1,0.2,0.6);
+    /* left of cube*/
+    glVertex3f(1.8,0.2,0.2);
+    glVertex3f(1.8,0.5,0.2);
+    glVertex3f(2.1,0.4,0.2);
+    glVertex3f(2.1,0.2,0.2);
+    /* Right of cube */
+    glVertex3f(1.8,0.2,0.6);
+    glVertex3f(1.8,0.5,0.6);
+    glVertex3f(2.1,0.4,0.6);
+    glVertex3f(2.1,0.2,0.6);
+
+    //******************MIDDLE BODY************************************
+    glVertex3f( 0.6, 0.5,0.6);
+    glVertex3f(0.6, 0.2,0.6);
+    glVertex3f(1.8, 0.2, 0.6);
+    glVertex3f(1.8,0.5,0.6);
     
-    //* Move to building square
-//    float moveX = -40 + x * 60;
-//    float moveZ = -30 + z * 60;
-}
+
+    /* bottom of cube*/
+    glVertex3f( 0.6,0.2,0.6);
+    glVertex3f(0.6,0.2,0.2);
+    glVertex3f(1.8,0.2,0.2);
+    glVertex3f( 1.8,0.2,0.6);
+
+    /* back of cube.*/
+    glVertex3f(0.6,0.5,0.2);
+    glVertex3f(0.6,0.2,0.2);
+    glVertex3f(1.8,0.2,0.2);
+    glVertex3f(1.8,0.5,0.2);
+
+    //*********************ENTER WINDOW**********************************
+    glColor3f(0.3,0.3,0.3);
+    glVertex3f( 0.77, 0.63,0.2);
+    glVertex3f(0.75, 0.5,0.2);        //quad front window
+    glVertex3f(1.2, 0.5, 0.2);
+    glVertex3f( 1.22,0.63,0.2);
+
+    glVertex3f(1.27,0.63,.2);
+    glVertex3f(1.25,0.5,0.2);        //quad back window
+    glVertex3f(1.65,0.5,0.2);
+    glVertex3f(1.67,0.63,0.2);
+
+    glColor3f(0.1,1.0,0.5);
+    glVertex3f(0.7,0.65,0.2);
+    glVertex3f(0.7,0.5,.2);       //first separation
+    glVertex3f(0.75,0.5,0.2);
+    glVertex3f(0.77,0.65,0.2);
+
+    glVertex3f(1.2,0.65,0.2);
+    glVertex3f(1.2,0.5,.2);       //second separation
+    glVertex3f(1.25,0.5,0.2);
+    glVertex3f(1.27,0.65,0.2);
+
+    glVertex3f(1.65,0.65,0.2);
+    glVertex3f(1.65,0.5,.2);     //3d separation
+    glVertex3f(1.7,0.5,0.2);
+    glVertex3f(1.7,0.65,0.2);
+
+    glVertex3f( 0.75, 0.65,0.2);
+    glVertex3f(0.75, 0.63,0.2);        //line strip
+    glVertex3f(1.7, 0.63, 0.2);
+    glVertex3f( 1.7,0.65,0.2);
+
+    glVertex3f( 0.75, 0.65,0.6);
+    glVertex3f(0.75, 0.63,0.6);        //line strip
+    glVertex3f(1.7, 0.63, 0.6);
+    glVertex3f( 1.7,0.65,0.6);
+
+    glColor3f(0.3,0.3,0.3);
+    glVertex3f( 0.77, 0.63,0.6);
+    glVertex3f(0.75, 0.5,0.6);        //quad front window
+    glVertex3f(1.2, 0.5, 0.6);
+    glVertex3f( 1.22,0.63,0.6);
+
+    glVertex3f(1.27,0.63,.6);
+    glVertex3f(1.25,0.5,0.6);        //quad back window
+    glVertex3f(1.65,0.5,0.6);
+    glVertex3f(1.67,0.63,0.6);
+
+    glColor3f(0.1,1.0,0.5);
+    glVertex3f(0.7,0.65,0.6);
+    glVertex3f(0.7,0.5,.6);       //first separation
+    glVertex3f(0.75,0.5,0.6);
+    glVertex3f(0.77,0.65,0.6);
+
+    glVertex3f(1.2,0.65,0.6);
+    glVertex3f(1.2,0.5,.6);       //second separation
+    glVertex3f(1.25,0.5,0.6);
+    glVertex3f(1.27,0.65,0.6);
+
+    glVertex3f(1.65,0.65,0.6);
+    glVertex3f(1.65,0.5,.6);
+    glVertex3f(1.7,0.5,0.6);
+    glVertex3f(1.7,0.65,0.6);
+    glEnd();
+
+
+    //**************************************************************
+    glBegin(GL_QUADS);
+
+    /* top of cube*/
+    glColor3f(0.3,0.3,0.3);
+    glVertex3f( 0.6, 0.5,0.6);
+    glVertex3f(0.6, 0.5,0.2);        //quad front window
+    glVertex3f(0.7, 0.65, 0.2);
+    glVertex3f( 0.7,0.65,0.6);
+
+    glVertex3f(1.7,0.65,.6);
+    glVertex3f(1.7,0.65,0.2);        //quad back window
+    glVertex3f(1.8,0.5,0.2);
+    glVertex3f(1.8,0.5,0.6);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);                /* start drawing the cube.*/
+        /* top of cube*/
+        glColor3f(0.3,0.3,0.3);
+        glVertex3f( 0.6, 0.5,0.6);
+        glVertex3f( 0.7,0.65,0.6);       //tri front window
+        glVertex3f(0.7,0.5,0.6);
+
+        glVertex3f( 0.6, 0.5,0.2);
+        glVertex3f( 0.7,0.65,0.2);       //tri front window
+        glVertex3f(0.7,0.5,0.2);
+
+        glVertex3f( 1.7, 0.65,0.2);
+        glVertex3f( 1.8,0.5,0.2);       //tri back window
+        glVertex3f( 1.7,0.5,0.2);
+
+        glVertex3f( 1.7, 0.65,0.6);
+        glVertex3f( 1.8,0.5,0.6);       //tri back window
+        glVertex3f(1.7,0.5,0.6);
+    glEnd();
+
+    //******************ATENNA BODY************************************
+    glPushMatrix();
+    glColor3f(0.3,0.3,0.7);
+    glTranslatef(1.5,0.8,0.45);
+    glRotatef(90.0,1.0,0,0);
+    gluCylinder(gluNewQuadric(),0.02,0.03,.5,10,10);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(0.0,0.3,0.3);
+    glTranslatef(1.5,1.0,0.45);
+    glRotatef(antRot,0.0f,1.0f,0.0f);
+    glutWireSphere(0.2,25,25);
+    glPopMatrix();
+    //*****************************************************************
+
+    glColor3f(0.7,0.7,0.7);
+    glPushMatrix();
+    glBegin(GL_LINE_STRIP);
+        for(theta=0;theta<360;theta=theta+40) {
+            glVertex3f(0.6,0.2,0.62);
+            glVertex3f(0.6+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.62);
+        }
+    glEnd();
+
+    glBegin(GL_LINE_STRIP);
+        for(theta=0;theta<360;theta=theta+40) {
+            glVertex3f(0.6,0.2,0.18);
+            glVertex3f(0.6+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.18);
+        }
+    glEnd();
+
+    glBegin(GL_LINE_STRIP);
+        for(theta=0;theta<360;theta=theta+40) {
+            glVertex3f(1.7,0.2,0.18);
+            glVertex3f(1.7+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.18);
+        }
+    glEnd();
+
+    glBegin(GL_LINE_STRIP);
+        for(theta=0;theta<360;theta=theta+40) {
+            glVertex3f(1.7,0.2,0.62);
+            glVertex3f(1.7+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.62);
+        }
+    glEnd();
+
+    glTranslatef(0.6,0.2,0.6);
+    glColor3f(0,0,0);
+    glutSolidTorus(0.025,0.07,10,25);
+
+    glTranslatef(0,0,-0.4);
+    glutSolidTorus(0.025,0.07,10,25);
+
+    glTranslatef(1.1,0,0);
+    glutSolidTorus(0.025,0.07,10,25);
+
+    glTranslatef(0,0,0.4);
+    glutSolidTorus(0.025,0.07,10,25);
+    //*************************************************************
+    glPopMatrix();
+    glEnable(GL_DEPTH_TEST);
+    glutPostRedisplay();
+
+    frame_count++;
+    if (frame_count % 10 == 0) {
+        antRot += 30;
+        frame_count = 0;
+        if (antRot > 360) {
+            antRot = 0;
+        }
+    }
+  }
 
 void renderSphe(int x, int z) {
     glMatrixMode(GL_MODELVIEW);
@@ -472,8 +748,8 @@ void CallBackRenderScene(void)
     
     glPushMatrix();
     glLoadIdentity();
-    car.renderCar(); // draw robot into the world
-//    renderCar();
+    //car.renderCar(); // draw robot into the world
+    renderCar();
     glPopMatrix();
 
     glLoadIdentity();
@@ -630,83 +906,28 @@ void keyboard(unsigned char key, int x, int y)
             break;
 
         case 122: // z
-                if (eyeZ == -85) break;
-                eyeZ -= 1.0;
                 std::cout << "EyeZ " << eyeZ << std::endl;
-//                car.cz += 0.5;
-//
-//            std::cout << "EyeZ: " << eyeZ << std::endl;
-
-//             z key
-//                  car.cz +=
-//                      offAddz; // move the robot forward, the offAddx and offAddz change
-//                 car.cx +=
-//                      offAddx;           // based on the direction the robot is currently facing
-//                  car.eyez += offAddz; // to keep up with where the robot is
-//                  car.atz += offAddz;
-//                  car.atx += offAddx;
-//                  car.eyex += offAddx;
-//                  car.offx += offAddx;
-//                  car.offz += offAddz;
-//                  switch (car.cx)
-//                  {z
-//                  case 545: // if at the boundary, we cannot go forward
-//                    car.cx -= 5;
-//                    car.offx -= 5;
-//                    car.atx -= 5;
-//                   car.eyex -= 5;
-//                    break;
-//                  case -665: // if at the boundary, we cannot go forward
-//                    car.cx += 5;
-//                    car.offx += 5;
-//                    car.atx += 5;
-//                    car.eyex += 5;
-//                    break;
-//                  default:
-//                    break;
-//                  }
-//                  switch (car.cz)
-//                  { // if at the boundary, we cannot go forward
-//                  case 545:
-//                    car.cz -= 5;
-//                    car.offz -= 5;
-//                    car.atz -= 5;
-//                    car.eyez -= 5;
-//                    break;
-//                  case -665: // if at the boundary, we cannot go forward
-//                    car.cz += 5;
-//                   car.offz += 5;
-//                car.atz += 5;
-//                    car.eyez += 5;
-//                    break;
-//                  default:
-//                    break;
-//                  }
+                eyeZ -= 1.0;
+                atZ -= 1.0;
+                cz -= 0.9;
             break;
         case 97: // a key
                 std::cout << "EyeZ: " << eyeZ << std::endl << " AtZ: " << atZ << std::endl;
-                car.moveforward();
-//                 car.cz += 1;
-//                 car.atz += 1;
-// //                car.eyez += 1;
                 eyeZ += 1.0;
                 atZ += 1.0;
+                cz += 0.9;
             break;
         case 115: // s key
             eyeY -= 1.0;
-//                car.eyey -= 1.0;
             std::cout << "EyeY: " << eyeY << std::endl;
             break;
         case 113: // q key
-            eyeX += 1.0;
-//                car.eyex += 1.0;
-            std::cout << "EyeX: " << eyeX << std::endl;
-
+            bodyAngle = 180;
+            cx += 0.9;
             break;
         case 119: // w key
-            eyeX -= 1.0;
-//                car.eyex -= 1.0;
-            std::cout << "EyeX: " << eyeX << std::endl;
+            bodyAngle = -180;
+            cx -= 0.9;
             break;
         case 114: // r key
             eyeZ += 1.0;
