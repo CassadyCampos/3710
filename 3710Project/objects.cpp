@@ -61,10 +61,11 @@ public:
     glEnable(GL_COLOR_MATERIAL);
 
     // begin the body of the Car
-    glBegin(GL_QUADS);
 
-    // frontdesign
-    glColor3f(1.0f, 0.0f, 1.0f);
+    glBegin(GL_QUADS);
+    /* top of cube*/
+    //************************FRONT BODY****************************************
+    glColor3f(0.1,1.0,0.5);
     glVertex3f( 0.2, 0.4,0.6);
     glVertex3f(0.6, 0.5,0.6);
     glVertex3f(0.6, 0.5,0.2);
@@ -94,22 +95,25 @@ public:
     glVertex3f( 0.6,0.2,0.2);
     glVertex3f( 0.6,0.5,0.2);
     glVertex3f( 0.2,0.4,0.2);
+
+    //****************************************************************************
     glVertex3f(0.7,0.65,0.6);
     glVertex3f(0.7,0.65,0.2);
     glVertex3f(1.7,0.65,0.2);
     glVertex3f(1.7,0.65,0.6);
 
     //***************************back guard******************************
-    glColor3f(1.0f, 0.0f, 1.0f);
-    glVertex3f(1.8,0.5,0.6);
-    glVertex3f(1.8,0.5,0.2);
-    glVertex3f(2.1,0.4,0.2);
+    // You can change r, g, b to different colors.
+    glColor3f(0.1,1.0,0.5);
+    glVertex3f( 1.8, 0.5,0.6);
+    glVertex3f(1.8, 0.5,0.2);
+    glVertex3f(2.1, 0.4, 0.2);
     glVertex3f(2.1,0.4,0.6);
     /* bottom of cube*/
-    glVertex3f(2.1,0.2,0.6);
+    glVertex3f( 2.1,0.2,0.6);
     glVertex3f(2.1,0.2,0.2);
     glVertex3f(1.8,0.2,0.6);
-    glVertex3f(1.8,0.2,0.6);
+    glVertex3f( 1.8,0.2,0.6);
     /* back of cube.*/
     glVertex3f(2.1,0.4,0.6);
     glVertex3f(2.1,0.4,0.2);
@@ -127,21 +131,10 @@ public:
     glVertex3f(2.1,0.2,0.6);
 
     //******************MIDDLE BODY************************************
-    glVertex3f(0.6,0.5,0.6);
-    glVertex3f(0.6,0.2,0.6);
-    glVertex3f(1.8,0.2,0.6);
+    glVertex3f( 0.6, 0.5,0.6);
+    glVertex3f(0.6, 0.2,0.6);
+    glVertex3f(1.8, 0.2, 0.6);
     glVertex3f(1.8,0.5,0.6);
-    //******************Top Antenna************************************
-    // /*side of antenna*/
-    // glVertex3f(1.35,1.3,0.4);
-    // glVertex3f(1.35,0.63,0.4);
-    // glVertex3f(1.6,0.63,0.4);
-    // glVertex3f(1.6,1.3,0.4);
-    // /*side of antenna*/
-    // glVertex3f(1.6,1.3,0.5);
-    // glVertex3f(1.6,0.63,0.5);
-    // glVertex3f(1.35,0.63,0.5);
-    // glVertex3f(1.35,1.3,0.5);
 
     /* bottom of cube*/
     glVertex3f( 0.6,0.2,0.6);
@@ -219,23 +212,57 @@ public:
     glVertex3f(1.65,0.5,.6);
     glVertex3f(1.7,0.5,0.6);
     glVertex3f(1.7,0.65,0.6);
+    glEnd();
 
+
+    //**************************************************************
+    glBegin(GL_QUADS);
+
+    /* top of cube*/
+    glColor3f(0.3,0.3,0.3);
+    glVertex3f( 0.6, 0.5,0.6);
+    glVertex3f(0.6, 0.5,0.2);        //quad front window
+    glVertex3f(0.7, 0.65, 0.2);
+    glVertex3f( 0.7,0.65,0.6);
+
+    glVertex3f(1.7,0.65,.6);
+    glVertex3f(1.7,0.65,0.2);        //quad back window
+    glVertex3f(1.8,0.5,0.2);
+    glVertex3f(1.8,0.5,0.6);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);                /* start drawing the cube.*/
+        /* top of cube*/
+        glColor3f(0.3,0.3,0.3);
+        glVertex3f( 0.6, 0.5,0.6);
+        glVertex3f( 0.7,0.65,0.6);       //tri front window
+        glVertex3f(0.7,0.5,0.6);
+
+        glVertex3f( 0.6, 0.5,0.2);
+        glVertex3f( 0.7,0.65,0.2);       //tri front window
+        glVertex3f(0.7,0.5,0.2);
+
+        glVertex3f( 1.7, 0.65,0.2);
+        glVertex3f( 1.8,0.5,0.2);       //tri back window
+        glVertex3f( 1.7,0.5,0.2);
+
+        glVertex3f( 1.7, 0.65,0.6);
+        glVertex3f( 1.8,0.5,0.6);       //tri back window
+        glVertex3f(1.7,0.5,0.6);
     glEnd();
 
     //******************ATENNA BODY************************************
-    glBegin(GL_TRIANGLE_STRIP);
-    GLUquadricObj *quadratic;
-    quadratic = gluNewQuadric();
-    gluQuadricTexture(quadratic, true);
-    glColor3f(1.0,0.0,1.0);
-    glTranslatef(3.0, 3.0, 3.0); 
-    glRotatef(90,1.0f,0.0f,0.0f);
-    gluCylinder(quadratic,0.1f,0.1f,1.0f,32,32);
-    glEnd();
+    glPushMatrix();
+    glColor3f(0.3,0.3,0.7);
+    glTranslatef(1.5,1.5,0.45);
+    glRotatef(90.0,1.0,0,0);
+    gluCylinder(gluNewQuadric(),0.02,0.03,.5,10,10);
+    glPopMatrix();
 
     glPushMatrix();
     glColor3f(0.0,0.3,0.3);
-    glTranslatef(1.5,1.5,0.45);
+    glTranslatef(1.5,1.75,0.45);
     glRotatef(antRot,0.0f,1.0f,0.0f);
     glutWireSphere(0.25,25,25);
     glPopMatrix();
