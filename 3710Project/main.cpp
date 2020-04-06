@@ -764,6 +764,21 @@ void moveCam() {
 //            eyeZ = -75;
 //            atX = atX - 12;
             break;
+        case 8: //* LOOKAT f8
+            eyeX = originX;
+            eyeY = originY + 6;
+            eyeZ = originZ - 15;
+            break;
+        case 6: //* LOOKAT f6
+            eyeX = originX;
+            eyeY = originY + 2;
+            eyeZ = originZ * - 1;
+            break;
+        case 7: //* LOOKAT f7
+            eyeX = originX;
+            eyeY = originY + 4;
+            eyeZ = (originZ * - 1) + 10;
+            break;
         default:
             break;
     }
@@ -1041,37 +1056,20 @@ void keyboard(unsigned char key, int x, int y)
 }
 
 void speckeyboard(int key, int x, int y) {
-    if (key == GLUT_KEY_F1) { // depending on what direction the robot is facing we set the camera
-//            // appropriately for the defined lookats
-//        std::cout << "test" << std::endl;
+    if (key == GLUT_KEY_F1) {
         fkey = 1;
-//            if (robNorth)
-//            {
-//                fKey = 1; // recent fkey is simply a int specifying what camera
-//                                // angle to use relative to the robot
-//            }
-//            if (robEast)
-//            {
-//                fkey = 4;
-//            }
-//            if (robSouth)
-//            {
-//                fkey = 3;
-//            }
-//            if (robWest)
-//            {
-//                fkey = 2;
-//            }
-    }
-    if (key == GLUT_KEY_F2) {
+    } else if (key == GLUT_KEY_F2) {
         fkey = 2;
-    }
-    
-    if (key == GLUT_KEY_F3) {
+    } else if (key == GLUT_KEY_F3) {
         fkey = 3;
-    }
-    if (key == GLUT_KEY_F5) {
+    } else if (key == GLUT_KEY_F5) {
         fkey = 5;
+    } else if (key == GLUT_KEY_F8) {
+        fkey = 8;
+    } else if (key == GLUT_KEY_F6) {
+        fkey = 6;
+    } else if (key == GLUT_KEY_F7) {
+        fkey = 7;
     }
     
 
