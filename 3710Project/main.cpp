@@ -71,7 +71,7 @@ float antRot = 90;
 float bodyAngle = 90;
 int cx = 4.0;
 int cy = 0.0;
-int  cz = -20.0;
+int cz = -20.0;
 
 bool isNorth = true;
 bool isWest = false;
