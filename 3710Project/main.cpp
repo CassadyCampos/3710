@@ -741,10 +741,23 @@ void moveCam() {
         case 2: //* LOOKAT f2
             eyeX = 12;
             eyeY = GROUND_LEVEL + 1;
-            eyeZ = -10;
-            atX = -12;
+            eyeZ = -25;
+//            atX = -12;
             
             std::cout << "EyeX: "<< eyeX << std::endl;
+            break;
+        case 3: //* LOOKAT f3
+            eyeX = -12;
+            eyeY = GROUND_LEVEL + 1;
+            eyeZ = -25;
+//            atX = 12;
+            break;
+            
+        case 5: //* LOOKAT f5
+//            std::cout << "LOOKAT 5" << std::endl;
+            eyeY = 10;
+            eyeZ = -75;
+//            atX = atX - 12;
             break;
         default:
             break;
@@ -1047,6 +1060,13 @@ void speckeyboard(int key, int x, int y) {
     }
     if (key == GLUT_KEY_F2) {
         fkey = 2;
+    }
+    
+    if (key == GLUT_KEY_F3) {
+        fkey = 3;
+    }
+    if (key == GLUT_KEY_F5) {
+        fkey = 5;
     }
     
 
