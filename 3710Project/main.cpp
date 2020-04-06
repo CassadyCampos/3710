@@ -70,6 +70,11 @@ float cx = 4.0;
 float cy = 0.0;
 float cz = -20.0;
 
+bool isNorth = true;
+bool isWest = false;
+bool isSouth = false;
+bool isEast = false;
+
 static void PrintString(void *font, char *str)
 {
     int i, len = strlen(str);
@@ -737,7 +742,6 @@ void moveCam() {
     switch (fkey) {
         case 1:
             eyeX = originX, eyeY = originY, eyeZ = originZ;
-            std::cout << "look forward " << std::endl;
             break;
         case 2: //* LOOKAT f2
             eyeX = 12;
@@ -986,6 +990,7 @@ void keyboard(unsigned char key, int x, int y)
                 std::cout << "EyeZ " << eyeZ << std::endl;
                 offsetZ -= 1.0;
                 atZ -= 1.0;
+                std::cout << "cz: " << cz << " cx: " << cx << std::endl;
                 if (bodyAngle == 90)
                 {
                     cz -= 1.0;
@@ -995,14 +1000,25 @@ void keyboard(unsigned char key, int x, int y)
                 
             break;
         case 97: // a key
-                std::cout << "EyeZ: " << eyeZ << std::endl << " AtZ: " << atZ << std::endl;
-                offsetZ += 1.0;
-                atZ += 1.0;
-                if (bodyAngle == 90)
-                {
-                    cz += 1.0;
-                } else{
-                    cx += 1.0;
+                if (isNorth) {
+                    std::cout << "EyeZ: " << eyeZ << std::endl << " AtZ: " << atZ << std::endl;
+                    offsetZ += 1.0;
+                    atZ += 1.0;
+                    std::cout << "cz: " << cz << " cx: " << cx << std::endl;
+                    if (bodyAngle == 90)
+                    {
+                        cz += 1.0;
+                    } else{
+                        cx += 1.0;
+                    }
+                } else if (isWest) {
+                    offsetX += 1.0;
+                    atX += 1.0;
+                    if (bodyAngle == 180) {
+                        cx += 1.0;
+                    } else {
+                        cz += 1.0;
+                    }
                 }
             break;
         case 115: // s key
@@ -1012,6 +1028,10 @@ void keyboard(unsigned char key, int x, int y)
         case 113: // q key
             eyeX = -8, eyeY = 5, eyeZ = -45;
             bodyAngle += 90;
+                if (isNorth) {
+                    isWest = true;
+                    isNorth = false;
+                }
             break;
         case 119: // w key
             bodyAngle -= 90;
@@ -1102,205 +1122,6 @@ void speckeyboard(int key, int x, int y) {
         fkey = 12;
     }
     
-
-//        if (key == GLUT_KEY_F2)
-//        { // if the f2 key is pressed we begin rotating the robots head to the right
-//            headTurnR = true;
-//        }
-//
-//        if (key == GLUT_KEY_F3)
-//        { // if the f3 key is pressed we begin rotating the robots head to the left
-//            headTurnL = true;
-//        }
-//
-//        if (key == GLUT_KEY_F4)
-//        {
-//            if (robNorth)
-//            {
-//                fkey = 1; // recent fkey is simply a int specifying what camera
-//                                // angle to use relative to the robot
-//            }
-//            if (robEast)
-//            {
-//                fkey = 4;
-//            }
-//            if (robSouth)
-//            {
-//                fkey = 3;
-//            }
-//            if (robWest)
-//            {
-//                fkey = 2;
-//            }
-//        }
-//
-//        if (key == GLUT_KEY_F6)
-//        { // depending on what direction the robot is facing we set the camera
-//            // appropriately for the defined lookats
-//            if (robNorth)
-//            {
-//                fkey = 6;
-//            }
-//            if (robEast)
-//            {
-//                fkey = 5;
-//            }
-//            if (robSouth)
-//            {
-//                fkey = 8;
-//            }
-//            if (robWest)
-//            {
-//                fkey = 7;
-//            }
-//        }
-//
-//        if (key == GLUT_KEY_F5)
-//        { // depending on what direction the robot is facing we set the camera
-//            // appropriately for the defined lookats
-//            if (robNorth)
-//            {
-//                fkey = 5;
-//            }
-//            if (robEast)
-//            {
-//                fkey = 8;
-//            }
-//            if (robSouth)
-//            {
-//                fkey = 7;
-//            }
-//            if (robWest)
-//            {
-//                fkey = 6;
-//            }
-//        }
-//
-//        if (key == GLUT_KEY_F7)
-//        { // depending on what direction the robot is facing we set the camera
-//            // appropriately for the defined lookats
-//            if (robNorth)
-//            {
-//                fkey = 7;
-//            }
-//            if (robEast)
-//            {
-//                fkey = 6;
-//            }
-//            if (robSouth)
-//            {
-//                fkey = 5;
-//            }
-//            if (robWest)
-//            {
-//                fkey = 8;
-//            }
-//        }
-//
-//        if (key == GLUT_KEY_F8)
-//        { // depending on what direction the robot is facing we set the camera
-//            // appropriately for the defined lookats
-//            if (robNorth)
-//            {
-//                fkey = 8;
-//            }
-//            if (robEast)
-//            {
-//                fkey = 7;
-//            }
-//            if (robSouth)
-//            {
-//                fkey = 6;
-//            }
-//            if (robWest)
-//            {
-//                fkey = 5;
-//            }
-//        }
-//
-//        if (key == GLUT_KEY_F9)
-//        { // depending on what direction the robot is facing we set the camera
-//            // appropriately for the defined lookats
-//            if (robNorth)
-//            {
-//                fkey = 9;
-//            }
-//            if (robEast)
-//            {
-//                fkey = 12;
-//            }
-//            if (robSouth)
-//            {
-//                fkey = 11;
-//            }
-//            if (robWest)
-//            {
-//                fkey = 10;
-//            }
-//        }
-//
-//        if (key == GLUT_KEY_F10)
-//        { // depending on what direction the robot is facing we set the camera
-//            // appropriately for the defined lookats
-//            if (robNorth)
-//            {
-//                fkey = 10;
-//            }
-//            if (robEast)
-//            {
-//                fkey = 9;
-//            }
-//            if (robSouth)
-//            {
-//                fkey = 12;
-//            }
-//            if (robWest)
-//            {
-//                fkey = 11;
-//            }
-//        }
-//
-//        if (key == GLUT_KEY_F11)
-//        { // depending on what direction the robot is facing we set the camera
-//            // appropriately for the defined lookats
-//            if (robNorth)
-//            {
-//                fkey = 11;
-//            }
-//            if (robEast)
-//            {
-//                fkey = 10;
-//            }
-//            if (robSouth)
-//            {
-//                fkey = 9;
-//            }
-//            if (robWest)
-//            {
-//                fkey = 12;
-//            }
-//        }
-//
-//        if (key == GLUT_KEY_F12)
-//        { // depending on what direction the robot is facing we set the camera
-//            // appropriately for the defined lookats
-//            if (robNorth)
-//            {
-//                fkey = 12;
-//            }
-//            if (robEast)
-//            {
-//                fkey = 11;
-//            }
-//            if (robSouth)
-//            {
-//                fkey = 10;
-//            }
-//            if (robWest)
-//            {
-//                fkey = 9;
-//            }
-//        }
 }
 
 void speckeyboarddown(int key, int x, int y)
