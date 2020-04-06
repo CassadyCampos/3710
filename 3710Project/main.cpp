@@ -29,6 +29,7 @@ int BLOCK_SIZE = 20;
 int Window_ID;
 int Window_Width = 1280;
 int Window_Height = 720;
+int location = 2;
 
 int fkey = 1; // camera angle starts at the '1' position. This position is
                     // behind the robots head
@@ -975,6 +976,17 @@ void mouse(int button, int state, int x, int y)
     }
 }
 
+bool isIntersection(int carZ){
+    if(carZ == location){
+        location += 60;
+        return true;
+    } else
+    {
+        return false;
+    }
+    
+}
+
 
 void keyboard(unsigned char key, int x, int y)
 {
@@ -1045,7 +1057,7 @@ void keyboard(unsigned char key, int x, int y)
             std::cout << "EyeY: " << eyeY << std::endl;
             break;
         case 113: // q key
-                if (isNorth) {
+                if (isNorth && isIntersection(cz)) {
                     eyeX = -8, eyeY = 5, eyeZ = -45;
                     bodyAngle += 90;
                     isWest = true;
