@@ -1,6 +1,5 @@
 #define PROGRAM_TITLE "Cass Pros Battle Humm"
 #define DISPLAY_INFO "CPSC 3710"
-#include "objects.cpp"
 
 #ifdef __APPLE__
 #define GL_SILENCE_DEPRECATION
@@ -20,9 +19,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "BuildingBuilder.hpp"
-
-#define PI 3.1415927
 
 int BLOCK_SIZE = 20;
 
@@ -34,29 +30,7 @@ int locationX = 4;
 
 int fkey = 1; // camera angle starts at the '1' position. This position is
                     // behind the robots head
-
-bool pausedState; // game starts unpaused and is controlled by 'p' key to change
-                  // this state
-
-void moveCam(int); // forward declaration of moveCam function.
-
-bool headTurnR = false; // can head turn right
-bool headTurnL = false; // can head turn left
-bool robRotR = false;    // is robot rotating right
-bool robRotL = false;    // is robot rotating left
-bool robNorth = true;    // is robot facing north (starts off north)
-bool robEast = false;    // is robot facing east
-bool robSouth = false;    // is robot facing south
-bool robWest = false;    // is robot facing west
-int offAddz = 5;        // we start off facing north so we want to be able to move that
-                        // direction, this is used for movement/camera on z key
-int offAddx = 0;        // same as offAddz
-int randNums[400];        // array to hold random numbers generated for building
-                        // generation
-int buildHits[400];        // sister array to hold hit values of buildings so they can
-                        // be destroyed.
-Car car;            // robot object to do most functions.
-BuildingBuilder builder;
+bool isPaused =  false;
 
 int eyeX = 5, eyeY = 8,eyeZ = -45;
 int atX = 0, atY = 0, atZ = 0;
@@ -87,7 +61,8 @@ static void PrintString(void *font, char *str)
         glutBitmapCharacter(font, *str++);
 }
 
-void renderCar() { // function for drawing the Car into the world
+// function for drawing the Car into the world
+void renderCar() {
     float theta,angle;
     int frame_count;
 
@@ -536,8 +511,6 @@ void renderBuild(int x, int z) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, upX, upY, upZ);
-//    gluLookAt(eyeX, 40, 60, atX, atY, atZ, 0, 1, 0);
-
     
     // These floats are calcualted from the viewpoint of looking at the *FRONT
     // Of the building.
@@ -829,7 +802,6 @@ void CallBackRenderScene(void) {
     glLoadIdentity();
     
     glPushMatrix();
-    //  robot.draw_environment(GL_RENDER); // draw the ground/blocks
     renderGround();
     glPopMatrix();
 
@@ -839,7 +811,6 @@ void CallBackRenderScene(void) {
     
     glPushMatrix();
     glLoadIdentity();
-    //car.renderCar(); // draw robot into the world
     renderCar();
     glPopMatrix();
 
@@ -872,8 +843,7 @@ void mouse(int button, int state, int x, int y)
 bool isIntersection(int carZ, int carX){
     if(carZ % 60 == 0 || carX % 60 == 0){
         return true;
-    } else
-    {
+    } else {
         return false;
     }
     
@@ -882,19 +852,13 @@ bool isIntersection(int carZ, int carX){
 
 void keyboard(unsigned char key, int x, int y)
 {
-
-    if (!pausedState)
-    {
-
+    if (key == 112) {
+        std::cout << "pause: " << isPaused << std::endl;
+        isPaused = !isPaused;
+    }
+    if (isPaused == 0) {
         switch (key)
         {
-        case 112: // p key
-
-            glutDisplayFunc(CallBackRenderScene);
-            glutIdleFunc(NULL);
-            pausedState = true;
-            break;
-
         case 122: // z key
                 if (isNorth) {
                     //* Check boundary
@@ -921,8 +885,6 @@ void keyboard(unsigned char key, int x, int y)
                         cz += 1.0;
                     }
                 }
-
-                
             break;
         case 97: // a key
                 if (isNorth) {
@@ -955,7 +917,7 @@ void keyboard(unsigned char key, int x, int y)
             std::cout << "EyeY: " << eyeY << std::endl;
             break;
         case 113: // q key
-                if (isNorth && isIntersection(cz,cz)) {
+                if (isNorth && isIntersection(cz,cx)) {
                     eyeX = -8, eyeY = 5, eyeZ = -45;
                     bodyAngle += 90;
                     isWest = true;
@@ -963,6 +925,11 @@ void keyboard(unsigned char key, int x, int y)
                 }
             break;
         case 119: // w key
+                if (isNorth && isIntersection(cz, cx)) {
+                    bodyAngle -= 90;
+                    isEast = true;
+                    isNorth = false;
+                }
                 if (isWest) {
                     eyeX = 5, eyeY = -8, eyeZ = -45;
                     bodyAngle -= 90;
@@ -985,45 +952,33 @@ void keyboard(unsigned char key, int x, int y)
 //                car.atx += 1.0;
             std::cout << "atX: " << atX << std::endl;
             break;
-        case 105: //i
+        case 105: //i key
             atX -= 1.0;
-//                car.atx -= 1.0;
             std::cout << "atX: " << atX << std::endl;
 
             break;
-        case 106: // j
+        case 106: // j key
             atY += 1.0;
-//                car.aty += 1.0;
             std::cout << "atY: " << atY << std::endl;
-
             break;
-        case 107: // k
+        case 107: // k key
             std::cout << "atY: " << atY << std::endl;
-
             atY -= 1.0;
-//                car.aty -= 1.0;
             break;
-        case 110: // n
+        case 110: // n key
             std::cout << "atZ: " << atZ << std::endl;
 
             atZ += 1.0;
-//                car.atz += 1.0;
             break;
         case 109: //
             std::cout << "atZ: " << atZ << std::endl;
             atZ -= 1.0;
-//                car.atz -= 1.0;
             break;
 
         default:
             printf("No case assigned for %d.\n", key);
             break;
         }
-    }
-    else if (key = 112)
-    {
-        glutIdleFunc(CallBackRenderScene);
-        pausedState = false;
     }
 }
 
@@ -1058,21 +1013,6 @@ void speckeyboard(int key, int x, int y) {
     
 }
 
-void speckeyboarddown(int key, int x, int y)
-{
-
-    if (GLUT_KEY_F2)
-    { // case for when the F2 key is released and the robots head should no longer
-        // be rotating
-        headTurnR = false;
-    }
-    if (GLUT_KEY_F3)
-    { // case for when the F3 key is released and the robots head should no longer
-        // be rotating
-        headTurnL = false;
-    }
-}
-
 void CallBackResizeScene(int Width, int Height)
 {
     if (Height == 0)
@@ -1084,8 +1024,7 @@ void CallBackResizeScene(int Width, int Height)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    // glOrtho(-200, 200, -200, 200, 0, 50);
-    // Buildings come into view in distance
+
     gluPerspective(45.0f, (GLfloat)Width / (GLfloat)Height, 0.1f, 300.0f);
 
     glMatrixMode(GL_MODELVIEW);
@@ -1109,23 +1048,6 @@ void MyInit(int Width, int Height)
 }
 
 int main(int argc, char **argv) {
-    car.atx = 0.0;       // x position of lookat
-    car.aty = 0.0;     // y position of lookat
-    car.atz = 0;       // z position of lookat
-    car.eyex = 0.0;      // x position of camera eye
-    car.eyey = 4;      // y position of camera eye
-    car.eyez = -10 ;    // z position of camera eye
-    car.cx = -3;        // x position of robot
-    car.cy = -5;     // y position of robot
-    car.cz = 4;        // z position of robot
-    car.bodyAngle = 95; // the angle at which the robot is currently.
-//    car.headAngle = 0; // angle the head is currently rotated
-//    car.antRot = 0;    // angle of antenae rotating
-//    car.offz = 0;      // x offset from the origin
-//    car.offx = 0;      // z offset from the origin
-//    car.nameCount = 0; // counter for naming the buildings for picking function
-
-
 
     glutInit(&argc, argv);
 
@@ -1143,7 +1065,6 @@ int main(int argc, char **argv) {
     glutMouseFunc(&mouse);
 
     glutSpecialFunc(&speckeyboard);
-    glutSpecialUpFunc(&speckeyboarddown);
     glutKeyboardFunc(&keyboard);
 
     MyInit(Window_Width, Window_Height);
