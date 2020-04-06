@@ -789,7 +789,7 @@ void CallBackRenderScene(void) {
 
     glutSwapBuffers();
 
-    moveCam();
+    //moveCam();
 //      robot.headRotate(headTurnR, headTurnL); // function for rotating head if head
 //                                              // is supposed to be rotating
 //
@@ -915,7 +915,6 @@ void mouse(int button, int state, int x, int y)
 }
 
 
-
 void keyboard(unsigned char key, int x, int y)
 {
 
@@ -959,6 +958,7 @@ void keyboard(unsigned char key, int x, int y)
             std::cout << "EyeY: " << eyeY << std::endl;
             break;
         case 113: // q key
+            eyeX = -8, eyeY = 5, eyeZ = -45;
             bodyAngle += 90;
             break;
         case 119: // w key
