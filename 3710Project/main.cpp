@@ -964,25 +964,29 @@ void keyboard(unsigned char key, int x, int y)
             break;
 
         case 122: // z
-                std::cout << "EyeZ " << eyeZ << std::endl;
-                offsetZ -= 1.0;
-                atZ -= 1.0;
+                std::cout << "EyeZ " << eyeZ << std::endl;   
                 if (bodyAngle == 90)
                 {
+                    offsetZ -= 1.0;
+                    atZ -= 1.0;
                     cz -= 1.0;
                 } else{
+                    offsetX -= 1.0;
+                    atX -= 1.0;
                     cx -= 1.0;
                 }
                 
             break;
         case 97: // a key
                 std::cout << "EyeZ: " << eyeZ << std::endl << " AtZ: " << atZ << std::endl;
-                offsetZ += 1.0;
-                atZ += 1.0;
                 if (bodyAngle == 90)
                 {
+                    offsetZ += 1.0;
+                    atZ += 1.0;
                     cz += 1.0;
                 } else{
+                    offsetX += 1.0;
+                    atX += 1.0;
                     cx += 1.0;
                 }
             break;
