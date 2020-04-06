@@ -745,7 +745,7 @@ void moveCam() {
                 eyeX = originX, eyeY = originY, eyeZ = originZ;
             } else if (isWest) {
                 
-                eyeX = originZ + offsetX, eyeY = originY, eyeZ = originX + offsetZ;
+                eyeX = -35, eyeY = 8, eyeZ = -25;
             }
             break;
         case 2: //* LOOKAT f2
@@ -1045,9 +1045,9 @@ void keyboard(unsigned char key, int x, int y)
             std::cout << "EyeY: " << eyeY << std::endl;
             break;
         case 113: // q key
-            eyeX = -8, eyeY = 5, eyeZ = -45;
-            bodyAngle += 90;
                 if (isNorth) {
+                    eyeX = -8, eyeY = 5, eyeZ = -45;
+                    bodyAngle += 90;
                     isWest = true;
                     isNorth = false;
                 }
