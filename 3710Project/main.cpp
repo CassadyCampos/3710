@@ -733,9 +733,10 @@ void renderGround() {
 }
 
 void moveCam() {
+    int originX = 5, originY = 8, originZ = -45;
     switch (fkey) {
         case 1:
-            eyeX = 5, eyeY = 8, eyeZ = -45;
+            eyeX = originX, eyeY = originY, eyeZ = originZ;
             std::cout << "look forward " << std::endl;
             break;
         case 2: //* LOOKAT f2
@@ -755,8 +756,12 @@ void moveCam() {
             
         case 5: //* LOOKAT f5
 //            std::cout << "LOOKAT 5" << std::endl;
-            eyeY = 10;
-            eyeZ = -75;
+            eyeX = originX;
+            eyeY = originY + 2;
+            eyeZ = originZ - 20;
+
+//            eyeY = 10;
+//            eyeZ = -75;
 //            atX = atX - 12;
             break;
         default:
