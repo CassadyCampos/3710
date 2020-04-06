@@ -993,8 +993,12 @@ void keyboard(unsigned char key, int x, int y)
                 std::cout << "cz: " << cz << " cx: " << cx << std::endl;
                 if (bodyAngle == 90)
                 {
+                    offsetZ -= 1.0;
+                    atZ -= 1.0;
                     cz -= 1.0;
                 } else{
+                    offsetX -= 1.0;
+                    atX -= 1.0;
                     cx -= 1.0;
                 }
                 
@@ -1034,6 +1038,7 @@ void keyboard(unsigned char key, int x, int y)
                 }
             break;
         case 119: // w key
+            eyeX = 5, eyeY = -8, eyeZ = -45;
             bodyAngle -= 90;
             break;
         case 114: // r key
