@@ -738,11 +738,11 @@ void moveCam() {
             eyeX = 5, eyeY = 8, eyeZ = -45;
             std::cout << "look forward " << std::endl;
             break;
-        case 2:
-//            if (eyeX > -15) {
-                eyeX = -50;
-                eyeY = GROUND_LEVEL+1;
-//            }
+        case 2: //* LOOKAT f2
+            eyeX = 12;
+            eyeY = GROUND_LEVEL + 1;
+            eyeZ = -10;
+            atX = -12;
             
             std::cout << "EyeX: "<< eyeX << std::endl;
             break;
@@ -789,7 +789,7 @@ void CallBackRenderScene(void) {
 
     glutSwapBuffers();
 
-    //moveCam();
+    moveCam();
 //      robot.headRotate(headTurnR, headTurnL); // function for rotating head if head
 //                                              // is supposed to be rotating
 //
