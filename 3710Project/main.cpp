@@ -30,7 +30,7 @@ int Window_ID;
 int Window_Width = 1280;
 int Window_Height = 720;
 
-int recentfKey = 1; // camera angle starts at the '1' position. This position is
+int fkey = 1; // camera angle starts at the '1' position. This position is
                     // behind the robots head
 
 bool pausedState; // game starts unpaused and is controlled by 'p' key to change
@@ -76,10 +76,9 @@ static void PrintString(void *font, char *str)
         glutBitmapCharacter(font, *str++);
 }
 
-void renderCar()
-  { // function for drawing the Car into the world
-  float theta,angle;
-  int frame_count;
+void renderCar() { // function for drawing the Car into the world
+    float theta,angle;
+    int frame_count;
 
     // cube begin
     glLoadIdentity();
@@ -92,7 +91,6 @@ void renderCar()
     glEnable(GL_COLOR_MATERIAL);
 
     // begin the body of the Car
-
     glBegin(GL_QUADS);
     /* top of cube*/
     //************************FRONT BODY****************************************
@@ -265,23 +263,23 @@ void renderCar()
     glEnd();
 
     glBegin(GL_TRIANGLES);                /* start drawing the cube.*/
-        /* top of cube*/
-        glColor3f(0.3,0.3,0.3);
-        glVertex3f( 0.6, 0.5,0.6);
-        glVertex3f( 0.7,0.65,0.6);       //tri front window
-        glVertex3f(0.7,0.5,0.6);
+    /* top of cube*/
+    glColor3f(0.3,0.3,0.3);
+    glVertex3f( 0.6, 0.5,0.6);
+    glVertex3f( 0.7,0.65,0.6);       //tri front window
+    glVertex3f(0.7,0.5,0.6);
 
-        glVertex3f( 0.6, 0.5,0.2);
-        glVertex3f( 0.7,0.65,0.2);       //tri front window
-        glVertex3f(0.7,0.5,0.2);
+    glVertex3f( 0.6, 0.5,0.2);
+    glVertex3f( 0.7,0.65,0.2);       //tri front window
+    glVertex3f(0.7,0.5,0.2);
 
-        glVertex3f( 1.7, 0.65,0.2);
-        glVertex3f( 1.8,0.5,0.2);       //tri back window
-        glVertex3f( 1.7,0.5,0.2);
+    glVertex3f( 1.7, 0.65,0.2);
+    glVertex3f( 1.8,0.5,0.2);       //tri back window
+    glVertex3f( 1.7,0.5,0.2);
 
-        glVertex3f( 1.7, 0.65,0.6);
-        glVertex3f( 1.8,0.5,0.6);       //tri back window
-        glVertex3f(1.7,0.5,0.6);
+    glVertex3f( 1.7, 0.65,0.6);
+    glVertex3f( 1.8,0.5,0.6);       //tri back window
+    glVertex3f(1.7,0.5,0.6);
     glEnd();
 
     //******************ATENNA BODY************************************
@@ -303,31 +301,35 @@ void renderCar()
     glColor3f(0.7,0.7,0.7);
     glPushMatrix();
     glBegin(GL_LINE_STRIP);
-        for(theta=0;theta<360;theta=theta+40) {
-            glVertex3f(0.6,0.2,0.62);
-            glVertex3f(0.6+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.62);
-        }
+    
+    for(theta=0;theta<360;theta=theta+40) {
+        glVertex3f(0.6,0.2,0.62);
+        glVertex3f(0.6+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.62);
+    }
     glEnd();
 
     glBegin(GL_LINE_STRIP);
-        for(theta=0;theta<360;theta=theta+40) {
-            glVertex3f(0.6,0.2,0.18);
-            glVertex3f(0.6+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.18);
-        }
+    
+    for(theta=0;theta<360;theta=theta+40) {
+        glVertex3f(0.6,0.2,0.18);
+        glVertex3f(0.6+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.18);
+    }
     glEnd();
 
     glBegin(GL_LINE_STRIP);
-        for(theta=0;theta<360;theta=theta+40) {
-            glVertex3f(1.7,0.2,0.18);
-            glVertex3f(1.7+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.18);
-        }
+    
+    for(theta=0;theta<360;theta=theta+40) {
+        glVertex3f(1.7,0.2,0.18);
+        glVertex3f(1.7+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.18);
+    }
     glEnd();
 
     glBegin(GL_LINE_STRIP);
-        for(theta=0;theta<360;theta=theta+40) {
-            glVertex3f(1.7,0.2,0.62);
-            glVertex3f(1.7+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.62);
-        }
+    
+    for(theta=0;theta<360;theta=theta+40) {
+        glVertex3f(1.7,0.2,0.62);
+        glVertex3f(1.7+(0.08*(cos(((theta+angle)*3.14)/180))),0.2+(0.08*(sin(((theta+angle)*3.14)/180))),0.62);
+    }
     glEnd();
 
     glTranslatef(0.6,0.2,0.6);
@@ -728,8 +730,20 @@ void renderGround() {
     glEnd();
 }
 
-void CallBackRenderScene(void)
-{
+void moveCam() {
+    switch (fkey) {
+        case 1:
+            std::cout << "look forward " << std::endl;
+            break;
+        case 2:
+            std::cout << "look right " << std::endl;
+            break;
+        default:
+            break;
+    }
+}
+
+void CallBackRenderScene(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
@@ -767,16 +781,20 @@ void CallBackRenderScene(void)
 
     glutSwapBuffers();
 
-    //  robot.headRotate(headTurnR, headTurnL); // function for rotating head if head
-    //                                          // is supposed to be rotating
-    //
-    //  robot.bodyRot(
-    //      robRotR,
-    //      robRotL); // function for rotating body if body is supposed to be rotating
-    //  robot.moveCam(
-    //      recentfKey); // passing an int to identify what the current camera angle
-    //                   // should be, moving there if it already isn't
+    moveCam();
+//      robot.headRotate(headTurnR, headTurnL); // function for rotating head if head
+//                                              // is supposed to be rotating
+//
+//      robot.bodyRot(
+//          robRotR,
+//          robRotL); // function for rotating body if body is supposed to be rotating
+//      robot.moveCam(
+//          fkey); // passing an int to identify what the current camera angle
+//                       // should be, moving there if it already isn't
 }
+
+
+
 void processHits(GLint hits, GLuint buffer[])
 {
     unsigned int i, j;
@@ -888,6 +906,8 @@ void mouse(int button, int state, int x, int y)
     }
 }
 
+
+
 void keyboard(unsigned char key, int x, int y)
 {
 
@@ -993,231 +1013,232 @@ void keyboard(unsigned char key, int x, int y)
     }
 }
 
-void speckeyboard(int key, int x, int y)
-{
-    if (!pausedState)
-    {
-        if (key == GLUT_KEY_F1) { // depending on what direction the robot is facing we set the camera
+void speckeyboard(int key, int x, int y) {
+    if (key == GLUT_KEY_F1) { // depending on what direction the robot is facing we set the camera
 //            // appropriately for the defined lookats
-            std::cout << "test" << std::endl;
-            if (robNorth)
-            {
-                recentfKey = 1; // recent fkey is simply a int specifying what camera
-                                // angle to use relative to the robot
-            }
-            if (robEast)
-            {
-                recentfKey = 4;
-            }
-            if (robSouth)
-            {
-                recentfKey = 3;
-            }
-            if (robWest)
-            {
-                recentfKey = 2;
-            }
-        }
-
-        if (key == GLUT_KEY_F2)
-        { // if the f2 key is pressed we begin rotating the robots head to the right
-            headTurnR = true;
-        }
-
-        if (key == GLUT_KEY_F3)
-        { // if the f3 key is pressed we begin rotating the robots head to the left
-            headTurnL = true;
-        }
-
-        if (key == GLUT_KEY_F4)
-        {
-            if (robNorth)
-            {
-                recentfKey = 1; // recent fkey is simply a int specifying what camera
-                                // angle to use relative to the robot
-            }
-            if (robEast)
-            {
-                recentfKey = 4;
-            }
-            if (robSouth)
-            {
-                recentfKey = 3;
-            }
-            if (robWest)
-            {
-                recentfKey = 2;
-            }
-        }
-
-        if (key == GLUT_KEY_F6)
-        { // depending on what direction the robot is facing we set the camera
-            // appropriately for the defined lookats
-            if (robNorth)
-            {
-                recentfKey = 6;
-            }
-            if (robEast)
-            {
-                recentfKey = 5;
-            }
-            if (robSouth)
-            {
-                recentfKey = 8;
-            }
-            if (robWest)
-            {
-                recentfKey = 7;
-            }
-        }
-
-        if (key == GLUT_KEY_F5)
-        { // depending on what direction the robot is facing we set the camera
-            // appropriately for the defined lookats
-            if (robNorth)
-            {
-                recentfKey = 5;
-            }
-            if (robEast)
-            {
-                recentfKey = 8;
-            }
-            if (robSouth)
-            {
-                recentfKey = 7;
-            }
-            if (robWest)
-            {
-                recentfKey = 6;
-            }
-        }
-
-        if (key == GLUT_KEY_F7)
-        { // depending on what direction the robot is facing we set the camera
-            // appropriately for the defined lookats
-            if (robNorth)
-            {
-                recentfKey = 7;
-            }
-            if (robEast)
-            {
-                recentfKey = 6;
-            }
-            if (robSouth)
-            {
-                recentfKey = 5;
-            }
-            if (robWest)
-            {
-                recentfKey = 8;
-            }
-        }
-
-        if (key == GLUT_KEY_F8)
-        { // depending on what direction the robot is facing we set the camera
-            // appropriately for the defined lookats
-            if (robNorth)
-            {
-                recentfKey = 8;
-            }
-            if (robEast)
-            {
-                recentfKey = 7;
-            }
-            if (robSouth)
-            {
-                recentfKey = 6;
-            }
-            if (robWest)
-            {
-                recentfKey = 5;
-            }
-        }
-
-        if (key == GLUT_KEY_F9)
-        { // depending on what direction the robot is facing we set the camera
-            // appropriately for the defined lookats
-            if (robNorth)
-            {
-                recentfKey = 9;
-            }
-            if (robEast)
-            {
-                recentfKey = 12;
-            }
-            if (robSouth)
-            {
-                recentfKey = 11;
-            }
-            if (robWest)
-            {
-                recentfKey = 10;
-            }
-        }
-
-        if (key == GLUT_KEY_F10)
-        { // depending on what direction the robot is facing we set the camera
-            // appropriately for the defined lookats
-            if (robNorth)
-            {
-                recentfKey = 10;
-            }
-            if (robEast)
-            {
-                recentfKey = 9;
-            }
-            if (robSouth)
-            {
-                recentfKey = 12;
-            }
-            if (robWest)
-            {
-                recentfKey = 11;
-            }
-        }
-
-        if (key == GLUT_KEY_F11)
-        { // depending on what direction the robot is facing we set the camera
-            // appropriately for the defined lookats
-            if (robNorth)
-            {
-                recentfKey = 11;
-            }
-            if (robEast)
-            {
-                recentfKey = 10;
-            }
-            if (robSouth)
-            {
-                recentfKey = 9;
-            }
-            if (robWest)
-            {
-                recentfKey = 12;
-            }
-        }
-
-        if (key == GLUT_KEY_F12)
-        { // depending on what direction the robot is facing we set the camera
-            // appropriately for the defined lookats
-            if (robNorth)
-            {
-                recentfKey = 12;
-            }
-            if (robEast)
-            {
-                recentfKey = 11;
-            }
-            if (robSouth)
-            {
-                recentfKey = 10;
-            }
-            if (robWest)
-            {
-                recentfKey = 9;
-            }
-        }
+//        std::cout << "test" << std::endl;
+        fkey = 1;
+//            if (robNorth)
+//            {
+//                fKey = 1; // recent fkey is simply a int specifying what camera
+//                                // angle to use relative to the robot
+//            }
+//            if (robEast)
+//            {
+//                fkey = 4;
+//            }
+//            if (robSouth)
+//            {
+//                fkey = 3;
+//            }
+//            if (robWest)
+//            {
+//                fkey = 2;
+//            }
     }
+    if (key == GLUT_KEY_F2) {
+        fkey = 2;
+    }
+    
+
+//        if (key == GLUT_KEY_F2)
+//        { // if the f2 key is pressed we begin rotating the robots head to the right
+//            headTurnR = true;
+//        }
+//
+//        if (key == GLUT_KEY_F3)
+//        { // if the f3 key is pressed we begin rotating the robots head to the left
+//            headTurnL = true;
+//        }
+//
+//        if (key == GLUT_KEY_F4)
+//        {
+//            if (robNorth)
+//            {
+//                fkey = 1; // recent fkey is simply a int specifying what camera
+//                                // angle to use relative to the robot
+//            }
+//            if (robEast)
+//            {
+//                fkey = 4;
+//            }
+//            if (robSouth)
+//            {
+//                fkey = 3;
+//            }
+//            if (robWest)
+//            {
+//                fkey = 2;
+//            }
+//        }
+//
+//        if (key == GLUT_KEY_F6)
+//        { // depending on what direction the robot is facing we set the camera
+//            // appropriately for the defined lookats
+//            if (robNorth)
+//            {
+//                fkey = 6;
+//            }
+//            if (robEast)
+//            {
+//                fkey = 5;
+//            }
+//            if (robSouth)
+//            {
+//                fkey = 8;
+//            }
+//            if (robWest)
+//            {
+//                fkey = 7;
+//            }
+//        }
+//
+//        if (key == GLUT_KEY_F5)
+//        { // depending on what direction the robot is facing we set the camera
+//            // appropriately for the defined lookats
+//            if (robNorth)
+//            {
+//                fkey = 5;
+//            }
+//            if (robEast)
+//            {
+//                fkey = 8;
+//            }
+//            if (robSouth)
+//            {
+//                fkey = 7;
+//            }
+//            if (robWest)
+//            {
+//                fkey = 6;
+//            }
+//        }
+//
+//        if (key == GLUT_KEY_F7)
+//        { // depending on what direction the robot is facing we set the camera
+//            // appropriately for the defined lookats
+//            if (robNorth)
+//            {
+//                fkey = 7;
+//            }
+//            if (robEast)
+//            {
+//                fkey = 6;
+//            }
+//            if (robSouth)
+//            {
+//                fkey = 5;
+//            }
+//            if (robWest)
+//            {
+//                fkey = 8;
+//            }
+//        }
+//
+//        if (key == GLUT_KEY_F8)
+//        { // depending on what direction the robot is facing we set the camera
+//            // appropriately for the defined lookats
+//            if (robNorth)
+//            {
+//                fkey = 8;
+//            }
+//            if (robEast)
+//            {
+//                fkey = 7;
+//            }
+//            if (robSouth)
+//            {
+//                fkey = 6;
+//            }
+//            if (robWest)
+//            {
+//                fkey = 5;
+//            }
+//        }
+//
+//        if (key == GLUT_KEY_F9)
+//        { // depending on what direction the robot is facing we set the camera
+//            // appropriately for the defined lookats
+//            if (robNorth)
+//            {
+//                fkey = 9;
+//            }
+//            if (robEast)
+//            {
+//                fkey = 12;
+//            }
+//            if (robSouth)
+//            {
+//                fkey = 11;
+//            }
+//            if (robWest)
+//            {
+//                fkey = 10;
+//            }
+//        }
+//
+//        if (key == GLUT_KEY_F10)
+//        { // depending on what direction the robot is facing we set the camera
+//            // appropriately for the defined lookats
+//            if (robNorth)
+//            {
+//                fkey = 10;
+//            }
+//            if (robEast)
+//            {
+//                fkey = 9;
+//            }
+//            if (robSouth)
+//            {
+//                fkey = 12;
+//            }
+//            if (robWest)
+//            {
+//                fkey = 11;
+//            }
+//        }
+//
+//        if (key == GLUT_KEY_F11)
+//        { // depending on what direction the robot is facing we set the camera
+//            // appropriately for the defined lookats
+//            if (robNorth)
+//            {
+//                fkey = 11;
+//            }
+//            if (robEast)
+//            {
+//                fkey = 10;
+//            }
+//            if (robSouth)
+//            {
+//                fkey = 9;
+//            }
+//            if (robWest)
+//            {
+//                fkey = 12;
+//            }
+//        }
+//
+//        if (key == GLUT_KEY_F12)
+//        { // depending on what direction the robot is facing we set the camera
+//            // appropriately for the defined lookats
+//            if (robNorth)
+//            {
+//                fkey = 12;
+//            }
+//            if (robEast)
+//            {
+//                fkey = 11;
+//            }
+//            if (robSouth)
+//            {
+//                fkey = 10;
+//            }
+//            if (robWest)
+//            {
+//                fkey = 9;
+//            }
+//        }
 }
 
 void speckeyboarddown(int key, int x, int y)
