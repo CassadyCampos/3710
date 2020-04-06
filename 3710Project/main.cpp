@@ -962,6 +962,7 @@ void keyboard(unsigned char key, int x, int y)
             bodyAngle += 90;
             break;
         case 119: // w key
+            eyeX = 5, eyeY = -8, eyeZ = -45;
             bodyAngle -= 90;
             break;
         case 114: // r key
