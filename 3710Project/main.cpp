@@ -77,6 +77,7 @@ bool isWest = false;
 bool isSouth = false;
 bool isEast = false;
 
+
 static void PrintString(void *font, char *str)
 {
     int i, len = strlen(str);
@@ -977,10 +978,10 @@ void mouse(int button, int state, int x, int y)
     }
 }
 
+
+
 bool isIntersection(int carZ, int carX){
-    if(carZ == locationZ || carX == locationX){
-        locationZ += 60;
-        locationX += 60;
+    if(carZ % 60 == 0 || carX % 60 == 0){
         return true;
     } else
     {
