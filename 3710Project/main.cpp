@@ -60,6 +60,7 @@ BuildingBuilder builder;
 
 int eyeX = 5, eyeY = 8,eyeZ = -45;
 int atX = 0, atY = 0, atZ = 0;
+float upX = 0, upY = 1, upZ = 0;
 
 int offsetX, offsetY, offsetZ;
 int GROUND_LEVEL = 0.5;
@@ -68,9 +69,9 @@ float rotateRect = 0.4;
 float rotateCyil = 0.5;
 float antRot = 90;
 float bodyAngle = 90;
-float cx = 4.0;
-float cy = 0.0;
-float cz = -20.0;
+int cx = 4.0;
+int cy = 0.0;
+int  cz = -20.0;
 
 bool isNorth = true;
 bool isWest = false;
@@ -92,7 +93,7 @@ void renderCar() { // function for drawing the Car into the world
 
     // cube begin
     glLoadIdentity();
-    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, 0, 1,0); // lookat view for the Car
+    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, upX, upY, upZ);
 
     glTranslatef(GROUND_LEVEL+cx,GROUND_LEVEL,GROUND_LEVEL+cz);      // translate to Cars current position
     glRotatef(bodyAngle, 0, 1, 0); // for when Car is turning to left or right
@@ -372,7 +373,7 @@ void renderCar() { // function for drawing the Car into the world
 void renderSphe(int x, int z) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, 0, 1, 0);
+    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, upX, upY, upZ);
 
     
     //* Move to building square
@@ -439,7 +440,7 @@ void renderSphe(int x, int z) {
 void renderCyli(int x, int z) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, 0, 1, 0);
+    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, upX, upY, upZ);
    
     float cylXPos = -15 + x * 60;
     float cylZPos = -20 + z * 60;
@@ -534,7 +535,7 @@ void renderCyli(int x, int z) {
 void renderBuild(int x, int z) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, 0, 1, 0);
+    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, upX, upY, upZ);
 //    gluLookAt(eyeX, 40, 60, atX, atY, atZ, 0, 1, 0);
 
     
@@ -606,7 +607,7 @@ void renderCity(GLenum mode)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, 0, 1, 0);
+    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, upX, upY, upZ);
     
     srand(time(NULL));
     int ran;
@@ -646,7 +647,7 @@ void renderGround() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, 0, 1, 0);
+    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, upX, upY, upZ);
 
     // Render blocks for building sections
     glColor3f(0.000, 0.000, 0.000); // black
@@ -752,11 +753,17 @@ void moveCam() {
             }
             break;
         case 2: //* LOOKAT f2
-            eyeX = 12;
-            eyeY = GROUND_LEVEL + 1;
-            eyeZ = -25;
+            if (isNorth) {
+                eyeX = 12;
+                eyeY = GROUND_LEVEL + 1;
+                eyeZ = -25;
+            } else if (isWest) {
+                eyeX = -25;
+                eyeY = GROUND_LEVEL + 1;
+                eyeZ = -35;
+            }
+
             
-            std::cout << "EyeX: "<< eyeX << std::endl;
             break;
         case 3: //* LOOKAT f3
             eyeX = -12;
@@ -854,128 +861,10 @@ void CallBackRenderScene(void) {
     glutSwapBuffers();
 
     moveCam();
-//      robot.headRotate(headTurnR, headTurnL); // function for rotating head if head
-//                                              // is supposed to be rotating
-//
-//      robot.bodyRot(
-//          robRotR,
-//          robRotL); // function for rotating body if body is supposed to be rotating
-//      robot.moveCam(
-//          fkey); // passing an int to identify what the current camera angle
-//                       // should be, moving there if it already isn't
 }
-
-
-
-void processHits(GLint hits, GLuint buffer[])
-{
-    unsigned int i, j;
-    GLuint names, *ptr, minZ, *ptrNames, numberOfNames;
-
-    printf("hits = %d\n", hits);
-    ptr = (GLuint *)buffer;
-    minZ = 0xffffffff;
-    for (i = 0; i < hits; i++)
-    {
-        names = *ptr;
-        ptr++;
-        if (*ptr < minZ)
-        {
-            numberOfNames = names;
-            minZ = *ptr;
-            ptrNames = ptr + 2;
-        }
-
-        ptr += names + 2;
-    }
-    printf("The closest hit names are:");
-    ptr = ptrNames;
-    if (hits == 0)
-    { // if no building are hit, we get out of this function as nothing more is to
-        // be done
-        return;
-    }
-    for (j = 0; j < numberOfNames; j++, ptr++)
-    {
-        std::cout << *ptr % 400 << std::endl;
-        if (buildHits[*ptr % 400] > 0)
-        {                             // if we hit a building an the hit counter is still above 0
-            buildHits[*ptr % 400]--; // subtract one from the hit counter
-        }
-        if (buildHits[*ptr % 400] == 0)
-        { // if the hit counter is now 0, we destroy the building by setting the
-            // number to generate it to a different value
-            randNums[*ptr % 400] = 5; // this falls to a different case in our switch
-                                      // statement and draws the building out of view
-        }
-    }
-    printf("\n");
-}
-
-#define SIZE 10000
 
 void mouse(int button, int state, int x, int y)
 {
-    GLuint selectBuf[SIZE]; // Selection buffer, which is an array of size 512.
-    GLint hits;
-    GLint viewport[4]; // Current viewport size. See below.
-    if (!pausedState)
-    {
-        if (button == GLUT_LEFT_BUTTON &&
-            state == GLUT_DOWN) // When the left mouse button is pressed, we start
-                                // picking.
-        {
-
-            glGetIntegerv(GL_VIEWPORT, viewport); // Get the viewport size and put
-                                                  // them into the array viewport.
-
-            glSelectBuffer(
-                SIZE,
-                selectBuf);             // Create the selection buffer for preparing picking.
-            glRenderMode(GL_SELECT); // Enter into the selection mode.
-
-            glInitNames(); // Initialize the name stack. We need to push our objects
-                           // into the stack.
-            glPushName(-1);
-
-            glMatrixMode(GL_PROJECTION); // Need to create a new projection matrix. We
-                                         // select projection stack first.
-            glPushMatrix();                 // Need to save the old one, which is our projection for
-                                         // rendering on the screen.
-            glLoadIdentity();             // Start a new projection matrix calculation.
-
-            // Create 5x5 pixel picking region near the current mouse pointer location
-            // This is where we need to pay attention to.
-            //
-            // Note the second parameter of gluPickMatrix. OpenGL has a different
-            // origin for its window coordinates than the operation system. The second
-            // parameter provides for the conversion between the two systems, i.e. it
-            // transforms the origin from the upper left corner, as provided by GLUT
-            // (related to the hardware, for this case, the mouse pointer's location),
-            // into the bottom left corner, which is the one OpenGL uses.
-            //
-            // The picking region in this case is a 5x5 window. You may find that it
-            // is not appropriate for your application. Do some tests to find an
-            // appropriate value if you're finding it hard to pick the right objects.
-            //
-            gluPickMatrix((GLdouble)x, (GLdouble)(viewport[3] - y), 5.1, 5.1,
-                          viewport);
-            gluPerspective(45.0f, (GLfloat)Window_Width / (GLfloat)Window_Height, 1.0,
-                           250.0f);
-            glMatrixMode(GL_MODELVIEW);
-            renderCity(GL_SELECT); // See below for the tricks we play here.
-
-            glMatrixMode(GL_PROJECTION); // Now that the projection is done,
-            glPopMatrix();                 // we don't need it any more. We have to
-            glFlush();                     // retrieve the project matrix for displaying on the screen.
-
-            hits = glRenderMode(GL_RENDER); // Leave the selection mode.
-
-            processHits(hits, selectBuf); // To see which objects are hit. See below
-
-            glutPostRedisplay();
-        }
-    }
 }
 
 
@@ -1006,16 +895,18 @@ void keyboard(unsigned char key, int x, int y)
             pausedState = true;
             break;
 
-        case 122: // z
+        case 122: // z key
                 if (isNorth) {
-//                    offsetZ -= 1.0;
-//                    atZ -= 1.0;
-//                    cz -= 1.0;
+                    //* Check boundary
+                    if (cz == -54) break;
+                    
                     if (bodyAngle == 90)
                     {
                         offsetZ -= 1.0;
                         atZ -= 1.0;
                         cz -= 1.0;
+                        if (cz % 6 == 0) std::cout << "can turn" << std::endl;
+                        std::cout << "atX: " << atX << std::endl << " AtZ: " << atZ << std::endl;
                     } else{
                         offsetX -= 1.0;
                         atX -= 1.0;
@@ -1035,7 +926,11 @@ void keyboard(unsigned char key, int x, int y)
             break;
         case 97: // a key
                 if (isNorth) {
-                    std::cout << "EyeZ: " << eyeZ << std::endl << " AtZ: " << atZ << std::endl;
+                    //* Check boundary
+                    if (cz >= 1154) break;
+
+                    if (cz % 6 == 0) std::cout << "can turn" << std::endl;
+                    std::cout << "atX: " << atX << std::endl << " AtZ: " << atZ << std::endl;
                     offsetZ += 1.0;
                     atZ += 1.0;
                     std::cout << "cz: " << cz << " cx: " << cx << std::endl;
