@@ -45,12 +45,13 @@ float antRot = 90;
 float bodyAngle = 90;
 int cx = 4.0;
 int cy = 0.0;
-int  cz = -20.0;
+int cz = -20.0;
 
 bool isNorth = true;
 bool isWest = false;
 bool isSouth = false;
 bool isEast = false;
+
 
 static void PrintString(void *font, char *str)
 {
@@ -837,10 +838,10 @@ void mouse(int button, int state, int x, int y)
 {
 }
 
+
+
 bool isIntersection(int carZ, int carX){
-    if(carZ == locationZ || carX == locationX){
-        locationZ += 60;
-        locationX += 60;
+    if(carZ % 60 == 0 || carX % 60 == 0){
         return true;
     } else {
         return false;
