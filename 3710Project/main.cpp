@@ -743,7 +743,6 @@ void moveCam() {
             eyeX = 12;
             eyeY = GROUND_LEVEL + 1;
             eyeZ = -25;
-//            atX = -12;
             
             std::cout << "EyeX: "<< eyeX << std::endl;
             break;
@@ -751,18 +750,17 @@ void moveCam() {
             eyeX = -12;
             eyeY = GROUND_LEVEL + 1;
             eyeZ = -25;
-//            atX = 12;
             break;
-            
+        case 4: //* LOOKAT F4 - original position
+            eyeX = originX;
+            eyeY = originY;
+            eyeZ = originZ;
+            break;
         case 5: //* LOOKAT f5
-//            std::cout << "LOOKAT 5" << std::endl;
             eyeX = originX;
             eyeY = originY + 2;
             eyeZ = originZ - 20;
 
-//            eyeY = 10;
-//            eyeZ = -75;
-//            atX = atX - 12;
             break;
         case 8: //* LOOKAT f8
             eyeX = originX;
@@ -778,6 +776,27 @@ void moveCam() {
             eyeX = originX;
             eyeY = originY + 4;
             eyeZ = (originZ * - 1) + 10;
+            break;
+        case 9: //* LOOKAT F9 -- further than f5
+            eyeX = originX;
+            eyeY = originY + 4;
+            eyeZ = originZ - 40;
+            break;
+        case 10: //* LOOKAT F10 -- further than f6
+            eyeX = originX;
+            eyeY = originY + 4;
+            eyeZ = (originZ * - 1) + 20;
+            break;
+        case 11: //* LOOKAT F11 -- further than f7
+            eyeX = originX;
+            eyeY = originY + 8;
+            eyeZ = (originZ * -1) + 20;
+            break;
+        case 12: //* LOOKAT F12 -- further than f8
+            eyeX = originX;
+            eyeY = originY + 12;
+            eyeZ = originZ - 30;
+            
             break;
         default:
             break;
@@ -1061,6 +1080,8 @@ void speckeyboard(int key, int x, int y) {
         fkey = 2;
     } else if (key == GLUT_KEY_F3) {
         fkey = 3;
+    } else if (key == GLUT_KEY_F4) {
+        fkey = 4;
     } else if (key == GLUT_KEY_F5) {
         fkey = 5;
     } else if (key == GLUT_KEY_F8) {
@@ -1069,6 +1090,16 @@ void speckeyboard(int key, int x, int y) {
         fkey = 6;
     } else if (key == GLUT_KEY_F7) {
         fkey = 7;
+    } else if (key == GLUT_KEY_F8) {
+        fkey = 8;
+    } else if (key == GLUT_KEY_F9) {
+        fkey = 9;
+    } else if (key == GLUT_KEY_F10) {
+        fkey = 10;
+    } else if (key == GLUT_KEY_F11) {
+        fkey = 11;
+    } else if (key == GLUT_KEY_F12) {
+        fkey = 12;
     }
     
 
