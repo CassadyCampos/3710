@@ -58,6 +58,8 @@ BuildingBuilder builder;
 
 int eyeX = 5, eyeY = 8,eyeZ = -45;
 int atX = 0, atY = 0, atZ = 0;
+
+int offsetX, offsetY, offsetZ;
 int GROUND_LEVEL = 0.5;
 int frame_count = 0;
 float rotateRect = 0.4;
@@ -82,7 +84,7 @@ void renderCar() { // function for drawing the Car into the world
 
     // cube begin
     glLoadIdentity();
-    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1,0); // lookat view for the Car
+    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, 0, 1,0); // lookat view for the Car
 
     glTranslatef(GROUND_LEVEL+cx,GROUND_LEVEL,GROUND_LEVEL+cz);      // translate to Cars current position
     glRotatef(bodyAngle, 0, 1, 0); // for when Car is turning to left or right
@@ -362,7 +364,7 @@ void renderCar() { // function for drawing the Car into the world
 void renderSphe(int x, int z) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, 0, 1, 0);
 
     
     //* Move to building square
@@ -429,7 +431,7 @@ void renderSphe(int x, int z) {
 void renderCyli(int x, int z) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, 0, 1, 0);
    
     float cylXPos = -15 + x * 60;
     float cylZPos = -20 + z * 60;
@@ -524,7 +526,7 @@ void renderCyli(int x, int z) {
 void renderBuild(int x, int z) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, 0, 1, 0);
 //    gluLookAt(eyeX, 40, 60, atX, atY, atZ, 0, 1, 0);
 
     
@@ -596,7 +598,7 @@ void renderCity(GLenum mode)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    gluLookAt(eyeX * 60, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, 0, 1, 0);
     
     srand(time(NULL));
     int ran;
@@ -636,7 +638,7 @@ void renderGround() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    gluLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, 0, 1, 0);
+    gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, 0, 1, 0);
 
     // Render blocks for building sections
     glColor3f(0.000, 0.000, 0.000); // black
@@ -733,10 +735,16 @@ void renderGround() {
 void moveCam() {
     switch (fkey) {
         case 1:
+            eyeX = 5, eyeY = 8, eyeZ = -45;
             std::cout << "look forward " << std::endl;
             break;
         case 2:
-            std::cout << "look right " << std::endl;
+//            if (eyeX > -15) {
+                eyeX = -50;
+                eyeY = GROUND_LEVEL+1;
+//            }
+            
+            std::cout << "EyeX: "<< eyeX << std::endl;
             break;
         default:
             break;
@@ -925,7 +933,7 @@ void keyboard(unsigned char key, int x, int y)
 
         case 122: // z
                 std::cout << "EyeZ " << eyeZ << std::endl;
-                eyeZ -= 1.0;
+                offsetZ -= 1.0;
                 atZ -= 1.0;
                 if (bodyAngle == 90)
                 {
@@ -937,7 +945,7 @@ void keyboard(unsigned char key, int x, int y)
             break;
         case 97: // a key
                 std::cout << "EyeZ: " << eyeZ << std::endl << " AtZ: " << atZ << std::endl;
-                eyeZ += 1.0;
+                offsetZ += 1.0;
                 atZ += 1.0;
                 if (bodyAngle == 90)
                 {
