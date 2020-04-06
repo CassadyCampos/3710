@@ -741,7 +741,11 @@ void moveCam() {
     int originX = 5, originY = 8, originZ = -45;
     switch (fkey) {
         case 1:
-            eyeX = originX, eyeY = originY, eyeZ = originZ;
+            if (isNorth) {
+                eyeX = originX, eyeY = originY, eyeZ = originZ;
+            } else if (isWest) {
+                eyeX = 0 , eyeY = originY, eyeZ = 1;
+            }
             break;
         case 2: //* LOOKAT f2
             eyeX = 12;
@@ -987,20 +991,29 @@ void keyboard(unsigned char key, int x, int y)
             break;
 
         case 122: // z
-                std::cout << "EyeZ " << eyeZ << std::endl;
-                offsetZ -= 1.0;
-                atZ -= 1.0;
-                std::cout << "cz: " << cz << " cx: " << cx << std::endl;
-                if (bodyAngle == 90)
-                {
+                if (isNorth) {
                     offsetZ -= 1.0;
                     atZ -= 1.0;
-                    cz -= 1.0;
-                } else{
+                    if (bodyAngle == 90)
+                    {
+                        offsetZ -= 1.0;
+                        atZ -= 1.0;
+                        cz -= 1.0;
+                    } else{
+                        offsetX -= 1.0;
+                        atX -= 1.0;
+                        cx -= 1.0;
+                    }
+                } else if (isWest) {
                     offsetX -= 1.0;
                     atX -= 1.0;
-                    cx -= 1.0;
+                    if (bodyAngle == 180) {
+                        cx -= 1.0;
+                    } else {
+                        cz += 1.0;
+                    }
                 }
+
                 
             break;
         case 97: // a key
@@ -1040,6 +1053,10 @@ void keyboard(unsigned char key, int x, int y)
         case 119: // w key
             eyeX = 5, eyeY = -8, eyeZ = -45;
             bodyAngle -= 90;
+                if (isWest) {
+                    isNorth = true;
+                    isWest = false;
+                }
             break;
         case 114: // r key
             eyeZ += 1.0;
