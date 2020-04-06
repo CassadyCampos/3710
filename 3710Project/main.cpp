@@ -744,7 +744,8 @@ void moveCam() {
             if (isNorth) {
                 eyeX = originX, eyeY = originY, eyeZ = originZ;
             } else if (isWest) {
-                eyeX = 0 , eyeY = originY, eyeZ = 1;
+                
+                eyeX = originZ + offsetX, eyeY = originY, eyeZ = originX + offsetZ;
             }
             break;
         case 2: //* LOOKAT f2
@@ -992,8 +993,9 @@ void keyboard(unsigned char key, int x, int y)
 
         case 122: // z
                 if (isNorth) {
-                    offsetZ -= 1.0;
-                    atZ -= 1.0;
+//                    offsetZ -= 1.0;
+//                    atZ -= 1.0;
+//                    cz -= 1.0;
                     if (bodyAngle == 90)
                     {
                         offsetZ -= 1.0;
