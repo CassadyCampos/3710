@@ -717,29 +717,37 @@ void renderGround() {
 }
 
 void moveCam() {
+    int baseY = 5;
     //* WHEN FACING NORTH;
-    int originX = 0, originY = 5, originZ = -15;
+    int nX = 0, nZ = -15;
     //* WHEN FACING WEST;
     int wX = -15, wZ = 1;
     switch (fkey) {
         case 1:
             if (isNorth) {
-                eyeX = originX; eyeY = originY; eyeZ = originZ;
-//            } else if (isWest) {
-//                eyeX = -35; eyeY = 8; eyeZ = -25;
+                eyeX = nX; eyeY = baseY; eyeZ = nZ;
+                break;
             } else if (isWest) {
-
                 eyeX = wX;
-                eyeY = originY;
+                eyeY = baseY;
                 eyeZ = wZ;
+                break;
+            } else if (isSouth) {
+                eyeX = -nX;
+                eyeY = baseY;
+                eyeZ = -nZ;
+                break;
+            } else if (isEast) {
+                eyeX = -wX;
+                eyeY = baseY;
+                eyeZ = -wZ;
+                break;
             }
-
             break;
         case 2: //* LOOKAT f2
             if (isNorth) {
-                eyeX = 12;
-                eyeY = GROUND_LEVEL + 1;
-                eyeZ = -25;
+                eyeX = 14;
+                eyeZ = 0;
             } else if (isWest) {
                 eyeX = -25;
                 eyeY = GROUND_LEVEL + 1;
@@ -749,55 +757,57 @@ void moveCam() {
             
             break;
         case 3: //* LOOKAT f3
-            eyeX = -12;
-            eyeY = GROUND_LEVEL + 1;
-            eyeZ = -25;
+            if (isNorth) {
+                eyeX = -14;
+                eyeZ = 0;
+            }
+
             break;
         case 4: //* LOOKAT F4 - original position
-            eyeX = originX;
-            eyeY = originY;
-            eyeZ = originZ;
+            eyeX = nX;
+            eyeY = baseY;
+            eyeZ = nZ;
             break;
         case 5: //* LOOKAT f5
-            eyeX = originX;
-            eyeY = originY + 2;
-            eyeZ = originZ - 20;
+            eyeX = nX;
+            eyeY = baseY + 2;
+            eyeZ = nZ - 20;
 
             break;
         case 8: //* LOOKAT f8
-            eyeX = originX;
-            eyeY = originY + 6;
-            eyeZ = originZ - 15;
+            eyeX = nX;
+            eyeY = baseY + 6;
+            eyeZ = nZ - 15;
             break;
         case 6: //* LOOKAT f6
-            eyeX = originX;
-            eyeY = originY + 2;
-            eyeZ = originZ * - 1;
+            eyeX = nX;
+            eyeY = baseY + 2;
+            eyeZ = nZ * - 1;
             break;
         case 7: //* LOOKAT f7
-            eyeX = originX;
-            eyeY = originY + 4;
-            eyeZ = (originZ * - 1) + 10;
+            eyeX = nX;
+            eyeY = baseY + 4;
+            eyeZ = (nZ * - 1) + 10;
             break;
         case 9: //* LOOKAT F9 -- further than f5
-            eyeX = originX;
-            eyeY = originY + 4;
-            eyeZ = originZ - 40;
+            eyeX = nX;
+            eyeY = baseY + 4;
+            eyeZ = nZ - 40;
             break;
         case 10: //* LOOKAT F10 -- further than f6
-            eyeX = originX;
-            eyeY = originY + 4;
-            eyeZ = (originZ * - 1) + 20;
+            eyeX = nX;
+            eyeY = baseY + 4;
+            eyeZ = (nZ * - 1) + 20;
             break;
         case 11: //* LOOKAT F11 -- further than f7
-            eyeX = originX;
-            eyeY = originY + 8;
-            eyeZ = (originZ * -1) + 20;
+            eyeX = nX;
+            eyeY = baseY + 8;
+            eyeZ = (nZ * -1) + 20;
             break;
         case 12: //* LOOKAT F12 -- further than f8
-            eyeX = originX;
-            eyeY = originY + 12;
-            eyeZ = originZ - 30;
+            eyeX = nX;
+            eyeY = baseY + 12;
+            eyeZ = nZ - 30;
             
             break;
         default:
