@@ -32,7 +32,7 @@ int fkey = 1; // camera angle starts at the '1' position. This position is
                     // behind the robots head
 bool isPaused =  false;
 
-int eyeX = 5, eyeY = 8,eyeZ = -45;
+int eyeX = 5, eyeY = 8,eyeZ = 25;
 int atX = 0, atY = 0, atZ = 0;
 float upX = 0, upY = 1, upZ = 0;
 
@@ -43,11 +43,11 @@ int GROUND_LEVEL = 0.5;
 int frame_count = 0;
 float rotateRect = 0.4;
 float rotateCyil = 0.5;
-float antRot = 90;
+float antRot = 30;
 float bodyAngle = 90;
-int cx = 4.0;
+int cx = 0.0;
 int cy = 0.0;
-int cz = 1.0;
+int cz = 0.0;
 
 bool isNorth = true;
 bool isWest = false;
@@ -66,7 +66,7 @@ static void PrintString(void *font, char *str)
 // function for drawing the Car into the world
 void renderCar() {
     float theta,angle;
-    int frame_count;
+    int frame_count=0;
 
     // cube begin
     glLoadIdentity();
@@ -850,13 +850,20 @@ void mouse(int button, int state, int x, int y)
 
 
 
-bool isIntersection(int carZ, int carX){
-    if(carZ % 60 == 0 || carX % 60 == 0){
+bool isIntersectionZ(int carZ){
+    if(carZ % 60 == 0){
         return true;
     } else {
         return false;
     }
-    
+}
+
+bool isIntersectionX(int carX){
+    if(carX % 60 == 0){
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
@@ -949,26 +956,26 @@ void keyboard(unsigned char key, int x, int y)
                 }
             break;
         case 113: // q key
-                if (isNorth && isIntersection(cz,cx)) {
-                    eyeX = -8, eyeY = 5, eyeZ = -45;
+                if (isNorth && isIntersectionZ(cz) && isIntersectionX(cx)) {
+                    //eyeX = -8, eyeY = 5, eyeZ = -45;
                     bodyAngle += 90;
                     isWest = true;
                     isNorth = false;
                     std::cout << "NORTH: cz: " << cz << " cx: " << cx << std::endl;
                     break;
-                } else if (isWest && isIntersection(cz, cx)) {
+                } else if (isWest && isIntersectionZ(cz) && isIntersectionX(cx)) {
                     bodyAngle += 90;
                     isSouth = true;
                     isWest = false;
                     std::cout << "WEST: cz: " << cz << " cx: " << cx << std::endl;
                     break;
-                } else if (isSouth && isIntersection(cz, cx)) {
+                } else if (isSouth && isIntersectionZ(cz) && isIntersectionX(cx)) {
                     bodyAngle += 90;
                     isEast = true;
                     isSouth = false;
                     std::cout << "SOUTH: cz: " << cz << " cx: " << cx << std::endl;
                     break;
-                } else if (isEast && isIntersection(cz, cx)) {
+                } else if (isEast && isIntersectionZ(cz) && isIntersectionX(cx)) {
                     bodyAngle = 90;
                     isNorth = true;
                     isEast = false;
@@ -978,21 +985,21 @@ void keyboard(unsigned char key, int x, int y)
                 }
             break;
         case 119: // w key
-                if (isNorth && isIntersection(cz, cx)) {
+                if (isNorth && isIntersectionZ(cz) && isIntersectionX(cx)) {
                     bodyAngle -= 90;
                     isEast = true;
                     isNorth = false;
-                } else if (isEast && isIntersection(cz, cx)) {
+                } else if (isEast && isIntersectionZ(cz) && isIntersectionX(cx)) {
                     bodyAngle -= 90;
                     isSouth = true;
                     isEast = false;
-                } else if (isSouth && isIntersection(cz, cx)) {
+                } else if (isSouth && isIntersectionZ(cz) && isIntersectionX(cx)) {
                     bodyAngle -= 90;
                     isWest = true;
                     isSouth = false;
-                } else if (isWest && isIntersection(cz, cx)) {
+                } else if (isWest && isIntersectionZ(cz) && isIntersectionX(cx)) {
                     bodyAngle = 90;
-                    eyeX = 5, eyeY = -8, eyeZ = -45;
+                    //eyeX = 5, eyeY = -8, eyeZ = -45;
                     isNorth = true;
                     isWest = false;
                 }
