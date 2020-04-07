@@ -1,4 +1,15 @@
-#define PROGRAM_TITLE "Cass Pros Battle Humm"
+//**********//**********//**********//**********//**********//**********//**********//**********//
+//*                                                                                            *//
+//*     CPSC 3710 Computer Graphics Spring 2020                                                *//
+//*                                                                                            *//
+//*     Cassady Campos                                                                         *//
+//*     Prosper Ibhamawu                                                                       *//
+//*                                                                                            *//
+//*                                                                                            *//
+//*                                                                                            *//
+//**********//**********//**********//**********//**********//**********//**********//**********//
+
+#define PROGRAM_TITLE "Cass Pros Battle Hummer"
 #define DISPLAY_INFO "CPSC 3710"
 
 #ifdef __APPLE__
@@ -28,10 +39,13 @@ int Window_Height = 720;
 int locationZ = 2;
 int locationX = 4;
 
-int fkey = 1; // camera angle starts at the '1' position. This position is
-                    // behind the robots head
+//* DEFAULT FUNCTION KEY PRESSED IS 1
+int fkey = 1;
+
+//* FLAG FOR PAUSE GAME
 bool isPaused =  false;
 
+//* CONSTANTS FOR CAMERA
 int eyeX = 5, eyeY = 8,eyeZ = 25;
 int atX = 0, atY = 0, atZ = 0;
 float upX = 0, upY = 1, upZ = 0;
@@ -45,6 +59,8 @@ float rotateRect = 0.4;
 float rotateCyil = 0.5;
 float antRot = 30;
 float bodyAngle = 90;
+
+//* CONSTANTS FOR CAR
 int cx = 0.0;
 int cy = 0.0;
 int cz = 0.0;
@@ -53,15 +69,6 @@ bool isNorth = true;
 bool isWest = false;
 bool isSouth = false;
 bool isEast = false;
-
-
-static void PrintString(void *font, char *str)
-{
-    int i, len = strlen(str);
-
-    for (i = 0; i < len; i++)
-        glutBitmapCharacter(font, *str++);
-}
 
 // function for drawing the Car into the world
 void renderCar() {
@@ -332,7 +339,6 @@ void renderCar() {
 
     glTranslatef(0,0,0.4);
     glutSolidTorus(0.025,0.07,10,25);
-    //*************************************************************
     glPopMatrix();
     glEnable(GL_DEPTH_TEST);
     glutPostRedisplay();
@@ -352,7 +358,6 @@ void renderSphe(int x, int z) {
     glLoadIdentity();
     gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, upX, upY, upZ);
 
-    
     //* Move to building square
     float moveX = -40 + x * 60;
     float moveZ = -30 + z * 60;
@@ -364,9 +369,9 @@ void renderSphe(int x, int z) {
     //* 1. Translate to origin (center of cylinder
     //* 2. Rotate on y
     //* 3. Rotate back to original spot
-    glTranslatef(1, 1, 1); // 3
-    glRotatef(rotateCyil , 0, 1, 0); //2
-    glTranslatef(1, 1, 1); // 1
+    glTranslatef(1, 1, 1); // 3.
+    glRotatef(rotateCyil , 0, 1, 0); //2.
+    glTranslatef(1, 1, 1); // 1.
     
     glRotatef(70, -1, 0, 0);
     glColor3f(0.753, 0.753, 0.753); // grey
@@ -376,7 +381,6 @@ void renderSphe(int x, int z) {
     glEnd();
     glPopMatrix();
     
-
     // Wick part
     glPushMatrix();
     //* Moves ontop of sphere
@@ -422,15 +426,11 @@ void renderCyli(int x, int z) {
     float cylXPos = -15 + x * 60;
     float cylZPos = -20 + z * 60;
     
-
-    
     //* Draw rectangle ontop
     float rectXmin = -5 + x * 60;
     float rectXmax = -25 + x * 60;
     float rectZmax = -12 + z * 60;
     float rectZmin = -30 + z * 60;
-    
-
     
     glPushMatrix();
     // Move to origin, rotate then move back
@@ -552,7 +552,6 @@ void renderBuild(int x, int z) {
     glVertex3f(buildingXmin+0.1, 8, buildingZmax + 2); // bot left
     glVertex3f(buildingXmin+0.1, 8, buildingZmin - 2); // bot right
 
-
     //*BACK
     glColor3f(0.467, 0.533, 0.600);
     glVertex3f(buildingXmax, 30, buildingZmin); // top right;
@@ -584,7 +583,6 @@ void renderCity(GLenum mode)
     
     gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, upX, upY, upZ);
     
-    srand(time(NULL));
     int ran;
     
     for (int i = 0; i < 20; i++) {
@@ -611,11 +609,8 @@ void renderCity(GLenum mode)
                     break;
                 }
             }
-            
             glFlush();
     }
-
-    
 }
 
 void renderGround() {
@@ -624,13 +619,12 @@ void renderGround() {
 
     gluLookAt(eyeX + offsetX, eyeY + offsetY, eyeZ + offsetZ, atX, atY, atZ, upX, upY, upZ);
 
-    // Render blocks for building sections
     glColor3f(0.000, 0.000, 0.000); // black
     glBegin(GL_QUADS);
 
     int neg50 = -50;
     int pos60 = 60;
-
+    //* BUILDING SQUARES
     // Amount of columns = 20
     // Every column x offset is changed
     for (int x = 0; x < 20; x++)
@@ -640,22 +634,16 @@ void renderGround() {
         for (int z = 0; z < 20; z++)
         {
             //bottom left
-//            std::cout << "V1: x:" <<neg50 + x * pos60 << " z: " << 0.0 +x z * pos60 << std::endl;
             glVertex3f(neg50 + x * pos60, GROUND_LEVEL, 0.0 + z * pos60);
 
             glTexCoord2f(0.0, 1.0);
             //bottom right
-//            std::cout << "V2: x:" << 0.0 + x * pos60 << " z: " << 0.0 + z * pos60 << std::endl;
             glVertex3f(0.0 + x * pos60, GROUND_LEVEL, 0.0 + z * pos60);
 
             glTexCoord2f(0.0, 0.0);
-            // top right
-//            std::cout << "V3: x:" << 0.0 + x * pos60 << " z: " << neg50 + z * pos60 << std::endl;
             glVertex3f(0.0 + x * pos60, GROUND_LEVEL, neg50 + z * pos60);
 
             glTexCoord2f(1.0, 0.0);
-            // top left
-//            std::cout << "V4: x:" << neg50 + x * pos60 << " z: " << neg50 + z * pos60 << std::endl;
             glVertex3f(neg50 + x * pos60, GROUND_LEVEL, neg50 + z * pos60);
         }
     }
@@ -966,7 +954,7 @@ void CallBackRenderScene(void) {
     glPopMatrix();
 
     glPushMatrix();
-    renderCity(GL_RENDER); // draw buildings into the world
+    renderCity(GL_RENDER);
     glPopMatrix();
     
     glPushMatrix();
@@ -1029,8 +1017,7 @@ void keyboard(unsigned char key, int x, int y)
         case 122: // z key
                 if (isNorth) {
                     //* Check boundary
-                    if (cz == -54) break;
-
+                    if (cz == -60) break;
                     offsetZ -= 1.0;
                     atZ -= 1.0;
                     cz -= 1.0;
@@ -1038,13 +1025,16 @@ void keyboard(unsigned char key, int x, int y)
                     std::cout << "NORTH: cz: " << cz << " cx: " << cx << std::endl;
                     break;
                 } else if (isWest) {
+                    //* Check boundary
+                    if (cx == -60) break;
                     offsetX -= 1.0;
                     atX -= 1.0;
                     cx -= 1.0;
                     std::cout << "WEST: cz: " << cz << " cx: " << cx << std::endl;
                     break;
-
                 } else if (isEast) {
+                    //* Check boundary
+                    if (cx >= 1160) break;
                     offsetX += 1.0;
                     atX += 1.0;
                     cx += 1.0;
@@ -1052,7 +1042,8 @@ void keyboard(unsigned char key, int x, int y)
 
                     break;
                 } else if (isSouth) {
-                    if (cz >= 1154) break;
+                    //* Check boundary
+                    if (cz >= 1160) break;
                     offsetZ += 1.0;
                     atZ += 1.0;
                     cz += 1.0;
@@ -1063,31 +1054,23 @@ void keyboard(unsigned char key, int x, int y)
         case 97: // a key
                 if (isNorth) {
                     //* Check boundary
-                    if (cz >= 1154) break;
+                    if (cz >= 1160) break;
                     offsetZ += 1.0;
                     atZ += 1.0;
                     cz += 1.0;
                     std::cout << "NORTH: cz: " << cz << " cx: " << cx << std::endl;
-//                    if (bodyAngle == 90)
-//                    {
-//                        cz += 1.0;
-//                    } else{
-//                        cx += 1.0;
-//                    }
                     break;
                 } else if (isWest) {
+                    //* Check boundary
+                    if (cx >= 1160) break;
                     offsetX += 1.0;
                     atX += 1.0;
                     cx += 1.0;
-//                    if (bodyAngle == 180) {
-//                        cx += 1.0;
-//                    } else {
-//                        cz += 1.0;
-//                    }
                     std::cout << "WEST: cz: " << cz << " cx: " << cx << std::endl;
 
                     break;
                 } else if (isEast) {
+                    if (cx == -60) break;
                     offsetX -= 1.0;
                     atX -= 1.0;
                     cx -= 1.0;
@@ -1101,13 +1084,11 @@ void keyboard(unsigned char key, int x, int y)
                     atZ -= 1.0;
                     cz -= 1.0;
                     std::cout << "SOUTH: cz: " << cz << " cx: " << cx << std::endl;
-
                     break;
                 }
             break;
         case 113: // q key
                 if (isNorth && isIntersectionZ(cz) && isIntersectionX(cx)) {
-                    //eyeX = -8, eyeY = 5, eyeZ = -45;
                     bodyAngle += 90;
                     isWest = true;
                     isNorth = false;
@@ -1149,7 +1130,6 @@ void keyboard(unsigned char key, int x, int y)
                     isSouth = false;
                 } else if (isWest && isIntersectionZ(cz) && isIntersectionX(cx)) {
                     bodyAngle = 90;
-                    //eyeX = 5, eyeY = -8, eyeZ = -45;
                     isNorth = true;
                     isWest = false;
                 }
@@ -1158,7 +1138,6 @@ void keyboard(unsigned char key, int x, int y)
 
         case 117: //u
             eyeX += 1.0;
-//                car.atx += 1.0;
             std::cout << "eyeX: " << eyeX << std::endl;
             break;
         case 105: //i key
@@ -1183,7 +1162,6 @@ void keyboard(unsigned char key, int x, int y)
         case 109: //
             eyeZ -= 1.0;
             std::cout << "eyeZ: " << eyeZ << std::endl;
-
             break;
 
         default:
