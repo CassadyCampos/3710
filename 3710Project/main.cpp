@@ -37,6 +37,8 @@ int atX = 0, atY = 0, atZ = 0;
 float upX = 0, upY = 1, upZ = 0;
 
 int offsetX, offsetY, offsetZ;
+int carOffX, carOffY, carOffZ;
+
 int GROUND_LEVEL = 0.5;
 int frame_count = 0;
 float rotateRect = 0.4;
@@ -715,15 +717,23 @@ void renderGround() {
 }
 
 void moveCam() {
-    int originX = 5, originY = 8, originZ = -45;
+    //* WHEN FACING NORTH;
+    int originX = 0, originY = 5, originZ = -15;
+    //* WHEN FACING WEST;
+    int wX = -15, wZ = 1;
     switch (fkey) {
         case 1:
             if (isNorth) {
-                eyeX = originX, eyeY = originY, eyeZ = originZ;
+                eyeX = originX; eyeY = originY; eyeZ = originZ;
+//            } else if (isWest) {
+//                eyeX = -35; eyeY = 8; eyeZ = -25;
             } else if (isWest) {
-                
-                eyeX = -35, eyeY = 8, eyeZ = -25;
+
+                eyeX = wX;
+                eyeY = originY;
+                eyeZ = wZ;
             }
+
             break;
         case 2: //* LOOKAT f2
             if (isNorth) {
@@ -863,11 +873,10 @@ void keyboard(unsigned char key, int x, int y)
                 if (isNorth) {
                     //* Check boundary
                     if (cz == -54) break;
-                    
 
-                        offsetZ -= 1.0;
-                        atZ -= 1.0;
-                        cz -= 1.0;
+                    offsetZ -= 1.0;
+                    atZ -= 1.0;
+                    cz -= 1.0;
   
                     std::cout << "NORTH: cz: " << cz << " cx: " << cx << std::endl;
                     break;
@@ -991,31 +1000,33 @@ void keyboard(unsigned char key, int x, int y)
 
 
         case 117: //u
-            atX += 1.0;
+            eyeX += 1.0;
 //                car.atx += 1.0;
-            std::cout << "atX: " << atX << std::endl;
+            std::cout << "eyeX: " << eyeX << std::endl;
             break;
         case 105: //i key
-            atX -= 1.0;
-            std::cout << "atX: " << atX << std::endl;
+            eyeX -= 1.0;
+            std::cout << "eyeX: " << eyeX << std::endl;
 
             break;
         case 106: // j key
-            atY += 1.0;
-            std::cout << "atY: " << atY << std::endl;
+            eyeY += 1.0;
+            std::cout << "eyeY: " << eyeY << std::endl;
             break;
         case 107: // k key
-            std::cout << "atY: " << atY << std::endl;
-            atY -= 1.0;
+            std::cout << "eyeY: " << eyeY << std::endl;
+            eyeY -= 1.0;
             break;
         case 110: // n key
-            std::cout << "atZ: " << atZ << std::endl;
 
-            atZ += 1.0;
+            eyeZ += 1.0;
+            std::cout << "eyeZ: " << eyeZ << std::endl;
+
             break;
         case 109: //
-            std::cout << "atZ: " << atZ << std::endl;
-            atZ -= 1.0;
+            eyeZ -= 1.0;
+            std::cout << "eyeZ: " << eyeZ << std::endl;
+
             break;
 
         default:
