@@ -32,7 +32,7 @@ int fkey = 1; // camera angle starts at the '1' position. This position is
                     // behind the robots head
 bool isPaused =  false;
 
-int eyeX = 5, eyeY = 8,eyeZ = -45;
+int eyeX = 5, eyeY = 8,eyeZ = 25;
 int atX = 0, atY = 0, atZ = 0;
 float upX = 0, upY = 1, upZ = 0;
 
@@ -930,7 +930,7 @@ void keyboard(unsigned char key, int x, int y)
                     isEast = true;
                     isNorth = false;
                 }
-                if (isWest) {
+                if (isWest && isIntersection(cz, cx)) {
                     eyeX = 5, eyeY = -8, eyeZ = -45;
                     bodyAngle -= 90;
                     isNorth = true;
