@@ -864,57 +864,80 @@ void keyboard(unsigned char key, int x, int y)
                     //* Check boundary
                     if (cz == -54) break;
                     
-                    if (bodyAngle == 90)
-                    {
+
                         offsetZ -= 1.0;
                         atZ -= 1.0;
                         cz -= 1.0;
-                        if (cz % 6 == 0) std::cout << "can turn" << std::endl;
-                        std::cout << "atX: " << atX << std::endl << " AtZ: " << atZ << std::endl;
-                    } else{
-                        offsetX -= 1.0;
-                        atX -= 1.0;
-                        cx -= 1.0;
-                    }
+  
+                    std::cout << "NORTH: cz: " << cz << " cx: " << cx << std::endl;
+                    break;
                 } else if (isWest) {
                     offsetX -= 1.0;
                     atX -= 1.0;
-                    if (bodyAngle == 180) {
-                        cx -= 1.0;
-                    } else {
-                        cz += 1.0;
-                    }
+                    cx -= 1.0;
+                    std::cout << "WEST: cz: " << cz << " cx: " << cx << std::endl;
+                    break;
+
+                } else if (isEast) {
+                    offsetX += 1.0;
+                    atX += 1.0;
+                    cx += 1.0;
+                    std::cout << "EAST: cz: " << cz << " cx: " << cx << std::endl;
+
+                    break;
+                } else if (isSouth) {
+                    if (cz >= 1154) break;
+                    offsetZ += 1.0;
+                    atZ += 1.0;
+                    cz += 1.0;
+                    std::cout << "SOUTH: cz: " << cz << " cx: " << cx << std::endl;
+                    break;
                 }
             break;
         case 97: // a key
                 if (isNorth) {
                     //* Check boundary
                     if (cz >= 1154) break;
-
-                    if (cz % 6 == 0) std::cout << "can turn" << std::endl;
-                    std::cout << "atX: " << atX << std::endl << " AtZ: " << atZ << std::endl;
                     offsetZ += 1.0;
                     atZ += 1.0;
-                    std::cout << "cz: " << cz << " cx: " << cx << std::endl;
-                    if (bodyAngle == 90)
-                    {
-                        cz += 1.0;
-                    } else{
-                        cx += 1.0;
-                    }
+                    cz += 1.0;
+                    std::cout << "NORTH: cz: " << cz << " cx: " << cx << std::endl;
+//                    if (bodyAngle == 90)
+//                    {
+//                        cz += 1.0;
+//                    } else{
+//                        cx += 1.0;
+//                    }
+                    break;
                 } else if (isWest) {
                     offsetX += 1.0;
                     atX += 1.0;
-                    if (bodyAngle == 180) {
-                        cx += 1.0;
-                    } else {
-                        cz += 1.0;
-                    }
+                    cx += 1.0;
+//                    if (bodyAngle == 180) {
+//                        cx += 1.0;
+//                    } else {
+//                        cz += 1.0;
+//                    }
+                    std::cout << "WEST: cz: " << cz << " cx: " << cx << std::endl;
+
+                    break;
+                } else if (isEast) {
+                    offsetX -= 1.0;
+                    atX -= 1.0;
+                    cx -= 1.0;
+                    std::cout << "EAST: cz: " << cz << " cx: " << cx << std::endl;
+
+                    break;
+                } else if (isSouth) {
+                    //* Check boundary
+                    if (cz == -54) break;
+                    offsetZ -= 1.0;
+                    atZ -= 1.0;
+                    cz -= 1.0;
+                    std::cout << "SOUTH: cz: " << cz << " cx: " << cx << std::endl;
+
+                    break;
                 }
-            break;
-        case 115: // s key
-            eyeY -= 1.0;
-            std::cout << "EyeY: " << eyeY << std::endl;
             break;
         case 113: // q key
                 if (isNorth && isIntersection(cz,cx)) {
@@ -922,6 +945,27 @@ void keyboard(unsigned char key, int x, int y)
                     bodyAngle += 90;
                     isWest = true;
                     isNorth = false;
+                    std::cout << "NORTH: cz: " << cz << " cx: " << cx << std::endl;
+                    break;
+                } else if (isWest && isIntersection(cz, cx)) {
+                    bodyAngle += 90;
+                    isSouth = true;
+                    isWest = false;
+                    std::cout << "WEST: cz: " << cz << " cx: " << cx << std::endl;
+                    break;
+                } else if (isSouth && isIntersection(cz, cx)) {
+                    bodyAngle += 90;
+                    isEast = true;
+                    isSouth = false;
+                    std::cout << "SOUTH: cz: " << cz << " cx: " << cx << std::endl;
+                    break;
+                } else if (isEast && isIntersection(cz, cx)) {
+                    bodyAngle = 90;
+                    isNorth = true;
+                    isEast = false;
+                    std::cout << "EAST: cz: " << cz << " cx: " << cx << std::endl;
+
+                    break;
                 }
             break;
         case 119: // w key
@@ -929,24 +973,23 @@ void keyboard(unsigned char key, int x, int y)
                     bodyAngle -= 90;
                     isEast = true;
                     isNorth = false;
-                }
-                if (isWest) {
-                    eyeX = 5, eyeY = -8, eyeZ = -45;
+                } else if (isEast && isIntersection(cz, cx)) {
                     bodyAngle -= 90;
+                    isSouth = true;
+                    isEast = false;
+                } else if (isSouth && isIntersection(cz, cx)) {
+                    bodyAngle -= 90;
+                    isWest = true;
+                    isSouth = false;
+                } else if (isWest && isIntersection(cz, cx)) {
+                    bodyAngle = 90;
+                    eyeX = 5, eyeY = -8, eyeZ = -45;
                     isNorth = true;
                     isWest = false;
                 }
             break;
-        case 114: // r key
-            eyeZ += 1.0;
-//                car.eyez += 1.0;
-            std::cout << "EyeZ: " << eyeZ << std::endl;
-            break;
-        case 120: //x key
-            eyeZ -= 1.0;
-//                car.eyez -= 1.0;
-            std::cout << "EyeZ " << eyeZ << std::endl;
-            break;
+
+
         case 117: //u
             atX += 1.0;
 //                car.atx += 1.0;
